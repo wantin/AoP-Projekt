@@ -1,4 +1,4 @@
-package einsnull; //test
+package einsnull; 
 
 public class Einheit extends Karte {
 	int staerke;
