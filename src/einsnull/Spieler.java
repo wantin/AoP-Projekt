@@ -1,5 +1,7 @@
 package einsnull;
 
+import einheitenkarten.Einheit;
+
 public class Spieler {
 	Karte[] hand;
 	Einheit[] truppen;
