@@ -4,15 +4,19 @@ Unser Spiel, das die Prüfung des Fachs AoP2 sein wird. geschrieben in java
 TODOs
     primäre Aufgaben
         -GUI
+            -Spielfeld
+            -Handkarten
+            -aktiver Spieler anzeige
+            -ausgewählte einheit hervorheben
+            -mögliche Züge signalisieren
         -Einheit
             Stärkewerte(effektiv gegen welche Einheit) = Leben: bei Angriff (egal von wem) reduziert(je nach Stärke des Gegners),
             extra Verteidigungswert,
             Bewegung, Reichweite, Name,
             Karte1/Karte2 -> Methoden ableiten, eine Einheit greift nur eine weitere an
         -Testeinheit
-        -Spielzüge
-                richtige Reihenfolge(wie oft und wann darf der Spieler Zug machen)
-                durchführbar(error falls Feld besetzt)
+        -Main Funktion
+            Spielablauf    
         -Spielbrett(jaa, links und rechts ist gut + passende Größe)
             freie Auswahl der Platzierung oder mit Einschränkungen?(z.B. nicht in Angriffsweite fremder Einheiten)
         -Spieler(Startkapital und Auswahl der Karten mit entsprechenden Eigenschaften zu Beginn des Spiels?,
@@ -20,6 +24,10 @@ TODOs
 
 
     sekundäre Aufgaben
+        -vor dem Spiel Karten kaufen
+        -vor dem Spiel Spielernamen eingeben
+        -Handkartenanzeige
+        -Namenanzeige
         -viele Einheiten
             -Kavallerie
             -Speerträger
@@ -37,11 +45,20 @@ TODOs
 
 
 Diskusion über wie wir Dinge machen sollten
+    -Wie groß soll das Spielfeld sein?
+    -W
+    -Wie machen wir die Zugreihenfolge?
+        Option 1: abwechselnd 1 Aktion
+        Option 2: mehrere Aktionen nicht mehrfach die gleiche Einheit
+            Dies würde erlauben, dass der Startspielervorteil eingegrenzt wird, indem der erste Zug weniger Aktionen hat.
+    -Wie Funktionieren die Kämpfe:
+        Valentin schlägt vor: Jede Einheit hat einen Stärkewert, dieser wird reduziert, wenn sie angegriffen wird. Er wird um den Stärkewert der angreifenen Einheit -den Rüstungswert der angegriffenen Einheit.
+        Die angreifende Einheit erleidet keinen Schaden, außer durch andere Effekte.
+    -Wie können wir verschiedene Karteneffekte gut realisieren?
+      müssen wir bei jeder Karte die Fähigkeit haben und dann bei denen die nichts machen das leer lassen?
+    -
+    -
 
--Wie können wir verschiedene Karteneffekte gut realisieren?
-  müssen wir bei jeder Karte die Fähigkeit haben und dann bei denen die nichts machen das leer lassen?
--GUI: ich wäre dafür die Oberfläche so zu gestalten, dass ein Spieler links und der andere rechts ist (anstatt oben und unten)
-  ich glaube bei zwei Spielern an einer Maschine ist das besser, da diese ja auch nebeneinander sitzen.
--
--
--
+Aus den Diskussionen kam:
+
+    -links rechts Aufteilung
