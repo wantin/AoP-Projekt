@@ -1,9 +1,9 @@
-package einheitenkarten;
+package einsnull;
 
 /*
- * Ich bin vorerst nur am herumexperimentieren, keine Ahnung wie wir alles lösen
- * Vielleicht ist die Position.java wegen der Feld.java gar nicht nötig und es
- * lässt sich auch ohne das hier implementieren. Müssen wir uns noch mal überlegen.
+ * Ich bin vorerst nur am herumexperimentieren, keine Ahnung wie wir alles lï¿½sen
+ * Vielleicht ist die Position.java wegen der Feld.java gar nicht nï¿½tig und es
+ * lï¿½sst sich auch ohne das hier implementieren. Mï¿½ssen wir uns noch mal ï¿½berlegen.
  */
 
 public class Position {

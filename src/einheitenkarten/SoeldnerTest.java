@@ -1,5 +1,6 @@
 package einheitenkarten;
+import einsnull.Einheit;
 
-public class SoeldnerTest {
+public class SoeldnerTest extends Einheit{
 
 }

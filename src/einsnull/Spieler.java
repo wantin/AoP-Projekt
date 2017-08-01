@@ -1,12 +1,19 @@
 package einsnull;
 
-import einheitenkarten.Einheit;
-
 public class Spieler {
-	String name;
-	Karte[] hand;
-	Einheit[] truppen;
-	int gold;
+	private String name;
+	private Karte[] hand;
+	private Einheit[] truppen;
+	private int gold;
+	
+	
+	//ich muss erstmal wieder ins Programmieren reinkommen, keine Ahnung ob die Methode hier Sinn macht (Dong)
+	//umbenannt zu print. falls wir die brauchen haben wir die dann ja
+	public void printHand() {
+		for (int i = 0; i <= hand.length; i++) {
+			System.out.println(hand[i]);
+		}
+	}
 	
 	public int getGold() {
 		return gold;
@@ -16,14 +23,6 @@ public class Spieler {
 		this.gold = gold;
 	}
 	
-	//ich muss erstmal wieder ins Programmieren reinkommen, keine Ahnung ob die Methode hier Sinn macht (Dong)
-	//umbenannt zu print. falls wir die brauchen haben wir die dann ja
-	public void printHand() {
-		for (int i = 0; i <= hand.length; i++) {
-			System.out.println(hand[i]);
-		}
-	}
-
 	public String getName() {
 		return name;
 	}

@@ -1,11 +1,9 @@
 package einsnull;
 
-import einheitenkarten.Einheit;
-
 /*
  * Die Klasse Feld ist eine Art Schachbrett auf dem die
  * Figuren bzw. Einheiten sich befinden. Durch bestimmte
- * Befehle können diese sich später darauf bewegen und 
+ * Befehle kï¿½nnen diese sich spï¿½ter darauf bewegen und 
  * andere sich auf dem Feld befindliche Einheiten angreifen. 
  */
 
@@ -13,9 +11,37 @@ public class Feld {
 	
 	/*
 	 * Hab ich erstmal so stehen lassen
-	 */
-	boolean belegt;
-	Einheit[] darauf;
+	 * passt aber glaube ich nicht zu der gleichen vorstellung von umsetzung von Feld
+	 * 
+	private boolean belegt;
+	private Einheit[] darauf;
+	
+	public boolean isBelegt() {
+		return belegt;
+	}
+
+	public void setBelegt(boolean belegt) {
+		this.belegt = belegt;
+	}
+
+	public Einheit[] getDarauf() {
+		return darauf;
+	}
+
+	public void setDarauf(Einheit[] darauf) {
+		this.darauf = darauf;
+	}
+*/
+	
+	public Einheit[][] getInhalt() {
+		return inhalt;
+	}
+
+	public void setInhalt(Einheit[][] inhalt) {
+		this.inhalt = inhalt;
+	}
+
+
 	
 	/*
 	 * Ein zweidimensionales Array, in dem die Besetzung gespeichert wird
@@ -23,7 +49,7 @@ public class Feld {
 	protected Einheit[][] inhalt;
 	
 	/*
-	 * Konstruktor (bei Bedarf nur ein Parameter, da quadratisches Feld?)
+	 * Konstruktor (bei Bedarf nur ein Parameter, da quadratisches Feld?) //wÃ¼rde ich uns offen lassen
 	 * @param zeile - Anzahl der Zeilen
 	 * @param spalte - Anzahl der Spalten
 	 */

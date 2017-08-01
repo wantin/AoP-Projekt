@@ -1,5 +1,6 @@
 package einsnull;
 
+import einheitenkarten.SoeldnerTest;
 import java.util.Scanner;
 
 public class Main {
@@ -25,6 +26,11 @@ public class Main {
 		
 		//Karten wählen
 		
+		//vorerst eine testkarte in die Hand jedes Spielers
+		Karte testkarte = new SoeldnerTest();
+		Karte[] teststart= {testkarte};
+		
+		links.setHand(teststart);
 		
 		//Karten ausspielen oder benutzen
 		while((links.getHand() != null || links.getTruppen() != null) && 
@@ -43,6 +49,8 @@ public class Main {
 				System.out.println("Die Partie endet unentschieden.");
 			}
 		}
+		
+		input.close();
 
 	}
 
