@@ -2,6 +2,9 @@ package einsnull;
 
 public abstract class Karte {
 	
-	abstract void ausspielen( Spieler ausspielender);
+	protected Spieler besitzer;
+	
+	abstract void ausspielen();
+	//Bilder für karten in den Karten speichern.
 	
 }

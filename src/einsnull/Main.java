@@ -5,15 +5,40 @@ import java.util.Scanner;
 
 public class Main {
 	
-	static void ziehen(Spieler links, Spieler rechts){
-		//eigentliches Spielen
+	//so sollten wir das später leicht ändern können.
+	static void runde(Spieler links, Spieler rechts) {
+		ziehen(links);
+		ziehen(rechts);
+	}
+	
+	//eigentliches Spielen
+	static void ziehen(Spieler aktiv){
+		//auswählen
+		//TODO: switch from console to GUI
+		System.out.println("Wollen Sie eine Handkarte ausspielen(1), oder eine Einheit bewegen(2)?");
+		Scanner input = new Scanner(System.in);
+		int auswahl = 0;
+		//TODO: Scanner unfug reparieren
+		if (input.hasNextInt()) {
+			auswahl= input.nextInt();
+		}
+		if(auswahl == 1){
+			System.out.println("Welche Handkarte wollen Sie spielen? (0 - " + (aktiv.getHand().length -1) + ")" );
+			auswahl= input.nextInt();
+			aktiv.getHand()[auswahl].ausspielen();
+		}else {
+			System.out.println("Welche Einheit wollen Sie bewegen? (0 - " + (aktiv.getTruppen().length -1) + ")" );
+			auswahl= input.nextInt();
+			aktiv.getTruppen()[auswahl].bewegen();
+		}
+		
 	}
 
 	public static void main(String[] args) {
 		
 		Scanner input = new Scanner(System.in);
-		Spieler links = new Spieler();
-		Spieler rechts = new Spieler();
+		Spieler links = new Spieler();links.setSeite("links");
+		Spieler rechts = new Spieler();rechts.setSeite("rechts");
 		
 		//Spieler oder KI auswählen
 		
@@ -25,17 +50,19 @@ public class Main {
 		rechts.setName(input.next());
 		
 		//Karten wählen
-		
 		//vorerst eine testkarte in die Hand jedes Spielers
-		Karte testkarte = new SoeldnerTest();
+		Karte testkarte = new SoeldnerTest(links);
 		Karte[] teststart= {testkarte};
-		
 		links.setHand(teststart);
+		
+		Karte testkarte2 = new SoeldnerTest(rechts);
+		Karte[] teststart2= {testkarte2};
+		rechts.setHand(teststart2);
 		
 		//Karten ausspielen oder benutzen
 		while((links.getHand() != null || links.getTruppen() != null) && 
 				(rechts.getHand() != null || rechts.getTruppen() != null)){
-			ziehen(links, rechts);
+			runde(links, rechts);
 		}
 		
 		//Sieger bekanntgeben

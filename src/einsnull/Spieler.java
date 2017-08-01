@@ -5,8 +5,17 @@ public class Spieler {
 	private Karte[] hand;
 	private Einheit[] truppen;
 	private int gold;
+	private String seite;
 	
 	
+	public String getSeite() {
+		return seite;
+	}
+
+	public void setSeite(String seite) {
+		this.seite = seite;
+	}
+
 	//ich muss erstmal wieder ins Programmieren reinkommen, keine Ahnung ob die Methode hier Sinn macht (Dong)
 	//umbenannt zu print. falls wir die brauchen haben wir die dann ja
 	public void printHand() {

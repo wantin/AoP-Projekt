@@ -46,10 +46,11 @@ public class Feld {
 	/*
 	 * Ein zweidimensionales Array, in dem die Besetzung gespeichert wird
 	 */
-	protected Einheit[][] inhalt;
+	private Einheit[][] inhalt;
 	
 	/*
-	 * Konstruktor (bei Bedarf nur ein Parameter, da quadratisches Feld?) //würde ich uns offen lassen
+	 * Konstruktor (bei Bedarf nur ein Parameter, da quadratisches Feld?) (Dong)
+	 * würde ich uns offen lassen vielleicht ist es besser wenn es breiter oder tiefer ist. (Valentin)
 	 * @param zeile - Anzahl der Zeilen
 	 * @param spalte - Anzahl der Spalten
 	 */

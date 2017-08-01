@@ -12,8 +12,8 @@ public class Effekt extends Karte {
 	}
 
 	//diese Funktion sollte im allgemeinen von den einzelnen Effekten überschrieben werden.
-	void ausspielen(Spieler ausspielender) {
-		System.out.println(ausspielender.getName() + " hat " + name + " ausgespielt.");
+	void ausspielen() {
+		System.out.println(besitzer.getName() + " hat " + name + " ausgespielt.");
 	}
 
 }
