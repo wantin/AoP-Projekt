@@ -33,11 +33,11 @@ public class Feld {
 	}
 */
 	
-	public Einheit[][] getInhalt() {
+	public Einheit[][][] getInhalt() {
 		return inhalt;
 	}
 
-	public void setInhalt(Einheit[][] inhalt) {
+	public void setInhalt(Einheit[][][] inhalt) {
 		this.inhalt = inhalt;
 	}
 
@@ -46,7 +46,7 @@ public class Feld {
 	/*
 	 * Ein zweidimensionales Array, in dem die Besetzung gespeichert wird
 	 */
-	private Einheit[][] inhalt;
+	private Einheit[][][] inhalt;
 	
 	/*
 	 * Konstruktor (bei Bedarf nur ein Parameter, da quadratisches Feld?) (Dong)
@@ -55,7 +55,7 @@ public class Feld {
 	 * @param spalte - Anzahl der Spalten
 	 */
 	public Feld(int zeile, int spalte) {
-		inhalt = new Einheit[zeile][spalte];
+		inhalt = new Einheit[zeile][spalte][0];
 	}
 	
 	/*Ermittelt die Anzahl der Zeilen */
@@ -74,8 +74,13 @@ public class Feld {
 	 * @param spalte - Spaltennummer ab Index 0
 	 * @return - Inhalt des Feldes, wenn leer return null
 	 */
-	public Einheit getInhalt (int zeile, int spalte) {
+	public Einheit[] getInhalt (int zeile, int spalte) {
 		return inhalt[zeile][spalte];
+	}
+	
+	public boolean besetzt (int zeile, int spalte) {
+		if (inhalt[zeile][spalte].length == 0) return false;
+			else return true;
 	}
 
 }

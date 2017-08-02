@@ -19,8 +19,7 @@ TODOs
             Spielablauf    
         -Spielbrett(jaa, links und rechts ist gut + passende Größe)
             freie Auswahl der Platzierung oder mit Einschränkungen?(z.B. nicht in Angriffsweite fremder Einheiten)
-        -Spieler(Startkapital und Auswahl der Karten mit entsprechenden Eigenschaften zu Beginn des Spiels?,
-            Möglichkeit der Namenseingabe und -anzeige während des Spiels, Ausgabe Gewinner?)
+
 
 
     sekundäre Aufgaben
@@ -37,6 +36,9 @@ TODOs
             ...
         -Bilder für Einheiten
         -Spielumgebung gestalten (GUI hübsch machen)
+        -Spieler(Startkapital und Auswahl der Karten mit entsprechenden Eigenschaften zu Beginn des Spiels?,
+            Möglichkeit der Namenseingabe und -anzeige während des Spiels, Ausgabe Gewinner?)
+
 
     optionale Aufgaben
         -Musik
