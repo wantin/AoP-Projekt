@@ -17,7 +17,7 @@ static Scanner input = new Scanner(System.in);
 
 	public void ausspielen() {
 		//erfragen des ortes vom Spieler
-		System.out.println("Sie können diese Einheit auf den Feldern (x,y) platzieren mit -1<x<2 und -1<y<6");
+		System.out.println("Sie können diese Einheit auf den Feldern (x,y) platzieren mit x aus [0, 1] und y aus [0, 5]");
 		System.out.println("Bitte geben Sie x an");
 		int auswahlX= input.nextInt();
 		System.out.println("Bitte geben Sie y an");

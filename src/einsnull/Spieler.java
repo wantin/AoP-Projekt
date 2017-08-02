@@ -1,12 +1,30 @@
 package einsnull;
 
+import java.util.ArrayList;
+
 public class Spieler {
+	
 	private String name;
-	private Karte[] hand;
-	private Einheit[] truppen;
+	private ArrayList<Karte> hand = new ArrayList<Karte>();
+	private ArrayList<Einheit> truppen = new ArrayList<Einheit>();
 	private int gold;
 	private String seite;
 	
+	//Kontrollausgabemethoden
+	
+	public void printTruppen() {
+		for (int i = 0; i < truppen.size(); i++) {
+			System.out.println(truppen.get(i));
+		}
+	}
+	
+	public void printHand() {
+		for (int i = 0; i < hand.size(); i++) { // du hattest hier <= das ist eins zu viel, weil der größte index einer Menge mit einem Element 0 ist.
+			System.out.println(hand.get(i));
+		}
+	}
+	
+	//Setter und Getter
 	
 	public String getSeite() {
 		return seite;
@@ -16,13 +34,6 @@ public class Spieler {
 		this.seite = seite;
 	}
 
-	//ich muss erstmal wieder ins Programmieren reinkommen, keine Ahnung ob die Methode hier Sinn macht (Dong)
-	//umbenannt zu print. falls wir die brauchen haben wir die dann ja
-	public void printHand() {
-		for (int i = 0; i <= hand.length; i++) {
-			System.out.println(hand[i]);
-		}
-	}
 	
 	public int getGold() {
 		return gold;
@@ -40,19 +51,20 @@ public class Spieler {
 		this.name = name;
 	}
 
-	public Karte[] getHand() {
+	public ArrayList<Karte> getHand() {
 		return hand;
 	}
 
-	public void setHand(Karte[] hand) {
+	public void setHand(ArrayList<Karte> hand) {
 		this.hand = hand;
 	}
 
-	public Einheit[] getTruppen() {
+	public ArrayList<Einheit> getTruppen() {
 		return truppen;
 	}
 
-	public void setTruppen(Einheit[] truppen) {
+	public void setTruppen(ArrayList<Einheit> truppen) {
 		this.truppen = truppen;
 	}
+	
 }

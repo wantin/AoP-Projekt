@@ -8,15 +8,23 @@ public class Main {
 	static Scanner input = new Scanner(System.in);
 	
 	//so sollten wir das später leicht ändern können.
-	static void runde(Spieler links, Spieler rechts) {
-		ziehen(links);
-		ziehen(rechts);
+	static void runde(Spieler links, Spieler rechts, Feld f) {
+		ziehen(links, f);
+		ziehen(rechts, f);
 	}
 	
 	//eigentliches Spielen
-	static void ziehen(Spieler aktiv){
+	static void ziehen(Spieler aktiv, Feld spielbrett){
 		//auswählen
 		//TODO: switch from console to GUI
+		
+		System.out.println("Hand von " + aktiv.getName());
+		aktiv.printHand();
+		System.out.println("Truppen von " + aktiv.getName());
+		aktiv.printTruppen();
+		System.out.println("Spielfeld:");
+		spielbrett.print();
+		
 		System.out.println("Wollen Sie eine Handkarte ausspielen(1), oder eine Einheit bewegen(2)?");
 		int auswahl = 0;
 		do {
@@ -27,21 +35,24 @@ public class Main {
 			}
 		}while(auswahl == 0);
 		if(auswahl == 1){
-			System.out.println("Welche Handkarte wollen Sie spielen? (0 - " + (aktiv.getHand().length ) + ")" );
+			System.out.println("Welche Handkarte wollen Sie spielen? [0, " + (aktiv.getHand().size()-1 ) + "]" );
 			auswahl= input.nextInt();
-			aktiv.getHand()[auswahl].ausspielen();
+			aktiv.getHand().get(auswahl).ausspielen();
 		}else {
-			System.out.println("Welche Einheit wollen Sie bewegen? (0 - " + (aktiv.getTruppen().length ) + ")" );
+			System.out.println("Welche Einheit wollen Sie bewegen? [0, " + (aktiv.getTruppen().size()-1 ) + "]" );
 			auswahl= input.nextInt();
-			aktiv.getTruppen()[auswahl].bewegen();
-		}
-		
+			aktiv.getTruppen().get(auswahl).bewegen();
+		}		
 	}
 
 	public static void main(String[] args) {
 		
+		Feld spielbrett = new Feld(6,6);
 		Spieler links = new Spieler();links.setSeite("links");
 		Spieler rechts = new Spieler();rechts.setSeite("rechts");
+		
+		
+		spielbrett.print();
 		
 		//Spieler oder KI auswählen
 		
@@ -55,17 +66,15 @@ public class Main {
 		//Karten wählen
 		//vorerst eine testkarte in die Hand jedes Spielers
 		Karte testkarte = new SoeldnerTest(links);
-		Karte[] teststart= {testkarte};
-		links.setHand(teststart);
+		links.getHand().add(testkarte);
 		
 		Karte testkarte2 = new SoeldnerTest(rechts);
-		Karte[] teststart2= {testkarte2};
-		rechts.setHand(teststart2);
+		rechts.getHand().add(testkarte2);
 		
 		//Karten ausspielen oder benutzen
 		while((links.getHand() != null || links.getTruppen() != null) && 
 				(rechts.getHand() != null || rechts.getTruppen() != null)){
-			runde(links, rechts);
+			runde(links, rechts, spielbrett);
 		}
 		
 		//Sieger bekanntgeben
