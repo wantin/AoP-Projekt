@@ -27,10 +27,8 @@ public class Feld {
 	 * @param spalte - Anzahl der Spalten
 	 */
 	public Feld(int zeile, int spalte) {
-		System.out.println("ausgeführt");
 		inhalt = new ArrayList<ArrayList<ArrayList<Einheit>>>(zeile);
 		for (int i = 0; i < zeile; i++) {
-			System.out.println("innen");
 			inhalt.add(new ArrayList<ArrayList<Einheit>>(spalte));
 			for (int j = 0; j < spalte; j++) {
 				inhalt.get(i).add(new ArrayList<Einheit>(1));

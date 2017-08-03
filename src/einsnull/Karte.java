@@ -4,7 +4,7 @@ public abstract class Karte {
 	
 	protected Spieler besitzer;
 	
-	abstract void ausspielen();
+	abstract boolean nutzen(Feld spielbrett);
 	//Bilder für karten in den Karten speichern.
 	
 }

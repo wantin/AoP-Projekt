@@ -25,23 +25,24 @@ public class Main {
 		System.out.println("Spielfeld:");
 		spielbrett.print();
 		
-		System.out.println("Wollen Sie eine Handkarte ausspielen(1), oder eine Einheit bewegen(2)?");
+		System.out.println("Wollen Sie eine Handkarte ausspielen(1), oder eine Einheit bewegen/mit ihr angreifen(2)?");
 		int auswahl = 0;
 		do {
 			//bevor ich die schleife hinzugefügt hatte hat es einfach immer auswahl != 1 gehabt und deswegen den fehler bei der Truppenlänge, obwohl es noch keine Truppen gibt.
 			//System.out.println("Durchlauf"); viele.. mein schwacher Laptop ist dran überhitzt XD
+			//scheinbar war das schließen des inputs das Problem
 			if (input.hasNextInt()) {
 				auswahl= input.nextInt();
 			}
-		}while(auswahl == 0);
+		}while(auswahl == 0); //ich weiß nicht ob diese Schleifen sinnvoll oder so sind. hatte ich zur Fehlerbehandlung. kommt aber am Ende eh alles über die GUI.
 		if(auswahl == 1){
 			System.out.println("Welche Handkarte wollen Sie spielen? [0, " + (aktiv.getHand().size()-1 ) + "]" );
 			auswahl= input.nextInt();
-			aktiv.getHand().get(auswahl).ausspielen();
+			aktiv.getHand().get(auswahl).nutzen(spielbrett);
 		}else {
 			System.out.println("Welche Einheit wollen Sie bewegen? [0, " + (aktiv.getTruppen().size()-1 ) + "]" );
 			auswahl= input.nextInt();
-			aktiv.getTruppen().get(auswahl).bewegen();
+			aktiv.getTruppen().get(auswahl).nutzen(spielbrett);
 		}		
 	}
 
@@ -51,17 +52,19 @@ public class Main {
 		Spieler links = new Spieler();links.setSeite("links");
 		Spieler rechts = new Spieler();rechts.setSeite("rechts");
 		
-		
-		spielbrett.print();
-		
 		//Spieler oder KI auswählen
 		
 		//Spieler benennen
 		//TODO: switch from console to GUI
+		
+		/* das ist zu nervig, deswegen vorerst anders
 		System.out.println("Bitte geben Sie den Namen des linken Spielers ein.");
 		links.setName(input.next());
 		System.out.println("Bitte geben Sie den Namen des rechten Spielers ein.");
 		rechts.setName(input.next());
+		*/
+		links.setName("Eule");
+		rechts.setName("Ratte");
 		
 		//Karten wählen
 		//vorerst eine testkarte in die Hand jedes Spielers

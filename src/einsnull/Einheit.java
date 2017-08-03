@@ -10,50 +10,84 @@ public class Einheit extends Karte {
 	protected ArrayList<int[]>  bewegung= new ArrayList<int[]> ();
 	protected ArrayList<int[]>  angriff = new ArrayList< int[]>();
 	protected String name;
-	protected int[] position = {};
+	protected int[] position = {-1, -1};
 
 static Scanner input = new Scanner(System.in);
 
-
-	public void ausspielen() {
-		//erfragen des ortes vom Spieler
-		System.out.println("Sie können diese Einheit auf den Feldern (x,y) platzieren mit x aus [0, 1] und y aus [0, 5]");
-		System.out.println("Bitte geben Sie x an");
-		int auswahlX= input.nextInt();
-		System.out.println("Bitte geben Sie y an");
-		int auswahlY= input.nextInt();
-		if (besitzer.getSeite() == "rechts") auswahlX= 5-auswahlX; //fuer Rechte Seite umstellen
-		int[] pos= {auswahlX, auswahlY};
-		this.setPosition(pos);
-	}
-
-	//man könnte vielleicht zwei funktionen machen. eine zum zeigen und eine zum bewegen
-	public void bewegen(){
-		//change from console to GUI
-		System.out.println("Es ist möglich die Einheit auf folgende Felder zu bewegen:");
-		for (int i = 0; i < bewegung.size(); i++) {
-			//check fuer Rand Feldgröße 6x6
-			if(position[0]+bewegung.get(i)[0] < 6 && position[0]+bewegung.get(i)[0] >= 0 && position[1]+bewegung.get(i)[1] < 6 && position[1]+bewegung.get(i)[1] >= 0
-					//es darf keine Einheit auf dem Feld sein
-					) {
-				System.out.println(( i + ".: " + position[0]+bewegung.get(i)[0]) + ", " + (position[1]+bewegung.get(i)[1]));
+	//Diese Funktion zeigt einem auf, wie man eine Karte(hier Einheit) nutzen kann und ruft dann die entsprechenden Funktionen auf (siehe unten)
+	public boolean nutzen(Feld spielbrett) {
+		if(position[0]==-1) { //prüft ob die Karte noch auf der Hand ist.
+			System.out.println("Diese Karte können Sie ausspielen. Geben Sie Zeile und Spalte eines freien Feldes in Ihrem Spielbereich an, auf welches Sie die Karte spielen wollen.");
+			System.out.println("Geben Sie die Zeile an, oder -1 um abzubrechen");
+			int x, y;
+			x= input.nextInt();
+			if(x == -1) return false;
+			System.out.println("Geben Sie die Spalte an");
+			y= input.nextInt();
+			this.ausspielen(spielbrett, x, y); //keine Korrektur brauch korrekte x, y
+			return true;
+		}else {
+			System.out.println("Diese Karte können Sie angreifen lassen oder bewegen.");
+			System.out.println("Mögliche Bewegungen:");
+			for (int i = 0; i < bewegung.size(); i++) {
+				//check fuer Rand Feldgröße 6x6
+				if(position[0]+bewegung.get(i)[0] < 6 && position[0]+bewegung.get(i)[0] >= 0 && position[1]+bewegung.get(i)[1] < 6 && position[1]+bewegung.get(i)[1] >= 0
+						//es darf keine Einheit auf dem Feld sein
+						&& !spielbrett.besetzt(position[0]+bewegung.get(i)[0], position[1]+bewegung.get(i)[1]) 
+						) {
+					System.out.println((position[0]+bewegung.get(i)[0]) + ", " + (position[1]+bewegung.get(i)[1]));
+				}
 			}
-		}
-		for (int i = 0; i < angriff.size(); i++) {
-			//check fuer Rand Feldgröße 6x6
-			if(position[0]+angriff.get(i)[0] < 6 && position[0]+angriff.get(i)[0] >= 0 && position[1]+angriff.get(i)[1] < 6 && position[1]+angriff.get(i)[1] >= 0
-					//es muss eine Einheit auf dem Feld sein
-					) {
-				System.out.println(( i + ".: " + position[0]+bewegung.get(i)[0]) + ", " + (position[1]+bewegung.get(i)[1]));
+			System.out.println("Mögliche Angriffe:");
+			for (int i = 0; i < angriff.size(); i++) {
+				//check fuer Rand Feldgröße 6x6
+				if(position[0]+angriff.get(i)[0] < 6 && position[0]+angriff.get(i)[0] >= 0 && position[1]+angriff.get(i)[1] < 6 && position[1]+angriff.get(i)[1] >= 0
+						//es muss eine Einheit auf dem Feld sein
+						&& spielbrett.besetzt(position[0]+angriff.get(i)[0], position[1]+angriff.get(i)[1]) 
+						) {
+					System.out.println((position[0]+bewegung.get(i)[0]) + ", " + (position[1]+bewegung.get(i)[1]));
+				}
 			}
+			System.out.println("Bitte geben Sie die Zeile und Spalte des Feldes an, auf das Sie bewegen oder angreifen lassen wollen.");
+			System.out.println("Geben Sie die Zeile an. Geben Sie -1 an, wenn Sie abbrechen wollen.");
+			int x, y;
+			x= input.nextInt();
+			if(x == -1) return false;
+			System.out.println("Geben Sie die Spalte an");
+			y= input.nextInt();
+			if(spielbrett.besetzt(x, y)) this.angreifen(spielbrett, x, y); //benötigt korrekte x, y
+			else this.bewegen(spielbrett, x, y);
+			return true;
 		}
-		System.out.println("Bitte geben Sie ein welche der Optionen Sie wählen wollen.");
-		int auswahl= input.nextInt();
-		//bisher kein Fehlerabfangen
-		position[0]+= bewegung.get(auswahl)[0];
-		position[1]+= bewegung.get(auswahl)[1];
+	}	
+	
+	//die drei Funktionen, die nutzen aufruft
+	public void ausspielen(Feld spielbrett, int zeile, int spalte){
+		spielbrett.getInhalt(zeile, spalte).add(this);
+		besitzer.getHand().remove(this);
+		besitzer.getTruppen().add(this);
+		position[0]= zeile;
+		position[1]= spalte;
 	}
 	
+	public void bewegen(Feld spielbrett, int zeile, int spalte) {
+		spielbrett.getInhalt(zeile, spalte).add(this);
+		spielbrett.getInhalt(position[0], position[1]).remove(this);
+		position[0]= zeile;
+		position[1]= spalte;
+	}
+	
+	//Wenn wir Einheiteneffekte haben wollen, wenn Einheiten angegriffen werden müssen wir das vielleicht noch anders machen.
+	public void angreifen(Feld spielbrett, int zeile, int spalte) {
+		spielbrett.getInhalt(zeile, spalte).get(0).setStaerke( 
+				+spielbrett.getInhalt(zeile, spalte).get(0).getStaerke()
+				-staerke
+				+spielbrett.getInhalt(zeile, spalte).get(0).getRuestung()
+		);
+	}
+
+	
+	//Setters und Getters
 	
 	public ArrayList<int[]> getAngriff() {
 		return angriff;
