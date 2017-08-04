@@ -1,7 +1,9 @@
 package einsnull;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
+import einheitenkarten.*;
 
 
 public class Einheit extends Karte {
@@ -159,6 +161,24 @@ static Scanner input = new Scanner(System.in);
 	
 	public String getName() {
 		return name;
+	}
+	
+	/* TODO(?): Verschiedene Chancen bestimmte Karten zu erhalten, vielleicht irgendwas mathematisches mit 
+	 * modulo und Runden? Vielleicht Case 1/2/3 ein Kartentyp, Case 4/5/6 ein anderer?
+	 * 
+	 * Methode zur Generierung zufälliger Einheiten, ein Case repräsentiert einen Kartentyp
+	 * @param Der zugehörige Spieler für den die Einheit generiert werden soll, wichtig für Bewegungsrichtung links/rechts
+	 * @return jeweilige zufällige Karte wird zurückgegegeben
+	 */
+	public static Einheit generateEinheit(Spieler besitzer) {
+		Random zufall = new Random();
+		int zufZahl = zufall.nextInt(0); 	// Zahl muss manuell je nach Anzahl der existierenden Klassen in 'einheitenkarten' geändert werden
+		switch (zufZahl) {					// case int AnzahlKarten: return new KartenTyp(besitzer);
+		case 0:
+			return new SoeldnerTest(besitzer);
+		default:
+			return null;
+		}
 	}
 	
 	/*(Dong:)
