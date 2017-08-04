@@ -23,9 +23,9 @@ public class SoeldnerTest extends Einheit{
 		int[] g= {0*v,-1*v};bewegung.add(g);
 		int[] h= {-1*v,-1*v};bewegung.add(h);
 		
-		int[] z= {1*v,0*v};angriff.add(z);
-		int[] y= {1*v,1*v};angriff.add(y);
-		int[] x= {1*v,-1*v};angriff.add(x);
+		int[] z= {1*v,1*v};angriff.add(z);
+		int[] y= {-1*v,1*v};angriff.add(y);
+		int[] x= {0*v,1*v};angriff.add(x);
 		
 	}
 }

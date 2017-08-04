@@ -9,8 +9,10 @@ public class Main {
 	
 	//so sollten wir das später leicht ändern können.
 	static void runde(Spieler links, Spieler rechts, Feld f) {
-		ziehen(links, f);
-		ziehen(rechts, f);
+		ziehen(links, f);//der erste muss nicht überprüft werden, ob das spiel zuende ist, weil das in der while schleife schon passiert ist.
+		if((!links.getHand().isEmpty() || !links.getTruppen().isEmpty()) && (!rechts.getHand().isEmpty() || !rechts.getTruppen().isEmpty())) {
+			ziehen(rechts, f);
+		}
 	}
 	
 	//eigentliches Spielen
@@ -75,17 +77,16 @@ public class Main {
 		rechts.getHand().add(testkarte2);
 		
 		//Karten ausspielen oder benutzen
-		while((links.getHand() != null || links.getTruppen() != null) && 
-				(rechts.getHand() != null || rechts.getTruppen() != null)){
+		while((!links.getHand().isEmpty() || !links.getTruppen().isEmpty()) && (!rechts.getHand().isEmpty() || !rechts.getTruppen().isEmpty())){
 			runde(links, rechts, spielbrett);
 		}
 		
 		//Sieger bekanntgeben
 		//TODO: switch from console to GUI
-		if(links.getHand() != null || links.getTruppen() != null) {
+		if(!links.getHand().isEmpty() || !links.getTruppen().isEmpty()) {
 			System.out.println(links.getName() + " hat gewonnen.");
 		}else {
-			if(rechts.getHand() != null || rechts.getTruppen() != null) {
+			if(!rechts.getHand().isEmpty() || !rechts.getTruppen().isEmpty()) {
 				System.out.println(rechts.getName() + " hat gewonnen.");
 			}else {
 				System.out.println("Die Partie endet unentschieden.");

@@ -30,8 +30,8 @@ static Scanner input = new Scanner(System.in);
 			System.out.println("Diese Karte können Sie angreifen lassen oder bewegen.");
 			System.out.println("Mögliche Bewegungen:");
 			for (int i = 0; i < bewegung.size(); i++) {
-				//check fuer Rand Feldgröße 6x6
-				if(position[0]+bewegung.get(i)[0] < 6 && position[0]+bewegung.get(i)[0] >= 0 && position[1]+bewegung.get(i)[1] < 6 && position[1]+bewegung.get(i)[1] >= 0
+				//check fuer Rand Feldgröße flexibel
+				if(position[0]+bewegung.get(i)[0] < spielbrett.getAnzahlZeilen() && position[0]+bewegung.get(i)[0] >= 0 && position[1]+bewegung.get(i)[1] < spielbrett.getAnzahlSpalten() && position[1]+bewegung.get(i)[1] >= 0
 						//es darf keine Einheit auf dem Feld sein
 						&& !spielbrett.besetzt(position[0]+bewegung.get(i)[0], position[1]+bewegung.get(i)[1]) 
 						) {
@@ -40,8 +40,8 @@ static Scanner input = new Scanner(System.in);
 			}
 			System.out.println("Mögliche Angriffe:");
 			for (int i = 0; i < angriff.size(); i++) {
-				//check fuer Rand Feldgröße 6x6
-				if(position[0]+angriff.get(i)[0] < 6 && position[0]+angriff.get(i)[0] >= 0 && position[1]+angriff.get(i)[1] < 6 && position[1]+angriff.get(i)[1] >= 0
+				//check fuer Rand Feldgröße flexibel
+				if(position[0]+angriff.get(i)[0] < spielbrett.getAnzahlZeilen() && position[0]+angriff.get(i)[0] >= 0 && position[1]+angriff.get(i)[1] < spielbrett.getAnzahlZeilen() && position[1]+angriff.get(i)[1] >= 0
 						//es muss eine Einheit auf dem Feld sein
 						&& spielbrett.besetzt(position[0]+angriff.get(i)[0], position[1]+angriff.get(i)[1]) 
 						) {
@@ -78,14 +78,31 @@ static Scanner input = new Scanner(System.in);
 	}
 	
 	//Wenn wir Einheiteneffekte haben wollen, wenn Einheiten angegriffen werden müssen wir das vielleicht noch anders machen.
+	// angegriffene Einheit: spielbrett.getInhalt(zeile, spalte).get(0)
 	public void angreifen(Feld spielbrett, int zeile, int spalte) {
-		spielbrett.getInhalt(zeile, spalte).get(0).setStaerke( 
-				+spielbrett.getInhalt(zeile, spalte).get(0).getStaerke()
-				-staerke
-				+spielbrett.getInhalt(zeile, spalte).get(0).getRuestung()
-		);
+		if( // check auf Schadenshöhe
+			staerke
+			-spielbrett.getInhalt(zeile, spalte).get(0).getRuestung() < 1 
+		) { //Minimalschaden
+			spielbrett.getInhalt(zeile, spalte).get(0).setStaerke(spielbrett.getInhalt(zeile, spalte).get(0).getStaerke() - 1);
+		}else { //regulärer Schaden
+			spielbrett.getInhalt(zeile, spalte).get(0).setStaerke( 
+					+spielbrett.getInhalt(zeile, spalte).get(0).getStaerke()
+					-staerke
+					+spielbrett.getInhalt(zeile, spalte).get(0).getRuestung()
+			);
+		}
+		if(spielbrett.getInhalt(zeile, spalte).get(0).getStaerke()<1) { //Einheit ist tot
+			spielbrett.getInhalt(zeile, spalte).get(0).getBesitzer().getTruppen().remove(spielbrett.getInhalt(zeile, spalte).get(0));
+			spielbrett.getInhalt(zeile, spalte).remove(0);
+		}
 	}
-
+	
+	/*vielleicht sollten wir das so zweiteilen
+	public void verteidigen() {
+		
+	}
+	*/
 	
 	//Setters und Getters
 	
@@ -144,7 +161,7 @@ static Scanner input = new Scanner(System.in);
 		return name;
 	}
 	
-	/*
+	/*(Dong:)
 	 * Ist es vielleicht besser Einheit.java als Interface zu nehmen
 	 * und die beiden nachfolgenden Methoden einzeln f�r die jeweiligen
 	 * Einheitenkarten zu definieren? Hei�t getMoveable() wie eine Art
@@ -154,6 +171,7 @@ static Scanner input = new Scanner(System.in);
 	 * Au�erdem brauchen wir glaube ich noch eine weitere Klasse um zu sagen
 	 * wem die Einheiten geh�ren. Also ob die Einheit wie beim Schach schwarz
 	 * oder wei� ist. 
+	 * 
 	 */
 	
 	/* getMoveable() 

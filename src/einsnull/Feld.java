@@ -42,12 +42,12 @@ public class Feld {
 			for (int j = 0; j < inhalt.get(0).size(); j++) {
 				if(getInhalt(i, j).size()<2) {
 					if(besetzt(i, j)) {
-						System.out.print(getEinheit(i, j).getName() + "\t");
+						System.out.print(getEinheit(i, j).getName() + " " + getEinheit(i, j).getStaerke() + "\t");
 					}else {
-						System.out.print("leer \t");
+						System.out.print("leer \t\t");
 					}
 				}else {
-					System.out.print("viele \t"); //sollte nach derzeitiger Planung nicht vorkommen
+					System.out.print("viele \t\t"); //sollte nach derzeitiger Planung nicht vorkommen
 				}
 			}
 			System.out.println("");
