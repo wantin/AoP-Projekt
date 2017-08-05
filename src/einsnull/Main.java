@@ -1,6 +1,9 @@
 package einsnull;
 
 import einheitenkarten.SoeldnerTest;
+
+import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
@@ -46,6 +49,53 @@ public class Main {
 			auswahl= input.nextInt();
 			aktiv.getTruppen().get(auswahl).nutzen(spielbrett);
 		}		
+	}
+	
+	
+	/* TODO(?): Verschiedene Chancen bestimmte Karten zu erhalten, vielleicht irgendwas mathematisches mit 
+	 * modulo und Runden? Vielleicht Case 1/2/3 ein Kartentyp, Case 4/5/6 ein anderer?
+	 * 
+	 * Methode zur Generierung zufälliger Einheiten, ein Case repräsentiert einen Kartentyp
+	 * @param Der zugehörige Spieler für den die Einheit generiert werden soll, wichtig für Bewegungsrichtung links/rechts
+	 * @return jeweilige zufällige Karte wird zurückgegegeben
+	 */
+	public Einheit generateEinheit(Spieler besitzer) {
+		Random zufall = new Random();
+		int zufZahl = zufall.nextInt(0); 	// Zahl muss manuell je nach Anzahl der existierenden Klassen in 'einheitenkarten' geändert werden
+		switch (zufZahl) {					// case int AnzahlKarten: return new KartenTyp(besitzer);
+			case 0:
+				return new SoeldnerTest(besitzer);
+			default:
+				return null;
+		}
+	}
+	
+	public void kaufen(Spieler besitzer) {
+		//ArrayList<Einheit> auswahl = new ArrayList<Einheit>();
+		Einheit[] auswahl = new Einheit[3];
+		ArrayList<Karte> hand = besitzer.getHand();
+		System.out.println("Kaufprozess beginnen");
+		System.out.println("Suchen Sie sich eine der folgenden Karten aus:");
+		while(besitzer.getGold() > 100) {
+			for(int i = 0; i <= 2; i++) {
+				auswahl[i] = generateEinheit(besitzer);
+				System.out.println("["+i+"] " + auswahl[i] + "("+auswahl[i].getPreis()+")");
+			}
+			int key = input.nextInt();
+			switch (key) {
+				case 0: 
+					hand.add(auswahl[0]);
+					besitzer.setGold(besitzer.getGold()-auswahl[0].getPreis());
+				case 1: 
+					hand.add(auswahl[1]);
+					besitzer.setGold(besitzer.getGold()-auswahl[1].getPreis());
+				case 2: 
+					hand.add(auswahl[2]);
+					besitzer.setGold(besitzer.getGold()-auswahl[2].getPreis());
+				default: 
+			}
+		
+		}
 	}
 
 	public static void main(String[] args) {

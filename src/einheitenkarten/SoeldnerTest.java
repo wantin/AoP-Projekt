@@ -4,6 +4,7 @@ import einsnull.Einheit;
 import einsnull.Spieler;
 
 public class SoeldnerTest extends Einheit{
+	int preis = 100;
 	
 	public SoeldnerTest(Spieler besitzer) {
 		this.besitzer= besitzer;
