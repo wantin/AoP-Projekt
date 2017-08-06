@@ -4,7 +4,6 @@ import einsnull.Einheit;
 import einsnull.Spieler;
 
 public class SoeldnerTest extends Einheit{
-	int preis = 100;
 	
 	public SoeldnerTest(Spieler besitzer) {
 		this.besitzer= besitzer;
@@ -13,7 +12,8 @@ public class SoeldnerTest extends Einheit{
 		//v (vorzeichen) sollte 1 für den linken Spieler und -1 für den rechten Spieler sein
 		staerke= 5;
 		ruestung= 2;
-		name= "Söldner";
+		name= "S�ldner";
+		preis = 100;
 		//ich weiß nicht, ob das nicht eleganter geht..
 		int[] a= {1*v,0*v};bewegung.add(a);
 		int[] b= {1*v,1*v};bewegung.add(b);
@@ -27,7 +27,7 @@ public class SoeldnerTest extends Einheit{
 		int[] z= {1*v,1*v};angriff.add(z);
 		int[] y= {-1*v,1*v};angriff.add(y);
 		int[] x= {0*v,1*v};angriff.add(x);
-		
 	}
+
 }
 //abcdefghijklmnopqrstuvwxyz

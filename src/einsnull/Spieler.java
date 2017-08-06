@@ -7,7 +7,7 @@ public class Spieler {
 	private String name;
 	private ArrayList<Karte> hand = new ArrayList<Karte>();
 	private ArrayList<Einheit> truppen = new ArrayList<Einheit>();
-	private int gold;
+	private int gold = 1000;
 	private String seite;
 	
 	//Kontrollausgabemethoden
@@ -19,7 +19,7 @@ public class Spieler {
 	}
 	
 	public void printHand() {
-		for (int i = 0; i < hand.size(); i++) { // du hattest hier <= das ist eins zu viel, weil der größte index einer Menge mit einem Element 0 ist.
+		for (int i = 0; i < hand.size(); i++) {
 			System.out.println(hand.get(i));
 		}
 	}

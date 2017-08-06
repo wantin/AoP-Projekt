@@ -168,10 +168,6 @@ static Scanner input = new Scanner(System.in);
 		return preis;
 	}
 	
-	public void setPreis(int preis) {
-		this.preis = preis;
-	}
-	
 	/*(Dong:)
 	 * Ist es vielleicht besser Einheit.java als Interface zu nehmen
 	 * und die beiden nachfolgenden Methoden einzeln f�r die jeweiligen

@@ -59,44 +59,58 @@ public class Main {
 	 * @param Der zugehörige Spieler für den die Einheit generiert werden soll, wichtig für Bewegungsrichtung links/rechts
 	 * @return jeweilige zufällige Karte wird zurückgegegeben
 	 */
-	public Einheit generateEinheit(Spieler besitzer) {
+	public static Einheit generateEinheit(Spieler besitzer) {
 		Random zufall = new Random();
-		int zufZahl = zufall.nextInt(0); 	// Zahl muss manuell je nach Anzahl der existierenden Klassen in 'einheitenkarten' geändert werden
+		int zufZahl = zufall.nextInt(1); 	// Zahl muss manuell je nach Anzahl der existierenden Klassen in 'einheitenkarten' geändert werden
 		switch (zufZahl) {					// case int AnzahlKarten: return new KartenTyp(besitzer);
 			case 0:
+				return new SoeldnerTest(besitzer);
+			case 1:
 				return new SoeldnerTest(besitzer);
 			default:
 				return null;
 		}
 	}
 	
-	public void kaufen(Spieler besitzer) {
-		//ArrayList<Einheit> auswahl = new ArrayList<Einheit>();
+	public static void kaufen(Spieler besitzer) {
 		Einheit[] auswahl = new Einheit[3];
 		ArrayList<Karte> hand = besitzer.getHand();
-		System.out.println("Kaufprozess beginnen");
+		System.out.println("Kaufprozess beginnen. Sie haben " + besitzer.getGold() + " Gold.");
 		System.out.println("Suchen Sie sich eine der folgenden Karten aus:");
 		while(besitzer.getGold() > 100) {
 			for(int i = 0; i <= 2; i++) {
 				auswahl[i] = generateEinheit(besitzer);
-				System.out.println("["+i+"] " + auswahl[i] + "("+auswahl[i].getPreis()+")");
+				System.out.println("["+i+"] " + auswahl[i].getName() + "("+auswahl[i].getPreis()+"g)");
 			}
-			int key = input.nextInt();
-			switch (key) {
-				case 0: 
-					hand.add(auswahl[0]);
-					besitzer.setGold(besitzer.getGold()-auswahl[0].getPreis());
-				case 1: 
-					hand.add(auswahl[1]);
-					besitzer.setGold(besitzer.getGold()-auswahl[1].getPreis());
-				case 2: 
-					hand.add(auswahl[2]);
-					besitzer.setGold(besitzer.getGold()-auswahl[2].getPreis());
-				default: 
+			int key;
+			do{
+				key = input.nextInt();
+				switch (key) {
+					case 0: 
+						hand.add(auswahl[0]);
+						besitzer.setGold(besitzer.getGold()-(auswahl[0]).getPreis());
+						System.out.println(auswahl[key].getName() + " zur Hand hinzugefügt.");
+						System.out.println("Sie haben nun " + besitzer.getGold() + " Gold.");
+						break;
+					case 1: 
+						hand.add(auswahl[1]);
+						besitzer.setGold(besitzer.getGold()-auswahl[1].getPreis());
+						System.out.println(auswahl[key].getName() + " zur Hand hinzugefügt.");
+						System.out.println("Sie haben nun " + besitzer.getGold() + " Gold.");
+						break;
+					case 2: 
+						hand.add(auswahl[2]);
+						besitzer.setGold(besitzer.getGold()-auswahl[2].getPreis());
+						System.out.println(auswahl[key].getName() + " zur Hand hinzugefügt.");
+						System.out.println("Sie haben nun " + besitzer.getGold() + " Gold.");
+						break;
+					default: 
+						System.out.println("Bitte korrekte Auswahl treffen.");
+					}
+				}while (key < 0 || key > 2);
 			}
-		
-		}
 	}
+	
 
 	public static void main(String[] args) {
 		
@@ -118,13 +132,16 @@ public class Main {
 		links.setName("Eule");
 		rechts.setName("Ratte");
 		
-		//Karten wÃ¤hlen
+		/*//Karten wÃ¤hlen
 		//vorerst eine testkarte in die Hand jedes Spielers
 		Karte testkarte = new SoeldnerTest(links);
 		links.getHand().add(testkarte);
 		
 		Karte testkarte2 = new SoeldnerTest(rechts);
-		rechts.getHand().add(testkarte2);
+		rechts.getHand().add(testkarte2);*/
+		
+		kaufen(links);
+		kaufen(rechts);
 		
 		//Karten ausspielen oder benutzen
 		while((!links.getHand().isEmpty() || !links.getTruppen().isEmpty()) && (!rechts.getHand().isEmpty() || !rechts.getTruppen().isEmpty())){
