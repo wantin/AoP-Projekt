@@ -1,6 +1,6 @@
 package einsnull;
 
-import einheitenkarten.SoeldnerTest;
+import einheitenkarten.*;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -61,12 +61,12 @@ public class Main {
 	 */
 	public static Einheit generateEinheit(Spieler besitzer) {
 		Random zufall = new Random();
-		int zufZahl = zufall.nextInt(1); 	// Zahl muss manuell je nach Anzahl der existierenden Klassen in 'einheitenkarten' geändert werden
+		int zufZahl = zufall.nextInt(2); 	// Zahl muss manuell je nach Anzahl der existierenden Klassen in 'einheitenkarten' geändert werden
 		switch (zufZahl) {					// case int AnzahlKarten: return new KartenTyp(besitzer);
 			case 0:
 				return new SoeldnerTest(besitzer);
 			case 1:
-				return new SoeldnerTest(besitzer);
+				return new SoeldnerTest2(besitzer);
 			default:
 				return null;
 		}
@@ -132,7 +132,10 @@ public class Main {
 		links.setName("Eule");
 		rechts.setName("Ratte");
 		
-		/*//Karten wÃ¤hlen
+		/*
+		 * Vorerst rausgenommen da jetzt Kaufmethode existiert
+		 * /
+		//Karten wÃ¤hlen
 		//vorerst eine testkarte in die Hand jedes Spielers
 		Karte testkarte = new SoeldnerTest(links);
 		links.getHand().add(testkarte);

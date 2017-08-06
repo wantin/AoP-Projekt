@@ -14,13 +14,13 @@ public class Spieler {
 	
 	public void printTruppen() {
 		for (int i = 0; i < truppen.size(); i++) {
-			System.out.println(truppen.get(i));
+			System.out.println(truppen.get(i).getName());
 		}
 	}
 	
 	public void printHand() {
 		for (int i = 0; i < hand.size(); i++) {
-			System.out.println(hand.get(i));
+			System.out.println(hand.get(i).getName());
 		}
 	}
 	
