@@ -5,6 +5,7 @@ import java.util.Scanner;
 public class Effekt extends Karte {
 	protected String name;
 	protected Spieler besitzer;
+	protected int preis;
 	
 	static Scanner input = new Scanner(System.in);
 	
@@ -14,6 +15,10 @@ public class Effekt extends Karte {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public int getPreis() {
+		return preis;
 	}
 	
 	public boolean nutzen(Feld spielbrett) {

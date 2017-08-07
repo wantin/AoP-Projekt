@@ -1,6 +1,7 @@
 package einsnull;
 
 import einheitenkarten.*;
+import effektkarten.*;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -80,9 +81,9 @@ public class Main {
 	 * @param Der zugeh�rige Spieler f�r den die Einheit generiert werden soll, wichtig f�r Bewegungsrichtung links/rechts
 	 * @return jeweilige zuf�llige Karte wird zur�ckgegegeben
 	 */
-	public static Einheit generateEinheit(Spieler besitzer) {
+	public static Karte generateEinheit(Spieler besitzer) {
 		Random zufall = new Random();
-		int zufZahl = zufall.nextInt(4); 	// Zahl muss manuell je nach Anzahl der existierenden Klassen in 'einheitenkarten' ge�ndert werden
+		int zufZahl = zufall.nextInt(7); 	// Zahl muss manuell je nach Anzahl der existierenden Klassen in 'einheitenkarten' ge�ndert werden
 		switch (zufZahl) {					// case int AnzahlKarten: return new KartenTyp(besitzer);
 			case 0:
 				return new SoeldnerTest(besitzer);
@@ -92,19 +93,33 @@ public class Main {
 				return new Ritter(besitzer);
 			case 3:
 				return new Bogenschuetzen(besitzer);
+			case 4:
+				return new Blitzschlag(besitzer);
+			case 5:
+				return new GottesSegen(besitzer);
+			case 6:
+				return new Saeuregranate(besitzer);
 			default:
 				return null; //sollte nicht vorkommen
 		}
 	}
 	
 	public static void kaufen(Spieler besitzer) {
-		Einheit[] auswahl = new Einheit[3];
+		Karte[] auswahl = new Karte[3];
 		ArrayList<Karte> hand = besitzer.getHand();
+		int maxPreis = 50;
+		int maxHand = 8;
+		
 		System.out.println("Kaufprozess beginnen. Sie haben " + besitzer.getGold() + " Gold.");
 		System.out.println("Suchen Sie sich eine der folgenden Karten aus:");
-		while(besitzer.getGold() > 100) {
+		
+		loop:
+		while(besitzer.getGold() >= maxPreis) {
 			for(int i = 0; i <= 2; i++) {
 				auswahl[i] = generateEinheit(besitzer);
+				while (besitzer.getGold() < auswahl[i].getPreis() && besitzer.getGold() >= maxPreis) {
+					auswahl[i] = generateEinheit(besitzer); // System.out.println(i + "Nicht genug Gold. Generiere neue Einheit."); // Nur zum Testen.
+				}
 				System.out.println("["+i+"] " + auswahl[i].getName() + "("+auswahl[i].getPreis()+"g)");
 			}
 			int key;
@@ -132,6 +147,11 @@ public class Main {
 					default: 
 						System.out.println("Bitte korrekte Auswahl treffen.");
 					}
+				System.out.println("Sie haben nun " + hand.size() + " Karten auf der Hand");
+				if (hand.size() >= maxHand) {
+					System.out.println("Maximale Handkartenanzahl von '" + maxHand + "' erreicht.");
+					break loop;
+				}
 				}while (key < 0 || key > 2);
 			}
 	}

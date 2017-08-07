@@ -7,6 +7,7 @@ public abstract class Karte {
 	protected int preis;
 	
 	abstract String getName();
+	abstract int getPreis();
 	
 	abstract boolean nutzen(Feld spielbrett);
 	//Bilder für karten in den Karten speichern.
