@@ -1,9 +1,7 @@
 package einsnull;
 
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.Scanner;
-import einheitenkarten.*;
 
 
 public class Einheit extends Karte {
@@ -80,32 +78,24 @@ static Scanner input = new Scanner(System.in);
 		position[1]= spalte;
 	}
 	
-	//Wenn wir Einheiteneffekte haben wollen, wenn Einheiten angegriffen werden müssen wir das vielleicht noch anders machen.
+	//zweigeteiltes Angreifen sollte spätere Effekte einfacher machen und sieht schöner aus
 	// angegriffene Einheit: spielbrett.getInhalt(zeile, spalte).get(0)
 	public void angreifen(Feld spielbrett, int zeile, int spalte) {
-		if( // check auf Schadenshöhe
-			staerke
-			-spielbrett.getInhalt(zeile, spalte).get(0).getRuestung() < 1 
-		) { //Minimalschaden
-			spielbrett.getInhalt(zeile, spalte).get(0).setStaerke(spielbrett.getInhalt(zeile, spalte).get(0).getStaerke() - 1);
-		}else { //regulärer Schaden
-			spielbrett.getInhalt(zeile, spalte).get(0).setStaerke( 
-					+spielbrett.getInhalt(zeile, spalte).get(0).getStaerke()
-					-staerke
-					+spielbrett.getInhalt(zeile, spalte).get(0).getRuestung()
-			);
-		}
-		if(spielbrett.getInhalt(zeile, spalte).get(0).getStaerke()<1) { //Einheit ist tot
-			spielbrett.getInhalt(zeile, spalte).get(0).getBesitzer().getTruppen().remove(spielbrett.getInhalt(zeile, spalte).get(0));
-			spielbrett.getInhalt(zeile, spalte).remove(0);
-		}
+		spielbrett.getInhalt(zeile, spalte).get(0).verteidigen(spielbrett, this);
 	}
 	
-	/*vielleicht sollten wir das so zweiteilen
-	public void verteidigen() {
-		
+	public void verteidigen(Feld spielbrett, Einheit angreifer) { //wird von der verteidigenden Einheit aus aufgerufen
+		if(angreifer.getStaerke()-ruestung < 1) { //check auf Schadenshöhe
+			staerke--; //Mindestschaden
+		}else { //regulärer Schaden
+			staerke-= angreifer.getStaerke()-ruestung;
+		}
+		if(staerke<1) {
+			besitzer.getTruppen().remove(this);
+			spielbrett.getInhalt(position[0], position[1]).remove(this);
+		}
 	}
-	*/
+
 	
 	//Setters und Getters
 	

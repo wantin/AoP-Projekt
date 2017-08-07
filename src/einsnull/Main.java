@@ -29,46 +29,46 @@ public class Main {
 		aktiv.printTruppen();
 		System.out.println("Spielfeld:");
 		spielbrett.print();
-		
-		System.out.println("Wollen Sie eine Handkarte ausspielen(1), oder eine Einheit bewegen/mit ihr angreifen(2)?");
 		int auswahl = 0;
+		boolean stop= false; //wird auf true gesetzt, wenn eine Aktion ausgefÃ¼hrt wurde.
+		
 		do {
-			//bevor ich die schleife hinzugefÃ¼gt hatte hat es einfach immer auswahl != 1 gehabt und deswegen den fehler bei der TruppenlÃ¤nge, obwohl es noch keine Truppen gibt.
-			//System.out.println("Durchlauf"); viele.. mein schwacher Laptop ist dran Ã¼berhitzt XD
-			//scheinbar war das schlieÃŸen des inputs das Problem
-			if (input.hasNextInt()) {
+			System.out.println("Wollen Sie eine Handkarte ausspielen(1), oder eine Einheit bewegen/mit ihr angreifen(2)?");
+			auswahl= input.nextInt();
+			if(auswahl == 1){
+				System.out.println("Welche Handkarte wollen Sie spielen? [0, " + (aktiv.getHand().size()-1 ) + "]" );
 				auswahl= input.nextInt();
+				stop= aktiv.getHand().get(auswahl).nutzen(spielbrett);
+			}else {
+				System.out.println("Welche Einheit wollen Sie bewegen? [0, " + (aktiv.getTruppen().size()-1 ) + "]" );
+				auswahl= input.nextInt();
+				stop= aktiv.getTruppen().get(auswahl).nutzen(spielbrett);
 			}
-		}while(auswahl == 0); //ich weiÃŸ nicht ob diese Schleifen sinnvoll oder so sind. hatte ich zur Fehlerbehandlung. kommt aber am Ende eh alles Ã¼ber die GUI.
-		if(auswahl == 1){
-			System.out.println("Welche Handkarte wollen Sie spielen? [0, " + (aktiv.getHand().size()-1 ) + "]" );
-			auswahl= input.nextInt();
-			aktiv.getHand().get(auswahl).nutzen(spielbrett);
-		}else {
-			System.out.println("Welche Einheit wollen Sie bewegen? [0, " + (aktiv.getTruppen().size()-1 ) + "]" );
-			auswahl= input.nextInt();
-			aktiv.getTruppen().get(auswahl).nutzen(spielbrett);
-		}		
+		}while(!stop);
 	}
 	
 	
 	/* TODO(?): Verschiedene Chancen bestimmte Karten zu erhalten, vielleicht irgendwas mathematisches mit 
 	 * modulo und Runden? Vielleicht Case 1/2/3 ein Kartentyp, Case 4/5/6 ein anderer?
 	 * 
-	 * Methode zur Generierung zufälliger Einheiten, ein Case repräsentiert einen Kartentyp
-	 * @param Der zugehörige Spieler für den die Einheit generiert werden soll, wichtig für Bewegungsrichtung links/rechts
-	 * @return jeweilige zufällige Karte wird zurückgegegeben
+	 * Methode zur Generierung zufï¿½lliger Einheiten, ein Case reprï¿½sentiert einen Kartentyp
+	 * @param Der zugehï¿½rige Spieler fï¿½r den die Einheit generiert werden soll, wichtig fï¿½r Bewegungsrichtung links/rechts
+	 * @return jeweilige zufï¿½llige Karte wird zurï¿½ckgegegeben
 	 */
 	public static Einheit generateEinheit(Spieler besitzer) {
 		Random zufall = new Random();
-		int zufZahl = zufall.nextInt(2); 	// Zahl muss manuell je nach Anzahl der existierenden Klassen in 'einheitenkarten' geändert werden
+		int zufZahl = zufall.nextInt(4); 	// Zahl muss manuell je nach Anzahl der existierenden Klassen in 'einheitenkarten' geï¿½ndert werden
 		switch (zufZahl) {					// case int AnzahlKarten: return new KartenTyp(besitzer);
 			case 0:
 				return new SoeldnerTest(besitzer);
 			case 1:
 				return new SoeldnerTest2(besitzer);
+			case 2:
+				return new Ritter(besitzer);
+			case 3:
+				return new Bogenschuetzen(besitzer);
 			default:
-				return null;
+				return null; //sollte nicht vorkommen
 		}
 	}
 	
@@ -89,19 +89,19 @@ public class Main {
 					case 0: 
 						hand.add(auswahl[0]);
 						besitzer.setGold(besitzer.getGold()-(auswahl[0]).getPreis());
-						System.out.println(auswahl[key].getName() + " zur Hand hinzugefügt.");
+						System.out.println(auswahl[key].getName() + " zur Hand hinzugefï¿½gt.");
 						System.out.println("Sie haben nun " + besitzer.getGold() + " Gold.");
 						break;
 					case 1: 
 						hand.add(auswahl[1]);
 						besitzer.setGold(besitzer.getGold()-auswahl[1].getPreis());
-						System.out.println(auswahl[key].getName() + " zur Hand hinzugefügt.");
+						System.out.println(auswahl[key].getName() + " zur Hand hinzugefï¿½gt.");
 						System.out.println("Sie haben nun " + besitzer.getGold() + " Gold.");
 						break;
 					case 2: 
 						hand.add(auswahl[2]);
 						besitzer.setGold(besitzer.getGold()-auswahl[2].getPreis());
-						System.out.println(auswahl[key].getName() + " zur Hand hinzugefügt.");
+						System.out.println(auswahl[key].getName() + " zur Hand hinzugefï¿½gt.");
 						System.out.println("Sie haben nun " + besitzer.getGold() + " Gold.");
 						break;
 					default: 
@@ -129,19 +129,10 @@ public class Main {
 		System.out.println("Bitte geben Sie den Namen des rechten Spielers ein.");
 		rechts.setName(input.next());
 		*/
-		links.setName("Eule");
-		rechts.setName("Ratte");
+		links.setName("linkeEule");
+		rechts.setName("rechteRatte");
 		
-		/*
-		 * Vorerst rausgenommen da jetzt Kaufmethode existiert
-		 * /
 		//Karten wÃ¤hlen
-		//vorerst eine testkarte in die Hand jedes Spielers
-		Karte testkarte = new SoeldnerTest(links);
-		links.getHand().add(testkarte);
-		
-		Karte testkarte2 = new SoeldnerTest(rechts);
-		rechts.getHand().add(testkarte2);*/
 		
 		kaufen(links);
 		kaufen(rechts);
