@@ -12,6 +12,7 @@ public class Einheit extends Karte {
 	protected String name;
 	protected int[] position = {-1, -1};
 	protected int preis;
+	int bereit;
 
 static Scanner input = new Scanner(System.in);
 
@@ -28,6 +29,10 @@ static Scanner input = new Scanner(System.in);
 			this.ausspielen(spielbrett, x, y); //keine Korrektur brauch korrekte x, y
 			return true;
 		}else {
+			if(bereit==0) {
+				System.out.println("Diese Einheit können Sie nicht benutzen, da sie sich schon bewegt hat");
+				return false;
+			}
 			System.out.println("Diese Karte können Sie angreifen lassen oder bewegen.");
 			System.out.println("Mögliche Bewegungen:");
 			for (int i = 0; i < bewegung.size(); i++) {
@@ -69,6 +74,7 @@ static Scanner input = new Scanner(System.in);
 		besitzer.getTruppen().add(this);
 		position[0]= zeile;
 		position[1]= spalte;
+		bereit=0;
 	}
 	
 	public void bewegen(Feld spielbrett, int zeile, int spalte) {
@@ -76,12 +82,14 @@ static Scanner input = new Scanner(System.in);
 		spielbrett.getInhalt(position[0], position[1]).remove(this);
 		position[0]= zeile;
 		position[1]= spalte;
+		bereit--;
 	}
 	
 	//zweigeteiltes Angreifen sollte spätere Effekte einfacher machen und sieht schöner aus
 	// angegriffene Einheit: spielbrett.getInhalt(zeile, spalte).get(0)
 	public void angreifen(Feld spielbrett, int zeile, int spalte) {
 		spielbrett.getInhalt(zeile, spalte).get(0).verteidigen(spielbrett, this);
+		bereit--;
 	}
 	
 	public void verteidigen(Feld spielbrett, Einheit angreifer) { //wird von der verteidigenden Einheit aus aufgerufen
@@ -98,10 +106,18 @@ static Scanner input = new Scanner(System.in);
 
 	
 	//Setters und Getters
+	public int getBereit() {
+		return bereit;
+	}
+
+	public void setBereit(int bereit) {
+		this.bereit = bereit;
+	}
 	
 	public ArrayList<int[]> getAngriff() {
 		return angriff;
 	}
+	
 	public void setAngriff(ArrayList<int[]> angriff) {
 		this.angriff = angriff;
 	}

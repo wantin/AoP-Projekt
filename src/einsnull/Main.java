@@ -10,11 +10,36 @@ public class Main {
 	
 	static Scanner input = new Scanner(System.in);
 	
-	//so sollten wir das später leicht ändern können.
+	//Zugreihenfolge: llrrrrllllrrrrllllrrrr....
 	static void runde(Spieler links, Spieler rechts, Feld f) {
+		
 		ziehen(links, f);//der erste muss nicht überprüft werden, ob das spiel zuende ist, weil das in der while schleife schon passiert ist.
+		
+		if((!links.getHand().isEmpty() || !links.getTruppen().isEmpty()) && (!rechts.getHand().isEmpty() || !rechts.getTruppen().isEmpty())) {
+			ziehen(links, f);
+		}
+		links.resetBereit();
+		
+		//rechts	
 		if((!links.getHand().isEmpty() || !links.getTruppen().isEmpty()) && (!rechts.getHand().isEmpty() || !rechts.getTruppen().isEmpty())) {
 			ziehen(rechts, f);
+		}
+		if((!links.getHand().isEmpty() || !links.getTruppen().isEmpty()) && (!rechts.getHand().isEmpty() || !rechts.getTruppen().isEmpty())) {
+			ziehen(rechts, f);
+		}
+		if((!links.getHand().isEmpty() || !links.getTruppen().isEmpty()) && (!rechts.getHand().isEmpty() || !rechts.getTruppen().isEmpty())) {
+			ziehen(rechts, f);
+		}
+		if((!links.getHand().isEmpty() || !links.getTruppen().isEmpty()) && (!rechts.getHand().isEmpty() || !rechts.getTruppen().isEmpty())) {
+			ziehen(rechts, f);
+		}
+		rechts.resetBereit();
+		
+		if((!links.getHand().isEmpty() || !links.getTruppen().isEmpty()) && (!rechts.getHand().isEmpty() || !rechts.getTruppen().isEmpty())) {
+			ziehen(links, f);
+		}
+		if((!links.getHand().isEmpty() || !links.getTruppen().isEmpty()) && (!rechts.getHand().isEmpty() || !rechts.getTruppen().isEmpty())) {
+			ziehen(links, f);
 		}
 	}
 	

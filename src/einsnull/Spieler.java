@@ -10,6 +10,12 @@ public class Spieler {
 	private int gold = 1000;
 	private String seite;
 	
+	public void resetBereit() {
+		for (int i = 0; i < truppen.size(); i++) {
+			truppen.get(i).setBereit(1);
+		}
+	}
+	
 	//Kontrollausgabemethoden
 	
 	public void printTruppen() {
