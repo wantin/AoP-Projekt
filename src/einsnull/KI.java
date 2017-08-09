@@ -12,7 +12,7 @@ import einheitenkarten.Ritter;
 import einheitenkarten.SoeldnerTest;
 import einheitenkarten.SoeldnerTest2;
 
-public class Spieler {
+public class KI extends Spieler {
 	
 	private String name;
 	private ArrayList<Karte> hand = new ArrayList<Karte>();
