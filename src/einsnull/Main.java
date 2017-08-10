@@ -44,12 +44,26 @@ public class Main {
 			links.ziehen(f);
 		}
 	}
+	
+	private GUI anzeige;
+		
+	public void start(){
+			anzeige.setVisible(true);
+	}
+		
+	public Main(){
+			this.anzeige = new GUI();
+	}
 
 	public static void main(String[] args) {
 		
 		Feld spielbrett = new Feld(6,6);
 		Spieler links = new Spieler();links.setSeite("links");
 
+				
+		//GUI
+		Main spiel = new Main();
+		spiel.start();
 		
 		//Spieler oder KI auswählen
 		
@@ -63,7 +77,9 @@ public class Main {
 		}else {
 			rechts = new Spieler();rechts.setSeite("rechts");
 		}
-		
+
+
+	
 		//Spieler benennen
 		//TODO: switch from console to GUI
 		

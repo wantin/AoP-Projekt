@@ -32,29 +32,36 @@ public class GUI extends JFrame{
 	private JPanel auswahl = new JPanel();
 	private JPanel mitte = new JPanel();
 	private JPanel lfeld = new JPanel();
-	private JPanel rfeld = new JPanel();
-	private JLabel sp1 = new JLabel("Spieler 1");	
-	private JLabel sp2 = new JLabel ("Spieler 2");
-	private JLabel sp1z = new JLabel ("Spielzug");
-	private JLabel sp2z = new JLabel ("Spielzug");
-	private JLabel sp1k = new JLabel ("Kartenstapel");
-	private JLabel sp2k = new JLabel ("Kartenstapel");
-	protected JLabel text1 = new JLabel();
-	protected JLabel text2 = new JLabel();
-	protected JLabel text3 = new JLabel();
-	protected JLabel text4 = new JLabel();
-	private JMenuItem beendenitem = new JMenuItem("Exit");
-	private JTextArea linkersp = new JTextArea();
-	private JTextArea rechtersp = new JTextArea();
-	private Spieler sp;
-	protected JLabel sp1n = new JLabel();
+	private JPanel rfeld = new JPanel();	
+	
+	private JButton ppbttn = new JButton("Player vs. Player");
+	private JButton pkbttn = new JButton("Player vs. KI");
+	private JButton start = new JButton("START");
+	
+	private JLabel plyr1 = new JLabel("Spieler 1");	
+	private JLabel plyr2 = new JLabel ("Spieler 2");
+	private JLabel plyr1z = new JLabel ("Spielzug");
+	private JLabel plyr2z = new JLabel ("Spielzug");
+	private JLabel plyr1k = new JLabel ("Kartenstapel");
+	private JLabel plyr2k = new JLabel ("Kartenstapel");
+	private JLabel text1 = new JLabel();
+	private JLabel text2 = new JLabel();
+	private JLabel text3 = new JLabel();
+	private JLabel text4 = new JLabel();
+	private JLabel plyr1n = new JLabel();
 	//protected JLabel sp2n = new JLabel();
+		
+	private JMenuItem beendenitem = new JMenuItem("Exit");
+	
+	private JTextArea linkerplyr = new JTextArea();
+	private JTextArea rechterplyr = new JTextArea();
+	
+	private Spieler plyr;
+
 	Random zufall = new Random();
 	
-
-	
 	public void setSpieler(Spieler spieler){
-		sp = spieler;
+		plyr = spieler;
 	}
 	
 	
@@ -120,80 +127,159 @@ public class GUI extends JFrame{
 		});
 		
 		
-
 		//auswahl.setToolTipText(text); //wenn Cursor darüber liegt erscheinender Text
 		
 		text1.setText("Willkommen zum spannenden Duell der Krieger!");
-		text1.setFont(new Font("Willkommen zum spannenden Duell der Krieger!", Font.PLAIN, 18));
-		text1.setLocation(300,10);
-		text1.setSize(400,60);
+		text1.setFont(new Font(text1.getText(), Font.ITALIC, 20));
+		text1.setBounds(250,10,500,60);
 		text1.setForeground(auswahl.getForeground());
 		
-		
-		text2.setText("Gebt Euren Titel ein:");
-		text2.setFont(new Font("Bitte gebt Euren Titel ein:", Font.PLAIN, 14));
-		text2.setLocation(90,100);
-		text2.setSize(180,20);
+		text2.setText("Wollt Ihr gegen die KI spielen , oder zu zweit an einem Computer?");
+		text2.setFont(new Font(text2.getText(), Font.PLAIN, 16));
 		text2.setForeground(auswahl.getForeground());
+		text2.setBounds(230,100,600,30);		
 		
-		linkersp.setLocation(300,100);
-		linkersp.setFont(new Font("", Font.PLAIN, 14));
-		linkersp.setSize(200,20);
-		linkersp.setForeground(auswahl.getForeground());
-		linkersp.setBackground(new Color(170,80,50));
+		ppbttn.setVisible(true);
+		ppbttn.setLayout(null);
+		ppbttn.setForeground(auswahl.getForeground());
+		ppbttn.setBounds(230,200,150,50);
+		ppbttn.setBackground(auswahl.getBackground());
+		ppbttn.addActionListener(new ActionListener(){
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {						
+
+				if(ppbttn != null){
+					text2.setVisible(false);
+					text3.setVisible(true);
+					pkbttn.setVisible(false);
+					ppbttn.setVisible(false);
+					linkerplyr.setVisible(true);
+					rechterplyr.setVisible(true);
+					start.setVisible(true);
+				}	
+			}			
+		});		
 		
-		rechtersp.setLocation(600,100);
-		rechtersp.setFont(new Font("", Font.PLAIN, 14));
-		rechtersp.setSize(200,20);
-		rechtersp.setForeground(auswahl.getForeground());
-		rechtersp.setBackground(new Color(170,80,60));		
-		
-		text3.setText("bla");
-		text3.setFont(new Font("", Font.PLAIN, 14));
-		text3.setLocation(300,90);
-		text3.setSize(60,40);
+		//Spieler auf linker Seite deshalb bttn true
+		pkbttn.setVisible(true);
+		pkbttn.setLayout(null);
+		pkbttn.setForeground(auswahl.getForeground());
+		pkbttn.setBounds(500,200,150,50);
+		pkbttn.setBackground(auswahl.getBackground());
+		pkbttn.addActionListener(new ActionListener(){
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+							
+				if(pkbttn != null){
+					text2.setVisible(false);
+					text4.setVisible(true);
+					pkbttn.setVisible(false);
+					ppbttn.setVisible(false);
+					linkerplyr.setVisible(true);
+					rechterplyr.setVisible(false);
+					start.setVisible(true);
+				}	
+			}			
+		});
+			
+		text3.setVisible(false);
+		text3.setText("Gebt Eure Titel ein(Max. 20 Zeichen):");
+		text3.setFont(text2.getFont());
+		text3.setBounds(50,100,270,20);
 		text3.setForeground(auswahl.getForeground());
 		
-		text4.setText("blabla");
-		text4.setFont(new Font("", Font.PLAIN, 14));
-		text4.setLocation(300,150);
-		text4.setSize(60,40);
+		linkerplyr.setVisible(false);
+		linkerplyr.setFont(new Font("", Font.ITALIC, 18));
+		linkerplyr.setBounds(350,100,200,30);
+		linkerplyr.setForeground(Color.white);
+		linkerplyr.setBackground(new Color(40,10,10));
+		
+		rechterplyr.setVisible(false);	
+		rechterplyr.setFont(linkerplyr.getFont());
+		rechterplyr.setBounds(600,100,200,30);
+		rechterplyr.setForeground(Color.black);
+		rechterplyr.setBackground(new Color(245,240,200));
+		
+		text4.setVisible(false);
+		text4.setText("Gebt Euren Titel ein(Max. 20 Zeichen):");
+		text4.setFont(text2.getFont());
+		text4.setBounds(50,100,250,40);
 		text4.setForeground(auswahl.getForeground());
 		
+		start.setVisible(false);
+		start.setBounds(500,250,140,60);
+		start.setForeground(auswahl.getForeground());
+		start.setBackground(auswahl.getBackground());
+		
+		//regelt die Länge der Namen(beschränkt auf 20 Zeichen
+		//panel bleibt solange sichtbar bis richtige länge, dann unsichtbar
+		start.addActionListener(new ActionListener(){
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				
+				String lname = linkerplyr.getText();
+				String rname = rechterplyr.getText();
+
+				if(lname.length() == 0 && rname.length() == 0 ){
+					start.isEnabled();
+					auswahl.setVisible(true);			
+				}
+					
+				else if(lname.length() != 0 & rname.length() != 0){
+					if(lname.length() < 21 & rname.length() < 21){
+						start.isEnabled();
+						auswahl.setVisible(false);
+					}
+					else{
+						start.isEnabled();
+						auswahl.setVisible(true);
+					}
+						
+				}					
+		}		
+	});	
 		
 		auswahl.add(text1);
-		auswahl.add(linkersp);
-		auswahl.add(rechtersp);
 		auswahl.add(text2);
 		auswahl.add(text3);
 		auswahl.add(text4);	
+		
+		auswahl.add(linkerplyr);
+		auswahl.add(rechterplyr);
+		
+		auswahl.add(ppbttn);
+		auswahl.add(pkbttn);
+		auswahl.add(start);
 	
 		
-		//Spieler 1 im linken Feld
+		//spieler 1 im linken Feld
 		lfeld.setLayout(null);
 		lfeld.setOpaque(true);
 		lfeld.setForeground(Color.white);
 		lfeld.setBackground(new Color(40,10,10));
 		lfeld.setBounds(0,0,300,1000);
 		
-		sp1.setLocation(120,10);
-		sp1.setSize(60,40);
-		sp1.setForeground(lfeld.getForeground());
+		plyr1.setLocation(120,10);
+		plyr1.setSize(60,40);
+		plyr1.setForeground(lfeld.getForeground());
 		
-		sp1z.setLocation(123,150);
-		sp1z.setSize(80,40);
-		sp1z.setForeground(lfeld.getForeground());
+		plyr1z.setLocation(123,150);
+		plyr1z.setSize(80,40);
+		plyr1z.setForeground(lfeld.getForeground());
 
-		sp1k.setLocation(117,300);
-		sp1k.setSize(90,40);
-		sp1k.setForeground(lfeld.getForeground());
+		plyr1k.setLocation(117,300);
+		plyr1k.setSize(90,40);
+		plyr1k.setForeground(lfeld.getForeground());
 		
-		//sp1n.setText(sp.getName());	
-		sp1n.setHorizontalAlignment(JLabel.CENTER);
-		sp1n.setLocation(70,70);
-		sp1n.setSize(140,40);
-		sp1n.setForeground(lfeld.getForeground());
-		sp1n.setBackground(lfeld.getBackground());
+		//plyr1n.setText(plyr.getName());	
+		plyr1n.setHorizontalAlignment(JLabel.CENTER);
+		plyr1n.setLocation(70,70);
+		plyr1n.setSize(140,40);
+		plyr1n.setForeground(lfeld.getForeground());
+		plyr1n.setBackground(lfeld.getBackground());		
 		
 		
 		//Kartenfeld linkes Feld
@@ -228,13 +314,13 @@ public class GUI extends JFrame{
 		lpanel.add(bildbttn);
 		*/
 		
-		lfeld.add(sp1);
-		lfeld.add(sp1z);
-		lfeld.add(sp1k);
-		lfeld.add(sp1n);
+		lfeld.add(plyr1);
+		lfeld.add(plyr1z);
+		lfeld.add(plyr1k);
+		lfeld.add(plyr1n);
 		lfeld.add(lpanel);		
 			
-		//Spielfeld
+		//spielfeld
 		mitte.setLayout(null);
 		mitte.setLayout(new GridLayout(6,6));
 		//mitte.setForeground(Color.orange);
@@ -271,41 +357,36 @@ public class GUI extends JFrame{
 						if(attbttn != null){
 							attbttn.setBackground(Color.red);
 							System.out.println("Das Feld ist besetzt von");//karte des gegners einfügen
-						}	
-							
-					}
-
-
-
-				
+						}							
+					}			
 						
 				});
 				mitte.add(button[c][d]);
 			}
 		}	
 		
-		//Spieler 2 im rechten Feld
+		//spieler 2 im rechten Feld
 		rfeld.setLayout(null);
 		rfeld.setOpaque(true);
 		rfeld.setForeground(Color.black);
 		rfeld.setBackground(new Color(245,240,200));
 		rfeld.setBounds(1200,0,300,1000);
 		
-		sp2.setLocation(120,10);
-		sp2.setSize(60,40);
-		sp2.setForeground(rfeld.getForeground());
+		plyr2.setLocation(120,10);
+		plyr2.setSize(60,40);
+		plyr2.setForeground(rfeld.getForeground());
 		
-		sp2z.setLocation(123,150);
-		sp2z.setSize(80,40);
-		sp2z.setForeground(rfeld.getForeground());		
+		plyr2z.setLocation(123,150);
+		plyr2z.setSize(80,40);
+		plyr2z.setForeground(rfeld.getForeground());		
 
-		sp2k.setLocation(117,300);
-		sp2k.setSize(90,40);
-		sp2k.setForeground(rfeld.getForeground());
+		plyr2k.setLocation(117,300);
+		plyr2k.setSize(90,40);
+		plyr2k.setForeground(rfeld.getForeground());
 		
-		/*sp2n.setLocation( 120,15);
-		sp2n.setSize(120,20);
-		sp2n.setForeground(rfeld.getForeground());*/
+		/*plyr2n.setLocation( 120,15);
+		plyr2n.setSize(120,20);
+		plyr2n.setForeground(rfeld.getForeground());*/
 		
 		//Kartenfeld rechtes Feld
 		JPanel rpanel = new JPanel();
@@ -323,10 +404,10 @@ public class GUI extends JFrame{
 			}
 		}
 		
-		rfeld.add(sp2);
-		rfeld.add(sp2z);
-		rfeld.add(sp2k);
-		//rfeld.add(sp2n);
+		rfeld.add(plyr2);
+		rfeld.add(plyr2z);
+		rfeld.add(plyr2k);
+		//rfeld.add(plyr2n);
 		rfeld.add(rpanel);
 		
 
@@ -337,7 +418,7 @@ public class GUI extends JFrame{
 	}
 	
 	private void beenden() {
-		System.out.println("Möge das Spiel beginnen!");
+		System.out.println("Möge der Krieg..äh das Spiel beginnen!");
 		System.exit(0);
 	}
 	
