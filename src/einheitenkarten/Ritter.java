@@ -12,6 +12,7 @@ public class Ritter extends Einheit {
 	
 	public Ritter(Spieler besitzer) {
 		this.besitzer= besitzer;
+		bildPfad = "bilder/einheiten/hasenritter";
 		int vor =1;
 		if (besitzer.getSeite()=="rechts")vor=-1;
 		//vor (vorzeichen) sollte 1 für den linken Spieler und -1 für den rechten Spieler sein

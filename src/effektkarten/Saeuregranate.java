@@ -12,6 +12,7 @@ public class Saeuregranate extends Effekt {
 		this.besitzer = besitzer;
 		name = "Säuregranate";
 		preis = 100;
+		bildPfad = "bilder/effekte/sauregranate";
 	}
 	
 	@Override

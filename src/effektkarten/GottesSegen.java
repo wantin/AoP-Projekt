@@ -10,6 +10,7 @@ public class GottesSegen extends Effekt {
 		this.besitzer = besitzer;
 		name = "Gottes Segen";
 		preis = 50;
+		bildPfad = "bilder/effekte/gottessegen";
 	}
 	
 	@Override

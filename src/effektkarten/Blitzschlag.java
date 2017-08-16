@@ -12,6 +12,7 @@ public class Blitzschlag extends Effekt {
 		this.besitzer = besitzer;
 		name = "Blitzschlag";
 		preis = 150;
+		bildPfad = "bilder/effekte/blitz";
 	}
 
 	@Override
