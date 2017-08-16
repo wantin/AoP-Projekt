@@ -13,6 +13,7 @@ public class Einheit extends Karte {
 	protected int[] position = {-1, -1};
 	protected int preis;
 	int bereit;
+	protected String bildPfad;
 
 static Scanner input = new Scanner(System.in);
 
@@ -47,7 +48,7 @@ static Scanner input = new Scanner(System.in);
 			System.out.println("Mögliche Angriffe:");
 			for (int i = 0; i < angriff.size(); i++) {
 				//check fuer Rand Feldgröße flexibel
-				if(position[0]+angriff.get(i)[0] < spielbrett.getAnzahlZeilen() && position[0]+angriff.get(i)[0] >= 0 && position[1]+angriff.get(i)[1] < spielbrett.getAnzahlZeilen() && position[1]+angriff.get(i)[1] >= 0
+				if(position[0]+angriff.get(i)[0] < spielbrett.getAnzahlZeilen() && position[0]+angriff.get(i)[0] >= 0 && position[1]+angriff.get(i)[1] < spielbrett.getAnzahlSpalten() && position[1]+angriff.get(i)[1] >= 0
 						//es muss eine Einheit auf dem Feld sein
 						&& spielbrett.besetzt(position[0]+angriff.get(i)[0], position[1]+angriff.get(i)[1]) 
 						) {
@@ -106,6 +107,10 @@ static Scanner input = new Scanner(System.in);
 
 	
 	//Setters und Getters
+	public String getBildPfad(){
+		return bildPfad;
+	}
+	
 	public int getBereit() {
 		return bereit;
 	}

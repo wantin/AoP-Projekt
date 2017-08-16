@@ -29,7 +29,12 @@ public class Spieler {
 	}
 	
 	//bewegt aus Main
-	public void kaufen() {
+	public void kaufen(GUI anzeige) {
+		
+		anzeige.kaufen(this);
+		
+		/* moved to GUI aber nur so halb. weiﬂ nicht, ob der Datenteil nicht hier bleiben sollte..
+		
 		Karte[] auswahl = new Karte[3];
 		int maxPreis = 50;
 		int maxHand = 8;
@@ -78,6 +83,7 @@ public class Spieler {
 				}
 				}while (key < 0 || key > 2);
 			}
+			*/
 	}
 	
 	/* TODO(?): Verschiedene Chancen bestimmte Karten zu erhalten, vielleicht irgendwas mathematisches mit 

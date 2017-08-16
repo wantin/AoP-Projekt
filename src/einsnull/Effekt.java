@@ -6,20 +6,9 @@ public class Effekt extends Karte {
 	protected String name;
 	protected Spieler besitzer;
 	protected int preis;
+	protected String bildPfad;
 	
 	static Scanner input = new Scanner(System.in);
-	
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	public int getPreis() {
-		return preis;
-	}
 	
 	public boolean nutzen(Feld spielbrett) {
 		System.out.println("Geben Sie das Feld der Einheit an, auf die Sie diese Karte anwenden wollen");
@@ -38,4 +27,16 @@ public class Effekt extends Karte {
 		System.out.println(besitzer.getName() + " hat " + name + " ausgespielt.");
 	}
 
+	//Getters und Setters
+	public String getBildPfad(){
+		return bildPfad;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public int getPreis() {
+		return preis;
+	}
 }

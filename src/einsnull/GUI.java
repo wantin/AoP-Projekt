@@ -14,6 +14,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.Random;
+import java.util.Scanner;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -26,43 +28,41 @@ import javax.swing.JTextField;
 
 
 public class GUI extends JFrame{
-		
+	
+	static Scanner input = new Scanner(System.in);
+	
 	private static final long serialVersionUID = 1L;
 	private JPanel content;
 	private JPanel auswahl = new JPanel();
+	private JPanel kaufPane = new JPanel();
 	private JPanel mitte = new JPanel();
 	private JPanel lfeld = new JPanel();
 	private JPanel rfeld = new JPanel();	
 	
+	private JButton[] kaufButtons= new JButton[3];
+	private JButton[][] feldButtons;
 	private JButton ppbttn = new JButton("Player vs. Player");
 	private JButton pkbttn = new JButton("Player vs. KI");
 	private JButton start = new JButton("START");
 	
+	private JLabel goldAnzeige = new JLabel();
+	private JLabel kaufLabel = new JLabel("Klicken Sie auf eine der drei Karten um sie zu kaufen.");
 	private JLabel plyr1 = new JLabel("Spieler 1");	
 	private JLabel plyr2 = new JLabel ("Spieler 2");
-	private JLabel plyr1z = new JLabel ("Spielzug");
-	private JLabel plyr2z = new JLabel ("Spielzug");
-	private JLabel plyr1k = new JLabel ("Kartenstapel");
-	private JLabel plyr2k = new JLabel ("Kartenstapel");
+	private JLabel plyr1k = new JLabel ("Handkarten");
+	private JLabel plyr2k = new JLabel ("Handkarten");
 	private JLabel text1 = new JLabel();
 	private JLabel text2 = new JLabel();
 	private JLabel text3 = new JLabel();
 	private JLabel text4 = new JLabel();
 	private JLabel plyr1n = new JLabel();
 	//protected JLabel sp2n = new JLabel();
-		
-	private JMenuItem beendenitem = new JMenuItem("Exit");
 	
 	private JTextArea linkerplyr = new JTextArea();
 	private JTextArea rechterplyr = new JTextArea();
 	
-	private Spieler plyr;
 
 	Random zufall = new Random();
-	
-	public void setSpieler(Spieler spieler){
-		plyr = spieler;
-	}
 	
 	
 	/*protected void aktion(){
@@ -74,32 +74,11 @@ public class GUI extends JFrame{
 		    System.out.println(ex);
 		  }
 	}*/
-		
-	public GUI(){
-		
-		this.setTitle("Spielbrett");
-		this.setSize(1500, 1000);
-		this.setResizable(false);
-		this.setLocation(200, 40);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		
-		//Hintergrund;
-		content = (JPanel) this.getContentPane();
-		content.setLayout(null);
-		
-		beendenitem.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent arg0){
-				beenden();
-			}
-		});
-		
-		//Abfrage, Kartenauswahl etc
-		auswahl.setLayout(null);
-		auswahl.setOpaque(true);
-		auswahl.setForeground(Color.white);
-		auswahl.setBackground(new Color(150,130,50));
-		auswahl.setBounds(300,168,900,497);
+	
+	
+	
+	public void setup0(Spieler rechts){ //PvP (true) oder PvE (false)
+		//auswahl.setToolTipText(text); //wenn Cursor darüber liegt erscheinender Text
 		
 		//da panel verschwand wenn man auf die dahinterliegenden buttons geklickt hat musste ich das dazu machen
 		//und bei des setBounds bisschen tricksen^^
@@ -126,10 +105,14 @@ public class GUI extends JFrame{
 			
 		});
 		
+		//Abfrage, Kartenauswahl etc
+		auswahl.setLayout(null);
+		auswahl.setOpaque(true);
+		auswahl.setForeground(Color.white);
+		auswahl.setBackground(new Color(150,130,50));
+		auswahl.setBounds(300,168,900,497);
 		
-		//auswahl.setToolTipText(text); //wenn Cursor darüber liegt erscheinender Text
-		
-		text1.setText("Willkommen zum spannenden Duell der Krieger!");
+		text1.setText("Willkommen zu Vona!");
 		text1.setFont(new Font(text1.getText(), Font.ITALIC, 20));
 		text1.setBounds(250,10,500,60);
 		text1.setForeground(auswahl.getForeground());
@@ -157,6 +140,7 @@ public class GUI extends JFrame{
 					linkerplyr.setVisible(true);
 					rechterplyr.setVisible(true);
 					start.setVisible(true);
+					setPlayer(rechts, true);
 				}	
 			}			
 		});		
@@ -180,10 +164,20 @@ public class GUI extends JFrame{
 					linkerplyr.setVisible(true);
 					rechterplyr.setVisible(false);
 					start.setVisible(true);
+					setPlayer(rechts, false);
 				}	
 			}			
 		});
-			
+	}
+	
+	//oben genutzte Methode, die auf Buttoneingabe reagiert.
+	public void setPlayer(Spieler rechts, boolean human){
+		if(human);
+		else rechts= new KI();
+	}
+	
+	//Namen wähelen
+	public void setup1(Spieler links, Spieler rechts){
 		text3.setVisible(false);
 		text3.setText("Gebt Eure Titel ein(Max. 20 Zeichen):");
 		text3.setFont(text2.getFont());
@@ -223,15 +217,15 @@ public class GUI extends JFrame{
 				String lname = linkerplyr.getText();
 				String rname = rechterplyr.getText();
 
-				if(lname.length() == 0 && rname.length() == 0 ){
-					start.isEnabled();
-					auswahl.setVisible(true);			
-				}
-					
-				else if(lname.length() != 0 & rname.length() != 0){
+				 if(lname.length() != 0 & rname.length() != 0){
 					if(lname.length() < 21 & rname.length() < 21){
 						start.isEnabled();
 						auswahl.setVisible(false);
+						links.setName(lname);
+						rechts.setName(rname);
+						plyr2.setText(rechts.getName());
+						plyr1.setText(links.getName());
+						kaufPane.setVisible(true);
 					}
 					else{
 						start.isEnabled();
@@ -253,7 +247,92 @@ public class GUI extends JFrame{
 		auswahl.add(ppbttn);
 		auswahl.add(pkbttn);
 		auswahl.add(start);
+	}
 	
+	
+	public void kaufen(Spieler kaufender){
+		
+
+		
+		kaufPane.setLayout(null);
+		kaufPane.setForeground(Color.white);
+		kaufPane.setBackground(new Color(50,180,50));
+		kaufPane.setBounds(300,168,900,497);
+		for (int i = 0; i < 3; i++) {
+			kaufButtons[i]= new JButton();
+			kaufButtons[i].setBounds(100 + i*250, 150, 200, 200);
+			kaufPane.add(kaufButtons[i]);
+		}
+		goldAnzeige.setText(kaufender.getName() + ", Sie haben " + kaufender.getGold() + " Gulden.");
+		goldAnzeige.setBounds(100, 30, 1000, 30);
+		
+		kaufLabel.setBounds(100, 80, 1000, 30);
+		
+		kaufPane.add(goldAnzeige);
+		kaufPane.add(kaufLabel);
+		
+		Karte[] angebot = new Karte[3];
+		int maxPreis = 50;
+		int maxHand = 8;
+		
+		loop:
+		while(kaufender.getGold() >= maxPreis) {
+			for(int i = 0; i <= 2; i++) {
+				angebot[i] = kaufender.generateEinheit();
+				while (kaufender.getGold() < angebot[i].getPreis() && kaufender.getGold() >= maxPreis) {
+					angebot[i] = kaufender.generateEinheit(); // System.out.println(i + "Nicht genug Gold. Generiere neue Einheit."); // Nur zum Testen.
+				}
+				System.out.println("["+i+"] " + angebot[i].getName() + "("+angebot[i].getPreis()+"g)");
+				kaufButtons[i].setIcon(new ImageIcon(((new ImageIcon(angebot[i].getBildPfad())).getImage()).getScaledInstance(150, 120, java.awt.Image.SCALE_SMOOTH)));
+			}
+			int key;
+			do{
+				key = input.nextInt();
+				switch (key) {
+					case 0: 
+						kaufender.getHand().add(angebot[0]);
+						kaufender.setGold(kaufender.getGold() - angebot[0].getPreis());
+						System.out.println(angebot[key].getName() + " zur Hand hinzugefï¿½gt.");
+						System.out.println("Sie haben nun " + kaufender.getGold() + " Gold.");
+						break;
+					case 1: 
+						kaufender.getHand().add(angebot[1]);
+						kaufender.setGold(kaufender.getGold() - angebot[0].getPreis());
+						System.out.println(angebot[key].getName() + " zur Hand hinzugefï¿½gt.");
+						System.out.println("Sie haben nun " + kaufender.getGold() + " Gold.");
+						break;
+					case 2: 
+						kaufender.getHand().add(angebot[2]);
+						kaufender.setGold(kaufender.getGold() - angebot[0].getPreis());
+						System.out.println(angebot[key].getName() + " zur Hand hinzugefï¿½gt.");
+						System.out.println("Sie haben nun " + kaufender.getGold() + " Gold.");
+						break;
+					default: 
+						System.out.println("Bitte korrekte Auswahl treffen.");
+					}
+				System.out.println("Sie haben nun " + kaufender.getHand().size() + " Karten auf der Hand");
+				if (kaufender.getHand().size() >= maxHand) {
+					System.out.println("Maximale Handkartenanzahl von '" + maxHand + "' erreicht.");
+					kaufPane.setVisible(false);
+					break loop;
+				}
+				}while (key < 0 || key > 2);
+			}
+	}
+	
+	
+	//Konstruktor
+	public GUI(Feld spielbrett, Spieler links, Spieler rechts){
+		
+		this.setTitle("Vona");
+		this.setSize(1500, 1000);
+		this.setResizable(false);
+		this.setLocation(200, 40);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		
+		//Hintergrund;
+		content = (JPanel) this.getContentPane();
+		content.setLayout(null);	
 		
 		//spieler 1 im linken Feld
 		lfeld.setLayout(null);
@@ -261,14 +340,10 @@ public class GUI extends JFrame{
 		lfeld.setForeground(Color.white);
 		lfeld.setBackground(new Color(40,10,10));
 		lfeld.setBounds(0,0,300,1000);
-		
+
 		plyr1.setLocation(120,10);
 		plyr1.setSize(60,40);
 		plyr1.setForeground(lfeld.getForeground());
-		
-		plyr1z.setLocation(123,150);
-		plyr1z.setSize(80,40);
-		plyr1z.setForeground(lfeld.getForeground());
 
 		plyr1k.setLocation(117,300);
 		plyr1k.setSize(90,40);
@@ -309,13 +384,12 @@ public class GUI extends JFrame{
 		}		
 
 		//Einbindung Bild zu Testzwecken
-		/*JButton bildbttn = new JButton(new ImageIcon(((new ImageIcon("bilder/söldner.jpg")).getImage()).getScaledInstance(150, 120, java.awt.Image.SCALE_SMOOTH)));	 
+		JButton bildbttn = new JButton(new ImageIcon(((new ImageIcon("bilder/test.jpg")).getImage()).getScaledInstance(150, 120, java.awt.Image.SCALE_SMOOTH)));	 
 	   	bildbttn.setLayout(null);
 		lpanel.add(bildbttn);
-		*/
+
 		
 		lfeld.add(plyr1);
-		lfeld.add(plyr1z);
 		lfeld.add(plyr1k);
 		lfeld.add(plyr1n);
 		lfeld.add(lpanel);		
@@ -331,16 +405,16 @@ public class GUI extends JFrame{
 		int m,n;
 		m = 6;
 		n = 6;
-		JButton[][] button = new JButton[m][n];
+		feldButtons = new JButton[m][n];
 		for(int c = 0; c < m; c++){
 			for(int d = 0; d < n; d++){
-				button[c][d] = new JButton();
-				button[c][d].setLayout(null);
-				button[c][d].setForeground(mitte.getForeground());
-				button[c][d].setSize(mitte.getPreferredSize());
-			    button[c][d].setBackground(mitte.getBackground());
-				button[c][d].setRolloverEnabled(false);//falls Maus geklickt scheint button durch!
-				button[c][d].addActionListener(new ActionListener(){
+				feldButtons[c][d] = new JButton();
+				feldButtons[c][d].setLayout(null);
+				feldButtons[c][d].setForeground(mitte.getForeground());
+				feldButtons[c][d].setSize(mitte.getPreferredSize());
+				feldButtons[c][d].setBackground(mitte.getBackground());
+				feldButtons[c][d].setRolloverEnabled(false);//falls Maus geklickt scheint button durch!
+				feldButtons[c][d].addActionListener(new ActionListener(){
 					
 					//muss noch abgeändert werden, da bisher der attbttn(für angreifbare einheiten) genutzt wird(auch wenn freies feld)
 					@Override
@@ -361,7 +435,7 @@ public class GUI extends JFrame{
 					}			
 						
 				});
-				mitte.add(button[c][d]);
+				mitte.add(feldButtons[c][d]);
 			}
 		}	
 		
@@ -374,11 +448,7 @@ public class GUI extends JFrame{
 		
 		plyr2.setLocation(120,10);
 		plyr2.setSize(60,40);
-		plyr2.setForeground(rfeld.getForeground());
-		
-		plyr2z.setLocation(123,150);
-		plyr2z.setSize(80,40);
-		plyr2z.setForeground(rfeld.getForeground());		
+		plyr2.setForeground(rfeld.getForeground());	
 
 		plyr2k.setLocation(117,300);
 		plyr2k.setSize(90,40);
@@ -405,7 +475,6 @@ public class GUI extends JFrame{
 		}
 		
 		rfeld.add(plyr2);
-		rfeld.add(plyr2z);
 		rfeld.add(plyr2k);
 		//rfeld.add(plyr2n);
 		rfeld.add(rpanel);
@@ -415,13 +484,8 @@ public class GUI extends JFrame{
 		content.add(mitte);
 		content.add(lfeld);
 		content.add(rfeld);
+		content.add(kaufPane);
 	}
-	
-	private void beenden() {
-		System.out.println("Möge der Krieg..äh das Spiel beginnen!");
-		System.exit(0);
-	}
-	
 
 }
 
