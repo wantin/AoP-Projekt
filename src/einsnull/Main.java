@@ -64,14 +64,19 @@ public class Main {
 		links.setName("linkeEule");
 		rechts.setName("rechteRatte");
 		anzeige.setup1(links, rechts);
+		
 		//Karten wählen
 		
 		//kaufen ist jetz in spieler
 		links.kaufen(anzeige);
 		rechts.kaufen(anzeige);
+		anzeige.versteckeKauf();
 		
 		//Karten ausspielen oder benutzen
-		while((!links.getHand().isEmpty() || !links.getTruppen().isEmpty()) && (!rechts.getHand().isEmpty() || !rechts.getTruppen().isEmpty())){
+		while((!links.getHand().isEmpty() || !links.getTruppen().isEmpty()) 
+				&& (!rechts.getHand().isEmpty() || !rechts.getTruppen().isEmpty())
+				|| links.getGold()==1000 //da nicht gewartet wird bis kaufen fertig ist..
+			){
 			runde(links, rechts, spielbrett);
 		}
 		

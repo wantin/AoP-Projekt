@@ -38,11 +38,13 @@ public class GUI extends JFrame{
 	private JPanel rfeld = new JPanel();
 
 	private JButton[] kaufButtons= new JButton[3];
+	private JLabel[][][] feldButtonLabels = new JLabel[6][6][2]; //Rüstung und Stärke
 	private JButton[][] feldButtons;
 	private JButton ppbttn = new JButton("Player vs. Player");
 	private JButton pkbttn = new JButton("Player vs. KI");
 	private JButton start = new JButton("START");
 
+	private JLabel[] preisLabel = new JLabel[3];
 	private JLabel goldAnzeige = new JLabel();
 	private JLabel kaufLabel = new JLabel("Klicken Sie auf eine der drei Karten um sie zu kaufen.");
 	private JLabel plyr1 = new JLabel("Spieler 1");
@@ -61,6 +63,31 @@ public class GUI extends JFrame{
 
 
 	Random zufall = new Random();
+	
+	//da panel verschwand wenn man auf die dahinterliegenden buttons geklickt hat musste ich das dazu machen (Elina)
+	//Ich habe das mal rausgeholt, damit man es mehrfach verwenden kann (Valentin)
+	MouseListener bleibHier = new MouseListener(){
+
+		@Override
+		public void mouseClicked(MouseEvent arg0) {
+			setVisible(true);
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent arg0) {}
+
+		@Override
+		public void mouseExited(MouseEvent arg0) {}
+
+		@Override
+		public void mousePressed(MouseEvent arg0) {
+			setVisible(true);
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent arg0) {}
+
+	};
 
 
 	//Konstruktor
@@ -76,45 +103,36 @@ public class GUI extends JFrame{
 		content = (JPanel) this.getContentPane();
 		content.setLayout(null);
 
-		/*beendenitem.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent arg0){
-				beenden();
-			}
-		});*/
-
-		//Abfrage, Kartenauswahl etc
+		//Spielart und Namen auswahl
 		auswahl.setLayout(null);
 		auswahl.setForeground(Color.white);
 		auswahl.setBackground(new Color(150,130,50));
 		auswahl.setBounds(200,100,800,400);
-
-
-		//da panel verschwand wenn man auf die dahinterliegenden buttons geklickt hat musste ich das dazu machen
-		//und bei des setBounds bisschen tricksen^^
-		auswahl.addMouseListener(new MouseListener(){
-
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				setVisible(true);
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent arg0) {}
-
-			@Override
-			public void mouseExited(MouseEvent arg0) {}
-
-			@Override
-			public void mousePressed(MouseEvent arg0) {
-				setVisible(true);
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent arg0) {}
-
-		});
-
+		auswahl.addMouseListener(bleibHier);
+		
+		//Karten kaufen
+		kaufPane.setLayout(null);
+		kaufPane.setForeground(Color.white);
+		kaufPane.setBackground(new Color(150,100,50));
+		kaufPane.setBounds(200,100,800,400);
+		kaufPane.setVisible(false);
+		
+		for (int i = 0; i < 3; i++) {
+			kaufButtons[i]= new JButton();
+			kaufButtons[i].setBounds(100 + i*220, 150, 160, 160);
+			kaufPane.add(kaufButtons[i]);
+			preisLabel[i] = new JLabel();
+			preisLabel[i].setLayout(null);
+			preisLabel[i].setForeground(new Color(200, 180, 70));
+			preisLabel[i].setBounds(100+i*220, 340, 160, 30);
+		}
+		
+		goldAnzeige.setBounds(100, 30, 1000, 30);
+		kaufLabel.setBounds(100, 80, 1000, 30);
+		kaufPane.add(goldAnzeige);
+		kaufPane.add(kaufLabel);
+		kaufPane.addMouseListener(bleibHier);
+		
 
 		text1.setText("Willkommen zu Vona!");
 		text1.setFont(new Font(text1.getText(), Font.ITALIC, 20));
@@ -144,7 +162,7 @@ public class GUI extends JFrame{
 					linkerplyr.setVisible(true);
 					rechterplyr.setVisible(true);
 					start.setVisible(true);
-					//setPlayer(rechts, true);
+					setPlayer(rechts, true);
 				}
 			}
 		});
@@ -168,7 +186,7 @@ public class GUI extends JFrame{
 					linkerplyr.setVisible(true);
 					rechterplyr.setVisible(false);
 					start.setVisible(true);
-					//setPlayer(rechts, false);
+					setPlayer(rechts, false);
 				}
 			}
 		});
@@ -219,12 +237,6 @@ public class GUI extends JFrame{
 				lpanel.add(lbttn);
 			}
 		}
-		
-		Ritter test = new Ritter(links);
-		//Einbindung Bild zu Testzwecken
-		JButton bildbttn = new JButton(new ImageIcon(((new ImageIcon("bilder/einheiten/hasenritter.jpg")).getImage()).getScaledInstance(150, 120, java.awt.Image.SCALE_SMOOTH)));
-	   	bildbttn.setLayout(null);
-		lpanel.add(bildbttn);
 
 		lfeld.add(plyr1);
 		lfeld.add(plyr1k);
@@ -239,7 +251,7 @@ public class GUI extends JFrame{
 		mitte.setBackground(new Color(150,50,15));
 		mitte.setBounds(300,0,600,600);
 
-		//Schleife Buttons fÃ¼r mittleres Feld
+		//Schleife Buttons für mittleres Feld
 		int m,n;
 		m = 6;
 		n = 6;
@@ -251,31 +263,40 @@ public class GUI extends JFrame{
 				feldButtons[c][d].setLayout(null);
 				feldButtons[c][d].setForeground(mitte.getForeground());
 				feldButtons[c][d].setSize(mitte.getPreferredSize());
-				feldButtons[c][d].setBackground(mitte.getBackground());
+				feldButtons[c][d].setIcon(new ImageIcon(((new ImageIcon("bilder/holzHintergrund.jpg")).getImage()).getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH)));
 				feldButtons[c][d].setRolloverEnabled(false);//falls Maus geklickt scheint button durch!
 				feldButtons[c][d].addActionListener(new ActionListener(){
 
-				//muss noch abgeÃ¤ndert werden, da bisher der attbttn(fÃ¼r angreifbare einheiten) genutzt wird(auch wenn freies feld)
-				@Override
-				public void actionPerformed(ActionEvent arg0) {
-					JButton freebttn = new JButton();
-					freebttn.setLayout(null);
-					freebttn.setSize(getPreferredSize());
-					freebttn.setForeground(mitte.getForeground());
-					if(freebttn == null){
-						System.out.println("Das Feld ist leer");
+					//muss noch abgeändert werden, da bisher der attbttn(für angreifbare einheiten) genutzt wird(auch wenn freies feld)
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+						JButton freebttn = new JButton();
+						freebttn.setLayout(null);
+						freebttn.setSize(getPreferredSize());
+						freebttn.setForeground(mitte.getForeground());
+						if(freebttn == null){
+							System.out.println("Das Feld ist leer");
+						}
+	
+						JButton attbttn = new JButton();
+						if(attbttn != null){
+							attbttn.setBackground(Color.red);
+							System.out.println("Das Feld ist besetzt von");//karte des gegners einfÃ¼gen
+						}
 					}
-
-					JButton attbttn = new JButton();
-					if(attbttn != null){
-						attbttn.setBackground(Color.red);
-						System.out.println("Das Feld ist besetzt von");//karte des gegners einfÃ¼gen
-					}
+				});
+				mitte.add(feldButtons[c][d]);
+			
+			
+				//glaube, dass das so nicht geht.
+				for (int i = 0; i < 2; i++) {
+					feldButtonLabels[c][d][i]= new JLabel();
+					feldButtonLabels[c][d][i].setBounds(10+ 70*i, 80, 10, 10);
+					feldButtonLabels[c][d][i].setText(Integer.toString(c+d+i));
+					
 				}
-			});
-			mitte.add(feldButtons[c][d]);
+			}
 		}
-	}
 
 		//spieler 2 im rechten Feld
 		rfeld.setLayout(null);
@@ -408,93 +429,65 @@ public class GUI extends JFrame{
 		else rechts= new KI();
 	}
 
-	/*protected void aktion(){
-		  JButton bildbttn = new JButton();
-		  try {
-		    Image img = ImageIO.read(getClass().getResource("bilder/schneckentyp.jpg"));
-		    bildbttn.setIcon(new ImageIcon(img));
-		  } catch (Exception ex) {
-		    System.out.println(ex);
-		  }
-	}*/
-
-
-
+	public void versteckeKauf(){
+		kaufPane.setVisible(false);
+	}
 
 	public void setup0(Spieler rechts){} //PvP (true) oder PvE (false)
 		//auswahl.setToolTipText(text); //wenn Cursor darÃ¼ber liegt erscheinender Text
 
 
 	public void kaufen(Spieler kaufender){
-
-	kaufPane.setLayout(null);
-	kaufPane.setForeground(Color.white);
-	kaufPane.setBackground(new Color(150,100,50));
-	kaufPane.setBounds(200,100,800,400);
-	kaufPane.setVisible(false);
 	
-	for (int i = 0; i < 3; i++) {
-		kaufButtons[i]= new JButton();
-		kaufButtons[i].setBounds(100 + i*220, 150, 160, 160);
-		kaufPane.add(kaufButtons[i]);
-	}
-	goldAnzeige.setText(kaufender.getName() + ", Sie haben " + kaufender.getGold() + " Gulden.");
-	goldAnzeige.setBounds(100, 30, 1000, 30);
-
-	kaufLabel.setBounds(100, 80, 1000, 30);
-
-	kaufPane.add(goldAnzeige);
-	kaufPane.add(kaufLabel);
-
-	Karte[] angebot = new Karte[3];
-	int maxPreis = 50;
-	int maxHand = 8;
-
-	loop:
-	while(kaufender.getGold() >= maxPreis) {
+		Karte[] angebot = new Karte[3];
+		int minPreis = 50;
+		int maxHand = 8;
 		for(int i = 0; i <= 2; i++) {
+			angebot[i]= new SoeldnerTest(kaufender);
 			angebot[i] = kaufender.generateEinheit();
-			while (kaufender.getGold() < angebot[i].getPreis() && kaufender.getGold() >= maxPreis) {
+			while (kaufender.getGold() < angebot[i].getPreis() && kaufender.getGold() >= minPreis) {
 				angebot[i] = kaufender.generateEinheit(); // System.out.println(i + "Nicht genug Gold. Generiere neue Einheit."); // Nur zum Testen.
 			}
-			System.out.println("["+i+"] " + angebot[i].getName() + "("+angebot[i].getPreis()+"g)");
-			kaufButtons[i].setIcon(new ImageIcon(((new ImageIcon("bilder/einheiten/hasenritter.jpg")).getImage()).getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH)));
-			//kaufButtons[i].setIcon(new ImageIcon(((new ImageIcon(angebot[i].getBildPfad())).getImage()).getScaledInstance(150, 120, java.awt.Image.SCALE_SMOOTH)));
-			
+			kaufButtons[i].setIcon(new ImageIcon(((new ImageIcon(angebot[i].getBildPfad())).getImage()).getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH)));
+			preisLabel[i].setText(Integer.toString(angebot[i].getPreis()));
 		}
-		int key;
-		do{
-			key = input.nextInt();
-			switch (key) {
-				case 0:
-					kaufender.getHand().add(angebot[0]);
-					kaufender.setGold(kaufender.getGold() - angebot[0].getPreis());
-					System.out.println(angebot[key].getName() + " zur Hand hinzugefÃ¯Â¿Â½gt.");
-					System.out.println("Sie haben nun " + kaufender.getGold() + " Gold.");
-					break;
-				case 1:
-					kaufender.getHand().add(angebot[1]);
-					kaufender.setGold(kaufender.getGold() - angebot[0].getPreis());
-					System.out.println(angebot[key].getName() + " zur Hand hinzugefÃ¯Â¿Â½gt.");
-					System.out.println("Sie haben nun " + kaufender.getGold() + " Gold.");
-					break;
-				case 2:
-					kaufender.getHand().add(angebot[2]);
-					kaufender.setGold(kaufender.getGold() - angebot[0].getPreis());
-					System.out.println(angebot[key].getName() + " zur Hand hinzugefÃ¯Â¿Â½gt.");
-					System.out.println("Sie haben nun " + kaufender.getGold() + " Gold.");
-					break;
-				default:
-					System.out.println("Bitte korrekte Auswahl treffen.");
-				}
-			System.out.println("Sie haben nun " + kaufender.getHand().size() + " Karten auf der Hand");
-			if (kaufender.getHand().size() >= maxHand) {
-				System.out.println("Maximale Handkartenanzahl von '" + maxHand + "' erreicht.");
-				break loop;
+		goldAnzeige.setText(kaufender.getName() + ", Sie haben " + kaufender.getGold() + " Gulden.");
+		
+		//es mag es nicht, wenn ich über i durchzähle.. also halt ausgeschrieben
+		kaufButtons[0].addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				kaufender.getHand().add(angebot[0]);
+				kaufender.setGold(kaufender.getGold()-angebot[0].getPreis());
+				content.repaint();
+				if (kaufender.getHand().size() >= maxHand || kaufender.getGold() < minPreis)
+					;//müssen wir nichts aufräumen?
+				else kaufen(kaufender);
 			}
-			}while (key < 0 || key > 2);
-		}
-}
+		});
+		kaufButtons[1].addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				kaufender.getHand().add(angebot[0]);
+				kaufender.setGold(kaufender.getGold()-angebot[1].getPreis());
+				content.repaint();
+				if (kaufender.getHand().size() >= maxHand || kaufender.getGold() < minPreis)
+					;//müssen wir nichts aufräumen?
+				else kaufen(kaufender);
+			}
+		});
+		kaufButtons[2].addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				kaufender.getHand().add(angebot[0]);
+				kaufender.setGold(kaufender.getGold()-angebot[2].getPreis());
+				content.repaint();
+				if (kaufender.getHand().size() >= maxHand || kaufender.getGold() < minPreis)
+					;//müssen wir nichts aufräumen?
+				else kaufen(kaufender);
+			}
+		});
+	}
 
 }
 
