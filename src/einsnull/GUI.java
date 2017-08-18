@@ -38,6 +38,7 @@ public class GUI extends JFrame{
 	private JPanel rfeld = new JPanel();	
 	
 	private JButton[] kaufButtons= new JButton[3];
+	private JLabel[][][] feldButtonLabels = new JLabel[6][6][2]; //Rüstung und Stärke
 	private JButton[][] feldButtons;
 	private JButton ppbttn = new JButton("Player vs. Player");
 	private JButton pkbttn = new JButton("Player vs. KI");
@@ -518,10 +519,6 @@ public class GUI extends JFrame{
 				if (kaufender.getHand().size() >= maxHand) {
 					System.out.println("Maximale Handkartenanzahl von '" + maxHand + "' erreicht.");
 					kaufPane.setVisible(false);
-					break loop;
-				}
-				}while (key < 0 || key > 2);
-			}
 	}
 
 }
