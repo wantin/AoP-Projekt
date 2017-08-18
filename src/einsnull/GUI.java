@@ -24,8 +24,6 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
-
 
 public class GUI extends JFrame{
 	
@@ -73,12 +71,32 @@ public class GUI extends JFrame{
 		  } catch (Exception ex) {
 		    System.out.println(ex);
 		  }
-	}*/
-	
-	
-	
-	public void setup0(Spieler rechts){ //PvP (true) oder PvE (false)
-		//auswahl.setToolTipText(text); //wenn Cursor darüber liegt erscheinender Text
+	//Konstruktor	
+	public GUI(Feld spielbrett, Spieler links, Spieler rechts){
+		
+		this.setTitle("Vona");
+		this.setSize(1200, 700);
+		this.setResizable(false);
+		this.setLocation(350, 150);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		
+		//Hintergrund;
+		content = (JPanel) this.getContentPane();
+		content.setLayout(null);
+		
+		/*beendenitem.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0){
+				beenden();
+			}
+		});*/
+		
+		//Abfrage, Kartenauswahl etc
+		auswahl.setVisible(false);
+		auswahl.setLayout(null);
+		auswahl.setForeground(Color.white);
+		auswahl.setBackground(new Color(150,130,50));
+		auswahl.setBounds(300,120,600,462);
 		
 		//da panel verschwand wenn man auf die dahinterliegenden buttons geklickt hat musste ich das dazu machen
 		//und bei des setBounds bisschen tricksen^^
@@ -88,7 +106,7 @@ public class GUI extends JFrame{
 			public void mouseClicked(MouseEvent arg0) {
 				setVisible(true);
 			}
-
+			
 			@Override
 			public void mouseEntered(MouseEvent arg0) {}
 
@@ -105,12 +123,6 @@ public class GUI extends JFrame{
 			
 		});
 		
-		//Abfrage, Kartenauswahl etc
-		auswahl.setLayout(null);
-		auswahl.setOpaque(true);
-		auswahl.setForeground(Color.white);
-		auswahl.setBackground(new Color(150,130,50));
-		auswahl.setBounds(300,168,900,497);
 		
 		text1.setText("Willkommen zu Vona!");
 		text1.setFont(new Font(text1.getText(), Font.ITALIC, 20));
@@ -120,7 +132,7 @@ public class GUI extends JFrame{
 		text2.setText("Wollt Ihr gegen die KI spielen , oder zu zweit an einem Computer?");
 		text2.setFont(new Font(text2.getText(), Font.PLAIN, 16));
 		text2.setForeground(auswahl.getForeground());
-		text2.setBounds(230,100,600,30);		
+		text2.setBounds(130,100,600,30);		
 		
 		ppbttn.setVisible(true);
 		ppbttn.setLayout(null);
@@ -140,7 +152,7 @@ public class GUI extends JFrame{
 					linkerplyr.setVisible(true);
 					rechterplyr.setVisible(true);
 					start.setVisible(true);
-					setPlayer(rechts, true);
+					//setPlayer(rechts, true);
 				}	
 			}			
 		});		
@@ -164,20 +176,160 @@ public class GUI extends JFrame{
 					linkerplyr.setVisible(true);
 					rechterplyr.setVisible(false);
 					start.setVisible(true);
-					setPlayer(rechts, false);
+					//setPlayer(rechts, false);
 				}	
 			}			
 		});
+		
+		//spieler 1 im linken Feld
+		lfeld.setLayout(null);
+		lfeld.setForeground(Color.white);
+		lfeld.setBackground(new Color(40,10,10));
+		lfeld.setBounds(0,0,300,700);
+
+		plyr1.setBounds(120,10,60,40);
+		plyr1.setForeground(lfeld.getForeground());
+
+		plyr1k.setBounds(120,250,90,40);
+		plyr1k.setForeground(lfeld.getForeground());
+				
+		//plyr1n.setText(plyr.getName());	
+		plyr1n.setVisible(true);
+		plyr1n.setHorizontalAlignment(JLabel.CENTER);
+		plyr1n.setBounds(70,70,140,40);
+		plyr1n.setForeground(lfeld.getForeground());
+		plyr1n.setBackground(Color.white);		
+				
+				
+		//Kartenfeld linkes Feld
+		int k,l;
+		k = 2;
+		l = 4;
+		JPanel lpanel = new JPanel();
+		lpanel.setLayout(null);
+		lpanel.setBounds(0,300,300,350);
+		lpanel.setLayout(new GridLayout(4,2,4,5));//Einteilung Panel und Zwischenabstände 
+		lpanel.setBackground(lfeld.getBackground());
+				
+		for(int a = 0; a < k; a++){
+			for(int b = 0; b < l; b++){		
+				JButton lbttn = new JButton();
+				lbttn.setBackground(lfeld.getBackground());	
+				lbttn.addActionListener(new ActionListener(){
+					@Override
+					public void actionPerformed(ActionEvent arg0){
+						//aktion();
+					}
+				});
+				lpanel.add(lbttn);
+			}
+		}		
+		
+		//Einbindung Bild zu Testzwecken
+		/*JButton bildbttn = new JButton(new ImageIcon(((new ImageIcon("bilder/test.jpg")).getImage()).getScaledInstance(150, 120, java.awt.Image.SCALE_SMOOTH)));	 
+	   	bildbttn.setLayout(null);
+		lpanel.add(bildbttn);*/
+				
+		lfeld.add(plyr1);
+		lfeld.add(plyr1k);
+		lfeld.add(plyr1n);
+		lfeld.add(lpanel);		
+					
+		//spielfeld
+		mitte.setLayout(null);
+		mitte.setLayout(new GridLayout(6,6));
+		
+		//mitte.setForeground(Color.orange);
+		mitte.setBackground(new Color(150,50,15));
+		mitte.setBounds(300,0,600,700);
+				
+		//Schleife Buttons für mittleres Feld
+		int m,n;		
+		m = 6;
+		n = 6;
+		feldButtons = new JButton[m][n];
+		for(int c = 0; c < m; c++){
+			for(int d = 0; d < n; d++){
+
+				feldButtons[c][d] = new JButton();
+				feldButtons[c][d].setLayout(null);
+				feldButtons[c][d].setForeground(mitte.getForeground());
+				feldButtons[c][d].setSize(mitte.getPreferredSize());
+				feldButtons[c][d].setBackground(mitte.getBackground());
+				feldButtons[c][d].setRolloverEnabled(false);//falls Maus geklickt scheint button durch!
+				feldButtons[c][d].addActionListener(new ActionListener(){
+							
+				//muss noch abgeändert werden, da bisher der attbttn(für angreifbare einheiten) genutzt wird(auch wenn freies feld)
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					JButton freebttn = new JButton();
+					freebttn.setLayout(null);
+					freebttn.setSize(getPreferredSize());
+					freebttn.setForeground(mitte.getForeground());
+					if(freebttn == null){
+						System.out.println("Das Feld ist leer");
+					}
+							
+					JButton attbttn = new JButton();
+					if(attbttn != null){
+						attbttn.setBackground(Color.red);
+						System.out.println("Das Feld ist besetzt von");//karte des gegners einfügen
+					}
+				}
+			});
+			mitte.add(feldButtons[c][d]);
+		}
+	}	
+				
+		//spieler 2 im rechten Feld
+		rfeld.setLayout(null);
+		rfeld.setOpaque(true);
+		rfeld.setForeground(Color.black);
+		rfeld.setBackground(new Color(245,240,200));
+		rfeld.setBounds(900,0,300,700);
+				
+		plyr2.setBounds(120,10, 60,40);
+		plyr2.setForeground(rfeld.getForeground());	
+
+		plyr2k.setBounds(120,250,90,40);
+		plyr2k.setForeground(rfeld.getForeground());
+				
+		/*plyr2n.setLocation( 120,15);
+		plyr2n.setSize(120,20);
+		plyr2n.setForeground(rfeld.getForeground());*/
+				
+		//Kartenfeld rechtes Feld
+		JPanel rpanel = new JPanel();
+		rpanel.setLayout(null);
+		rpanel.setBounds(0,300,300,350);
+		rpanel.setLayout(new GridLayout(4,2,4,5));//Einteilung Panel und Zwischenabstände 
+		rpanel.setBackground(rfeld.getBackground());
+				
+		for(int e = 0; e < k; e++){
+			for(int f = 0; f < l; f++){		
+				JButton rbttn = new JButton();
+				rbttn.setBackground(rfeld.getBackground());
+				rpanel.add(rbttn);
+			}
+		}
+				
+		rfeld.add(plyr2);
+		rfeld.add(plyr2k);
+		//rfeld.add(plyr2n);
+		rfeld.add(rpanel);
+				
+
+		content.add(auswahl);
+		content.add(kaufPane);
+		content.add(mitte);
+		content.add(lfeld);
+		content.add(rfeld);		
 	}
-	
-	//oben genutzte Methode, die auf Buttoneingabe reagiert.
-	public void setPlayer(Spieler rechts, boolean human){
-		if(human);
-		else rechts= new KI();
-	}
+
 	
 	//Namen wähelen
 	public void setup1(Spieler links, Spieler rechts){
+		
 		text3.setVisible(false);
 		text3.setText("Gebt Eure Titel ein(Max. 20 Zeichen):");
 		text3.setFont(text2.getFont());
@@ -199,7 +351,7 @@ public class GUI extends JFrame{
 		text4.setVisible(false);
 		text4.setText("Gebt Euren Titel ein(Max. 20 Zeichen):");
 		text4.setFont(text2.getFont());
-		text4.setBounds(50,100,250,40);
+		text4.setBounds(50,100,270,40);
 		text4.setForeground(auswahl.getForeground());
 		
 		start.setVisible(false);
@@ -216,9 +368,10 @@ public class GUI extends JFrame{
 				
 				String lname = linkerplyr.getText();
 				String rname = rechterplyr.getText();
+					
+				if(lname.length() != 0 && rname.length() != 0){
+					if(lname.length() < 21 && rname.length() < 21){
 
-				 if(lname.length() != 0 & rname.length() != 0){
-					if(lname.length() < 21 & rname.length() < 21){
 						start.isEnabled();
 						auswahl.setVisible(false);
 						links.setName(lname);
@@ -231,10 +384,10 @@ public class GUI extends JFrame{
 						start.isEnabled();
 						auswahl.setVisible(true);
 					}
-						
-				}					
-		}		
-	});	
+					
+				}	
+			}
+		});	
 		
 		auswahl.add(text1);
 		auswahl.add(text2);
@@ -249,6 +402,34 @@ public class GUI extends JFrame{
 		auswahl.add(start);
 	}
 	
+
+	
+	
+	
+	
+	
+	//oben genutzte Methode, die auf Buttoneingabe reagiert.
+	public void setPlayer(Spieler rechts, boolean human){
+		if(human);
+		else rechts= new KI();
+	}
+
+	/*protected void aktion(){
+		  JButton bildbttn = new JButton();
+		  try {
+		    Image img = ImageIO.read(getClass().getResource("bilder/schneckentyp.jpg"));
+		    bildbttn.setIcon(new ImageIcon(img));
+		  } catch (Exception ex) {
+		    System.out.println(ex);
+		  }
+	}*/
+
+	
+	
+	
+	public void setup0(Spieler rechts){} //PvP (true) oder PvE (false)
+		//auswahl.setToolTipText(text); //wenn Cursor darüber liegt erscheinender Text
+
 	
 	public void kaufen(Spieler kaufender){
 		
@@ -267,14 +448,37 @@ public class GUI extends JFrame{
 		goldAnzeige.setBounds(100, 30, 1000, 30);
 		
 		kaufLabel.setBounds(100, 80, 1000, 30);
+	
+	kaufPane.addMouseListener(new MouseListener(){
 		
+		@Override
+		public void mouseClicked(MouseEvent arg0) {
+			setVisible(true);
+		}
+		
+		@Override
+		public void mouseEntered(MouseEvent arg0) {}
+
+		@Override
+		public void mouseExited(MouseEvent arg0) {}
+
+		@Override
+		public void mousePressed(MouseEvent arg0) {
+			setVisible(true);
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent arg0) {} 
+
+	});
+	
 		kaufPane.add(goldAnzeige);
 		kaufPane.add(kaufLabel);
-		
+	
 		Karte[] angebot = new Karte[3];
 		int maxPreis = 50;
 		int maxHand = 8;
-		
+	
 		loop:
 		while(kaufender.getGold() >= maxPreis) {
 			for(int i = 0; i <= 2; i++) {
@@ -318,173 +522,6 @@ public class GUI extends JFrame{
 				}
 				}while (key < 0 || key > 2);
 			}
-	}
-	
-	
-	//Konstruktor
-	public GUI(Feld spielbrett, Spieler links, Spieler rechts){
-		
-		this.setTitle("Vona");
-		this.setSize(1500, 1000);
-		this.setResizable(false);
-		this.setLocation(200, 40);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		
-		//Hintergrund;
-		content = (JPanel) this.getContentPane();
-		content.setLayout(null);	
-		
-		//spieler 1 im linken Feld
-		lfeld.setLayout(null);
-		lfeld.setOpaque(true);
-		lfeld.setForeground(Color.white);
-		lfeld.setBackground(new Color(40,10,10));
-		lfeld.setBounds(0,0,300,1000);
-
-		plyr1.setLocation(120,10);
-		plyr1.setSize(60,40);
-		plyr1.setForeground(lfeld.getForeground());
-
-		plyr1k.setLocation(117,300);
-		plyr1k.setSize(90,40);
-		plyr1k.setForeground(lfeld.getForeground());
-		
-		//plyr1n.setText(plyr.getName());	
-		plyr1n.setHorizontalAlignment(JLabel.CENTER);
-		plyr1n.setLocation(70,70);
-		plyr1n.setSize(140,40);
-		plyr1n.setForeground(lfeld.getForeground());
-		plyr1n.setBackground(lfeld.getBackground());		
-		
-		
-		//Kartenfeld linkes Feld
-		int k,l;
-		k = 2;
-		l = 4;
-		JPanel lpanel = new JPanel();
-		lpanel.setLayout(null);
-		lpanel.setLocation(0,400);
-		lpanel.setSize(300,500);
-		lpanel.setLayout(new GridLayout(4,2,4,5));//Einteilung Panel und Zwischenabstände 
-		lpanel.setBackground(lfeld.getBackground());
-		
-		for(int a = 0; a < k; a++){
-			for(int b = 0; b < l; b++){		
-				JButton lbttn = new JButton();
-				lbttn.setBackground(lfeld.getBackground());
-	
-				lbttn.addActionListener(new ActionListener(){
-					@Override
-					public void actionPerformed(ActionEvent arg0){
-						//aktion();
-					}
-				});
-				lpanel.add(lbttn);
-			}
-		}		
-
-		//Einbindung Bild zu Testzwecken
-		JButton bildbttn = new JButton(new ImageIcon(((new ImageIcon("bilder/test.jpg")).getImage()).getScaledInstance(150, 120, java.awt.Image.SCALE_SMOOTH)));	 
-	   	bildbttn.setLayout(null);
-		lpanel.add(bildbttn);
-
-		
-		lfeld.add(plyr1);
-		lfeld.add(plyr1k);
-		lfeld.add(plyr1n);
-		lfeld.add(lpanel);		
-			
-		//spielfeld
-		mitte.setLayout(null);
-		mitte.setLayout(new GridLayout(6,6));
-		//mitte.setForeground(Color.orange);
-		mitte.setBackground(new Color(150,50,15));
-		mitte.setBounds(300,0,900,1000);
-		
-		//Schleife Buttons für mittleres Feld
-		int m,n;
-		m = 6;
-		n = 6;
-		feldButtons = new JButton[m][n];
-		for(int c = 0; c < m; c++){
-			for(int d = 0; d < n; d++){
-				feldButtons[c][d] = new JButton();
-				feldButtons[c][d].setLayout(null);
-				feldButtons[c][d].setForeground(mitte.getForeground());
-				feldButtons[c][d].setSize(mitte.getPreferredSize());
-				feldButtons[c][d].setBackground(mitte.getBackground());
-				feldButtons[c][d].setRolloverEnabled(false);//falls Maus geklickt scheint button durch!
-				feldButtons[c][d].addActionListener(new ActionListener(){
-					
-					//muss noch abgeändert werden, da bisher der attbttn(für angreifbare einheiten) genutzt wird(auch wenn freies feld)
-					@Override
-					public void actionPerformed(ActionEvent arg0) {
-						JButton freebttn = new JButton();
-						freebttn.setLayout(null);
-						freebttn.setSize(getPreferredSize());
-						freebttn.setForeground(mitte.getForeground());
-						if(freebttn == null){
-							System.out.println("Das Feld ist leer");
-						}
-					
-						JButton attbttn = new JButton();
-						if(attbttn != null){
-							attbttn.setBackground(Color.red);
-							System.out.println("Das Feld ist besetzt von");//karte des gegners einfügen
-						}							
-					}			
-						
-				});
-				mitte.add(feldButtons[c][d]);
-			}
-		}	
-		
-		//spieler 2 im rechten Feld
-		rfeld.setLayout(null);
-		rfeld.setOpaque(true);
-		rfeld.setForeground(Color.black);
-		rfeld.setBackground(new Color(245,240,200));
-		rfeld.setBounds(1200,0,300,1000);
-		
-		plyr2.setLocation(120,10);
-		plyr2.setSize(60,40);
-		plyr2.setForeground(rfeld.getForeground());	
-
-		plyr2k.setLocation(117,300);
-		plyr2k.setSize(90,40);
-		plyr2k.setForeground(rfeld.getForeground());
-		
-		/*plyr2n.setLocation( 120,15);
-		plyr2n.setSize(120,20);
-		plyr2n.setForeground(rfeld.getForeground());*/
-		
-		//Kartenfeld rechtes Feld
-		JPanel rpanel = new JPanel();
-		rpanel.setLayout(null);
-		rpanel.setLocation(0,400);
-		rpanel.setSize(300,500);
-		rpanel.setLayout(new GridLayout(4,2,4,5));//Einteilung Panel und Zwischenabstände 
-		rpanel.setBackground(rfeld.getBackground());
-		
-		for(int e = 0; e < k; e++){
-			for(int f = 0; f < l; f++){		
-				JButton rbttn = new JButton();
-				rbttn.setBackground(rfeld.getBackground());
-				rpanel.add(rbttn);
-			}
-		}
-		
-		rfeld.add(plyr2);
-		rfeld.add(plyr2k);
-		//rfeld.add(plyr2n);
-		rfeld.add(rpanel);
-		
-
-		content.add(auswahl);
-		content.add(mitte);
-		content.add(lfeld);
-		content.add(rfeld);
-		content.add(kaufPane);
 	}
 
 }
