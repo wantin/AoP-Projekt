@@ -2,6 +2,8 @@ package einheitenkarten;
 
 import java.util.Scanner;
 
+import javax.swing.JLabel;
+
 import einsnull.Einheit;
 import einsnull.Feld;
 import einsnull.Spieler;

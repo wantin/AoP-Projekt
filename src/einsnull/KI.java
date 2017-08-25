@@ -14,7 +14,7 @@ import einheitenkarten.SoeldnerTest2;
 
 public class KI extends Spieler {
 	
-	private String name;
+	private String name = "KI";
 	private ArrayList<Karte> hand = new ArrayList<Karte>();
 	private ArrayList<Einheit> truppen = new ArrayList<Einheit>();
 	private int gold = 1000;

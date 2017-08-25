@@ -10,7 +10,7 @@ public class Bogenschuetzen extends Einheit {
 		bildPfad = "bilder/einheiten/bogenschutze.jpg";
 		staerke= 5;
 		ruestung= 0;
-		name= "BogenschÃ¼tze";
+		name= "Bogenschütze";
 		preis = 100;
 		
 		//eleganter und so

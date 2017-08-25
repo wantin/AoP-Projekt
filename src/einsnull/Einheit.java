@@ -20,7 +20,7 @@ static Scanner input = new Scanner(System.in);
 	//Diese Funktion zeigt einem auf, wie man eine Karte(hier Einheit) nutzen kann und ruft dann die entsprechenden Funktionen auf (siehe unten)
 	public boolean nutzen(Feld spielbrett) {
 		if(position[0]==-1) { //prüft ob die Karte noch auf der Hand ist.
-			System.out.println("Diese Karte können Sie ausspielen. Geben Sie Zeile und Spalte eines freien Feldes in Ihrem Spielbereich an, auf welches Sie die Karte spielen wollen.");
+			System.out.println("Diese Karte k�nnen Sie ausspielen. Geben Sie Zeile und Spalte eines freien Feldes in Ihrem Spielbereich an, auf welches Sie die Karte spielen wollen.");
 			System.out.println("Geben Sie die Zeile an, oder -1 um abzubrechen");
 			int x, y;
 			x= input.nextInt();
@@ -104,7 +104,6 @@ static Scanner input = new Scanner(System.in);
 			spielbrett.getInhalt(position[0], position[1]).remove(this);
 		}
 	}
-
 	
 	//Setters und Getters
 	public String getBildPfad(){
@@ -162,17 +161,21 @@ static Scanner input = new Scanner(System.in);
 	public void setStaerke(int staerke) {
 		this.staerke = staerke;
 	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
+	
 	public int getStaerke() {
 		return staerke;
 	}
 	
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public String getName() {
 		return name;
+	}
+	
+	public void setPreis(int preis){
+		this.preis = preis;
 	}
 	
 	public int getPreis() {

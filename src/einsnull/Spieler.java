@@ -33,7 +33,7 @@ public class Spieler {
 		
 		anzeige.kaufen(this);
 		
-		/* moved to GUI aber nur so halb. weiß nicht, ob der Datenteil nicht hier bleiben sollte..
+		/* moved to GUI aber nur so halb. weiï¿½ nicht, ob der Datenteil nicht hier bleiben sollte..
 		
 		Karte[] auswahl = new Karte[3];
 		int maxPreis = 50;

@@ -41,8 +41,7 @@ public class Main {
 		}
 	}
 
-	public static void main(String[] args) {
-		
+	public static void main(String[] args) {		
 
 		Feld spielbrett = new Feld(6,6);
 		Spieler links = new Spieler();links.setSeite("links");
@@ -53,16 +52,12 @@ public class Main {
 		anzeige.setVisible(true);
 		
 		//Spieler oder KI auswählen
-		anzeige.setup0(rechts);
+		anzeige.setup0(links);
 
-	
-		//Spieler benennen
-
-		/*
-		 * Diese Namen sollten nur noch auftauchen, wenn setup1 nicht geklappt hat.
-		*/
-		links.setName("linkeEule");
-		rechts.setName("rechteRatte");
+		//Diese Namen sollten nur noch auftauchen, wenn setup1 nicht geklappt hat.
+		
+		/*links.setName("linkeEule");
+		rechts.setName("rechteRatte");*/
 		anzeige.setup1(links, rechts);
 		
 		//Karten wählen
@@ -70,7 +65,7 @@ public class Main {
 		//kaufen ist jetz in spieler
 		links.kaufen(anzeige);
 		rechts.kaufen(anzeige);
-		anzeige.versteckeKauf();
+		//anzeige.versteckeKauf();
 		
 		//Karten ausspielen oder benutzen
 		while((!links.getHand().isEmpty() || !links.getTruppen().isEmpty()) 
