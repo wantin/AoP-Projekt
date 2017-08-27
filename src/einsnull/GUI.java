@@ -439,27 +439,53 @@ public class GUI extends JFrame{
 		Karte[] angebot = new Karte[3];
 		int minPreis = 50;
 		int maxHand = 8;
+		
 		for(int i = 0; i <= 2; i++) {
 			//angebot[i]= new SoeldnerTest(kaufender);
 			angebot[i] = kaufender.generateEinheit();
 			while (kaufender.getGold() < angebot[i].getPreis() && kaufender.getGold() >= minPreis) {
-				angebot[i] = kaufender.generateEinheit(); // System.out.println(i + "Nicht genug Gold. Generiere neue Einheit."); // Nur zum Testen.
+				angebot[i] = kaufender.generateEinheit(); System.out.println(i + "Nicht genug Gold. Generiere neue Einheit."); // Nur zum Testen.
 			}
 			kaufButtons[i].setIcon(new ImageIcon(((new ImageIcon(angebot[i].getBildPfad())).getImage()).getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH)));
 			preisLabel[i].setText(Integer.toString(angebot[i].getPreis()));
+			
+			final int innerI = i;
+			
+			ActionListener l = new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					kaufender.getHand().add(angebot[innerI]);
+					kaufender.setGold(kaufender.getGold()-angebot[innerI].getPreis());
+					content.repaint();
+					
+					if (kaufender.getHand().size() < maxHand && kaufender.getGold() >= minPreis) kaufen(kaufender);
+
+					System.out.println(kaufender.getName() + " hat "+ angebot[innerI].getName() + " gekauft. Jetziges Gold: " + kaufender.getGold() + " / Handkartenanzahl: " + kaufender.getHand().size());
+					//System.out.println("Hand:");kaufender.printHand();
+				}
+			};
+			
+			for( ActionListener temp : kaufButtons[i].getActionListeners() ) {
+				kaufButtons[i].removeActionListener( temp );
+			}
+			kaufButtons[innerI].addActionListener(l);
 		}
 		goldAnzeige.setText(kaufender.getName() + ", Sie haben " + kaufender.getGold() + " Gulden.");
 		
-		//es mag es nicht, wenn ich über i durchzähle.. also halt ausgeschrieben
+		System.out.println(kaufender.getName() + " hat nun folgende Karten:");kaufender.printHand();
+		
+		/*//es mag es nicht, wenn ich über i durchzähle.. also halt ausgeschrieben
 		kaufButtons[0].addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				kaufender.getHand().add(angebot[0]);
 				kaufender.setGold(kaufender.getGold()-angebot[0].getPreis());
 				content.repaint();
-				if (kaufender.getHand().size() >= maxHand || kaufender.getGold() < minPreis)
-					;//müssen wir nichts aufräumen?
-				else kaufen(kaufender);
+				
+				System.out.println(angebot[0].getName() + " gekauft.0");
+				//System.out.println("Hand:");kaufender.printHand();
+				
+				if (kaufender.getHand().size() < maxHand && kaufender.getGold() > minPreis) kaufen(kaufender);
 			}
 		});
 		kaufButtons[1].addActionListener(new ActionListener(){
@@ -468,9 +494,11 @@ public class GUI extends JFrame{
 				kaufender.getHand().add(angebot[0]);
 				kaufender.setGold(kaufender.getGold()-angebot[1].getPreis());
 				content.repaint();
-				if (kaufender.getHand().size() >= maxHand || kaufender.getGold() < minPreis)
-					;//müssen wir nichts aufräumen?
-				else kaufen(kaufender);
+				
+				System.out.println(angebot[1].getName() + " gekauft.1");
+				//System.out.println("Hand:");kaufender.printHand();
+
+				if (kaufender.getHand().size() < maxHand && kaufender.getGold() > minPreis) kaufen(kaufender);
 			}
 		});
 		kaufButtons[2].addActionListener(new ActionListener(){
@@ -479,10 +507,12 @@ public class GUI extends JFrame{
 				kaufender.getHand().add(angebot[0]);
 				kaufender.setGold(kaufender.getGold()-angebot[2].getPreis());
 				content.repaint();
-				if (kaufender.getHand().size() >= maxHand || kaufender.getGold() < minPreis)
-					;//müssen wir nichts aufräumen?
-				else kaufen(kaufender);
+				
+				System.out.println(angebot[2].getName() + " gekauft.2");
+				//System.out.println("Hand:");kaufender.printHand();
+
+				if (kaufender.getHand().size() < maxHand && kaufender.getGold() > minPreis) kaufen(kaufender);
 			}
-		});
+		});*/
 	}
 }
