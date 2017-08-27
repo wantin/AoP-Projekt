@@ -16,6 +16,15 @@ public class SoeldnerTest2 extends Einheit{
 		name= "Doppelsoldner";
 		preis = 200;
 		//ich weiÃŸ nicht, ob das nicht eleganter geht..
+		
+		//also so sollte das uebrigens eleganter und kürzer sein, falls ich das richtig verstanden habe
+		for (int i = -1; i <= 1; i++) {
+			for (int j = -1; j <= 1; j++) {
+				int[] temp = {i*vor, j*vor}; bewegung.add(temp); angriff.add(temp);				
+				}
+		}
+		
+		/*
 		int[] a= {1*vor,0*vor};bewegung.add(a);
 		int[] b= {1*vor,1*vor};bewegung.add(b);
 		int[] c= {0*vor,1*vor};bewegung.add(c);
@@ -32,8 +41,7 @@ public class SoeldnerTest2 extends Einheit{
 		int[] v= {-1*vor,0*vor};angriff.add(v);
 		int[] u= {0*vor,-1*vor};angriff.add(u);
 		int[] t= {1*vor,-1*vor};angriff.add(t);
-		int[] s= {-1*vor,-1*vor};angriff.add(s);
+		int[] s= {-1*vor,-1*vor};angriff.add(s);*/
 	}
 
 }
-//abcdefghijklmnopqrstuvwxyz
