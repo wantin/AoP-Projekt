@@ -431,17 +431,18 @@ public class GUI extends JFrame{
 		kaufPane.setVisible(false);
 	}
 
+	//was ist das?
 	public void setup0(Spieler rechts){} //PvP (true) oder PvE (false)
 		//auswahl.setToolTipText(text); //wenn Cursor darÃ¼ber liegt erscheinender Text
 
-	public void kaufen(Spieler kaufender){
-	
+	public void kaufen(Spieler kaufender, Spieler anderer){
+		
+		GUI anzeige = this;
 		Karte[] angebot = new Karte[3];
 		int minPreis = 50;
 		int maxHand = 8;
 		
 		for(int i = 0; i <= 2; i++) {
-			//angebot[i]= new SoeldnerTest(kaufender);
 			angebot[i] = kaufender.generateEinheit();
 			while (kaufender.getGold() < angebot[i].getPreis() && kaufender.getGold() >= minPreis) {
 				angebot[i] = kaufender.generateEinheit(); System.out.println(i + "Nicht genug Gold. Generiere neue Einheit."); // Nur zum Testen.
@@ -449,7 +450,7 @@ public class GUI extends JFrame{
 			kaufButtons[i].setIcon(new ImageIcon(((new ImageIcon(angebot[i].getBildPfad())).getImage()).getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH)));
 			preisLabel[i].setText(Integer.toString(angebot[i].getPreis()));
 			
-			final int innerI = i;
+			final int innerI = i; //was macht das?
 			
 			ActionListener l = new ActionListener() {
 				@Override
@@ -458,10 +459,17 @@ public class GUI extends JFrame{
 					kaufender.setGold(kaufender.getGold()-angebot[innerI].getPreis());
 					content.repaint();
 					
-					if (kaufender.getHand().size() < maxHand && kaufender.getGold() >= minPreis) kaufen(kaufender);
+					if (kaufender.getHand().size() < maxHand && kaufender.getGold() >= minPreis) kaufen(kaufender, anderer); //weitereinkaufen
+					else{
+						if(anderer.getHand().size() == 0){ //der andere kauft
+							anderer.kaufen(anzeige, kaufender);
+						}else{	//aufr�umen
+							kaufPane.setVisible(false);
+						}
+					}
 
+					//Kontrollausgabe
 					System.out.println(kaufender.getName() + " hat "+ angebot[innerI].getName() + " gekauft. Jetziges Gold: " + kaufender.getGold() + " / Handkartenanzahl: " + kaufender.getHand().size());
-					//System.out.println("Hand:");kaufender.printHand();
 				}
 			};
 			
@@ -473,46 +481,6 @@ public class GUI extends JFrame{
 		goldAnzeige.setText(kaufender.getName() + ", Sie haben " + kaufender.getGold() + " Gulden.");
 		
 		System.out.println(kaufender.getName() + " hat nun folgende Karten:");kaufender.printHand();
-		
-		/*//es mag es nicht, wenn ich über i durchzähle.. also halt ausgeschrieben
-		kaufButtons[0].addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				kaufender.getHand().add(angebot[0]);
-				kaufender.setGold(kaufender.getGold()-angebot[0].getPreis());
-				content.repaint();
-				
-				System.out.println(angebot[0].getName() + " gekauft.0");
-				//System.out.println("Hand:");kaufender.printHand();
-				
-				if (kaufender.getHand().size() < maxHand && kaufender.getGold() > minPreis) kaufen(kaufender);
-			}
-		});
-		kaufButtons[1].addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				kaufender.getHand().add(angebot[0]);
-				kaufender.setGold(kaufender.getGold()-angebot[1].getPreis());
-				content.repaint();
-				
-				System.out.println(angebot[1].getName() + " gekauft.1");
-				//System.out.println("Hand:");kaufender.printHand();
-
-				if (kaufender.getHand().size() < maxHand && kaufender.getGold() > minPreis) kaufen(kaufender);
-			}
-		});
-		kaufButtons[2].addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				kaufender.getHand().add(angebot[0]);
-				kaufender.setGold(kaufender.getGold()-angebot[2].getPreis());
-				content.repaint();
-				
-				System.out.println(angebot[2].getName() + " gekauft.2");
-				//System.out.println("Hand:");kaufender.printHand();
-
-				if (kaufender.getHand().size() < maxHand && kaufender.getGold() > minPreis) kaufen(kaufender);
-			}
-		});*/
+	
 	}
 }

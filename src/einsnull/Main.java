@@ -63,8 +63,7 @@ public class Main {
 		//Karten wählen
 		
 		//kaufen ist jetz in spieler
-		links.kaufen(anzeige);
-		rechts.kaufen(anzeige);
+		links.kaufen(anzeige, rechts);
 		//anzeige.versteckeKauf();
 		
 		//Karten ausspielen oder benutzen

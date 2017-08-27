@@ -29,9 +29,9 @@ public class Spieler {
 	}
 	
 	//bewegt aus Main
-	public void kaufen(GUI anzeige) {
+	public void kaufen(GUI anzeige, Spieler anderer) {
 		
-		anzeige.kaufen(this);
+		anzeige.kaufen(this, anderer);
 		
 		/* moved to GUI aber nur so halb. wei� nicht, ob der Datenteil nicht hier bleiben sollte..
 		
