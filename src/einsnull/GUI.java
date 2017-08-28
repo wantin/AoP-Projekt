@@ -59,6 +59,7 @@ public class GUI extends JFrame{
 
 	private JTextArea linkerplyr = new JTextArea();
 	private JTextArea rechterplyr = new JTextArea();
+	GUI anzeige = this;
 
 
 	Random zufall = new Random();
@@ -370,7 +371,7 @@ public class GUI extends JFrame{
 
 				if (ppbttn != null){
 				if(lname.length() != 0 && rname.length() != 0){
-					if(lname.length() < 21 && rname.length() < 21){
+					if(lname.length() < 21 && rname.length() < 21){//anfangen bei PvP
 
 						start.isEnabled();
 						auswahl.setVisible(false);
@@ -379,13 +380,14 @@ public class GUI extends JFrame{
 						plyr2.setText(rechts.getName());
 						plyr1.setText(links.getName());
 						kaufPane.setVisible(true);
+						links.kaufen(anzeige, rechts);
 					}
-					else{
+					else{//nicht anfangen
 						start.isEnabled();
 						auswahl.setVisible(true);
 					}
 				}
-				if(pkbttn != null){
+				if(pkbttn != null){ //anfangen bei PvE
 					if(lname.length() != 0 && lname.length() < 21){
 
 							start.isEnabled();
@@ -395,8 +397,9 @@ public class GUI extends JFrame{
 							plyr1.setText(links.getName());
 							plyr2.setText(rechts.getName());
 							kaufPane.setVisible(true);
+							links.kaufen(anzeige, rechts);
 					}
-						else{
+						else{//nicht anfangen
 							start.isEnabled();
 							auswahl.setVisible(true);
 						}
@@ -437,7 +440,6 @@ public class GUI extends JFrame{
 
 	public void kaufen(Spieler kaufender, Spieler anderer){
 		
-		GUI anzeige = this;
 		Karte[] angebot = new Karte[3];
 		int minPreis = 50;
 		int maxHand = 8;

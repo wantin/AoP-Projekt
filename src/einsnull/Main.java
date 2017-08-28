@@ -62,9 +62,7 @@ public class Main {
 		
 		//Karten wÃ¤hlen
 		
-		//kaufen ist jetz in spieler
-		links.kaufen(anzeige, rechts);
-		//anzeige.versteckeKauf();
+		//kaufen ist jetz in spieler und wird über GUI aufgerufen
 		
 		//Karten ausspielen oder benutzen
 		while((!links.getHand().isEmpty() || !links.getTruppen().isEmpty()) 

@@ -33,7 +33,7 @@ public class Spieler {
 		
 		anzeige.kaufen(this, anderer);
 		
-		/* moved to GUI aber nur so halb. wei� nicht, ob der Datenteil nicht hier bleiben sollte..
+		/* Ich lass das mal noch drin, bis ich kaufen bei der KI auch drin habe, aber ich glaube dann brauchen wir das wirklich nicht mehr.
 		
 		Karte[] auswahl = new Karte[3];
 		int maxPreis = 50;
