@@ -1,9 +1,6 @@
 package einheitenkarten;
 
 import java.util.Scanner;
-
-import javax.swing.JLabel;
-
 import einsnull.Einheit;
 import einsnull.Feld;
 import einsnull.Spieler;
@@ -54,7 +51,7 @@ public class Ritter extends Einheit {
 		x= input.nextInt();
 		System.out.println("Geben Sie die Spalte an.");
 		y= input.nextInt();
-		bonus= Math.abs(x - position[0])+Math.abs(y-position[1]); //bonusschaden für anstürmen
+		bonus= Math.max( Math.abs(x - position[0]), Math.abs(y-position[1])); //bonusschaden für anstürmen
 		this.bewegen(spielbrett, x, y);
 		staerke += bonus;
 		spielbrett.getInhalt(zeile, spalte).get(0).verteidigen(spielbrett, this);
