@@ -38,8 +38,9 @@ public class GUI extends JFrame{
 	private JPanel rfeld = new JPanel();
 
 	private JButton[] kaufButtons= new JButton[3];
-	private JLabel[][][] feldButtonLabels = new JLabel[6][6][2]; //Rüstung und Stärke
 	private JButton[][] feldButtons;
+	private JButton[] linksHandkarten = new JButton[8];
+	private JButton[] rechtsHandkarten = new JButton[8];
 	private JButton ppbttn = new JButton("Player vs. Player");
 	private JButton pkbttn = new JButton("Player vs. KI");
 	private JButton start = new JButton("START");
@@ -48,8 +49,8 @@ public class GUI extends JFrame{
 	private JLabel[][] staerkeKarte = new JLabel[6][6];
 	private JLabel goldAnzeige = new JLabel();
 	private JLabel kaufLabel = new JLabel("Klicken Sie auf eine der drei Karten um sie zu kaufen.");
-	private JLabel plyr1 = new JLabel("Spieler 1");
-	private JLabel plyr2 = new JLabel ("Spieler 2");
+	private JLabel plyr1 = new JLabel("linker Spieler");
+	private JLabel plyr2 = new JLabel ("rechter Spieler");
 	private JLabel plyr1k = new JLabel ("Handkarten");
 	private JLabel plyr2k = new JLabel ("Handkarten");
 	private JLabel text1 = new JLabel();
@@ -89,6 +90,25 @@ public class GUI extends JFrame{
 
 	};
 	
+	public void aktualisierenHand(Spieler links, Spieler rechts){
+		
+		//Handkarten des linken Spielers aktualisiert darstellen
+		for(int i = 0; i < links.getHand().size(); i++){ 
+			linksHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(links.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH)));
+		}
+		for(int i = links.getHand().size(); i<8; i++){
+			linksHandkarten[i].setBackground(lfeld.getBackground());
+		}
+		//Handkarten des rechten Spielers aktualisiert darstellen
+		for(int i = 0; i < rechts.getHand().size(); i++){ 
+			rechtsHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(rechts.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH)));
+		}
+		for(int i = rechts.getHand().size(); i<8; i++){
+			rechtsHandkarten[i].setBackground(rfeld.getBackground());
+		}
+		
+	}
+	
 	//Konstruktor
 	public GUI(Feld spielbrett, Spieler links, Spieler rechts){
 
@@ -102,7 +122,7 @@ public class GUI extends JFrame{
 		content.setLayout(null);
 
 		//Spielart und Namen auswahl
-		//auswahl.setVisible(false); falls man den Anfang überspringen will
+		//auswahl.setVisible(false); //falls man den Anfang überspringen will
 		auswahl.setLayout(null);
 		auswahl.setForeground(Color.white);
 		auswahl.setBackground(new Color(150,130,50));
@@ -214,6 +234,7 @@ public class GUI extends JFrame{
 		lpanel.setLayout(new GridLayout(4,2,4,5));//Einteilung Panel und ZwischenabstÃ¤nde
 		lpanel.setBackground(lfeld.getBackground());
 
+		/*alt
 		for(int a = 0; a < k; a++){
 			for(int b = 0; b < l; b++){
 				JButton lbttn = new JButton();
@@ -227,6 +248,17 @@ public class GUI extends JFrame{
 				lpanel.add(lbttn);
 			}
 		}
+		*/
+		
+		//neu
+		for(int i = 0; i < 8; i++){  //8 als Handkartenlimit
+			linksHandkarten[i]= new JButton();
+			linksHandkarten[i].setSize(100, 100);
+			linksHandkarten[i].setBackground(lfeld.getBackground());
+		//	linksHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(links.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH)));
+			lpanel.add(linksHandkarten[i]);	
+		}
+
 
 		lfeld.add(plyr1);
 		lfeld.add(plyr1k);
@@ -304,12 +336,23 @@ public class GUI extends JFrame{
 		rpanel.setLayout(new GridLayout(4,2,4,5));//Einteilung Panel und ZwischenabstÃ¤nde
 		rpanel.setBackground(rfeld.getBackground());
 
+		/*alte version
 		for(int e = 0; e < k; e++){
 			for(int f = 0; f < l; f++){
 				JButton rbttn = new JButton();
 				rbttn.setBackground(rfeld.getBackground());
 				rpanel.add(rbttn);
 			}
+		}
+		*/
+		
+		//neu
+		for(int i = 0; i < 8; i++){  //8 als Handkartenlimit
+			rechtsHandkarten[i]= new JButton();
+			rechtsHandkarten[i].setSize(100, 100);
+			rechtsHandkarten[i].setBackground(rfeld.getBackground());
+			//rechtsHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(rechts.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH)));
+			rpanel.add(rechtsHandkarten[i]);	
 		}
 
 		rfeld.add(plyr2);
@@ -459,6 +502,11 @@ public class GUI extends JFrame{
 				public void actionPerformed(ActionEvent e) {
 					kaufender.getHand().add(angebot[innerI]);
 					kaufender.setGold(kaufender.getGold()-angebot[innerI].getPreis());
+					if(kaufender.getSeite()=="links"){
+						aktualisierenHand(kaufender, anderer);
+					}else{
+						aktualisierenHand(anderer, kaufender);
+					}
 					content.repaint();
 					
 					if (kaufender.getHand().size() < maxHand && kaufender.getGold() >= minPreis) kaufen(kaufender, anderer); //weitereinkaufen
