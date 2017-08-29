@@ -93,17 +93,10 @@ public class GUI extends JFrame{
 		for(int i = 0; i < links.getHand().size(); i++){ 
 			linksHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(links.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH)));
 		}
-		for(int i = links.getHand().size(); i<8; i++){
-			linksHandkarten[i].setBackground(lfeld.getBackground());
-		}
 		//Handkarten des rechten Spielers aktualisiert darstellen
 		for(int i = 0; i < rechts.getHand().size(); i++){ 
 			rechtsHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(rechts.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH)));
-		}
-		for(int i = rechts.getHand().size(); i<8; i++){
-			rechtsHandkarten[i].setBackground(rfeld.getBackground());
-		}
-		
+		}		
 	}
 	
 	//Konstruktor
@@ -224,29 +217,26 @@ public class GUI extends JFrame{
 		plyr1k.setForeground(lfeld.getForeground());
 
 		//Kartenfeld linkes Feld
-		int k,l;
-		k = 2;
-		l = 4;
 		JLabel lLabel = new JLabel();
 		lLabel.setLayout(null);
 		lLabel.setBounds(0,220,250,480);
 		lLabel.setLayout(new GridLayout(4,2,4,5));//Einteilung Panel und ZwischenabstÃ¤nde	
 		lLabel.addMouseListener(bleibHier);
 
-		for(int a = 0; a < k; a++){
-			for(int b = 0; b < l; b++){
-				JButton lbttn = new JButton();
-				lbttn.setOpaque(false);
-				lbttn.setContentAreaFilled(false); //to make the content area transparent
-				lbttn.addActionListener(new ActionListener(){
-					@Override
-					public void actionPerformed(ActionEvent arg0){
-						//aktion();
-					}
-				});
-				lLabel.add(lbttn);
-			}
+		for(int i = 0; i < 8; i++){  //8 als Handkartenlimit
+			linksHandkarten[i]= new JButton();
+			linksHandkarten[i].setOpaque(false);
+			linksHandkarten[i].setContentAreaFilled(false); 
+			//linksHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(links.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH)));
+			/*lbttn.addActionListener(new ActionListener(){
+			 	@Override
+				public void actionPerformed(ActionEvent arg0){
+					aktion();
+				}
+			});*/
+			lLabel.add(linksHandkarten[i]);	
 		}
+
 		
 		//Verziehrung links
 		Icon oIcon = new ImageIcon(getClass().getResource("ornament.png"));
@@ -338,13 +328,13 @@ public class GUI extends JFrame{
 		rLabel.setLayout(new GridLayout(4,2,4,5));//Einteilung Panel und ZwischenabstÃ¤ndes
 		rLabel.addMouseListener(bleibHier);
 		
-		for(int e = 0; e < k; e++){
-			for(int f = 0; f < l; f++){
-				JButton rbttn = new JButton();
-				rbttn.setOpaque(false);
-				rbttn.setContentAreaFilled(false);
-				rLabel.add(rbttn);
-			}
+		//neu
+		for(int i = 0; i < 8; i++){  //8 als Handkartenlimit
+			rechtsHandkarten[i]= new JButton();
+			rechtsHandkarten[i].setOpaque(false);
+			rechtsHandkarten[i].setContentAreaFilled(false);
+			//rechtsHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(rechts.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH)));
+			rLabel.add(rechtsHandkarten[i]);	
 		}
 		
 		//Verziehrung rechts
