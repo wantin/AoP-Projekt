@@ -20,7 +20,9 @@ public class Spieler {
 	private int gold = 1000;
 	private String seite;
 	private int aktionsAuswahl0;
-	private int aktionsAuswahl1;
+	private int aktionsAuswahlZeile= -1;
+	private int aktionsAuswahlSpalte= -1;
+	private boolean aktionAuswahlHand;
 	
 	static Scanner input = new Scanner(System.in);
 	
@@ -125,7 +127,14 @@ public class Spieler {
 		//TODO: switch from console to GUI
 		anzeige.optionenZeigenSpieler(this);
 		
-		
+		while(aktionsAuswahl0==-1){
+			if(aktionAuswahlHand){
+				this.getHand().get(aktionsAuswahl0).nutzen(spielbrett);
+			}else{
+				this.getTruppen().get(aktionsAuswahl0).nutzen(spielbrett);
+			}
+		}
+		/*alt
 		System.out.println("Hand von " + this.getName());
 		this.printHand();
 		System.out.println("Truppen von " + this.getName());
@@ -148,6 +157,7 @@ public class Spieler {
 				stop= this.getTruppen().get(auswahl).nutzen(spielbrett);
 			}
 		}while(!stop);
+		*/
 	}
 	
 	//Kontrollausgabemethoden
@@ -170,6 +180,14 @@ public class Spieler {
 		return seite;
 	}
 
+	public boolean isAktionAuswahlHand() {
+		return aktionAuswahlHand;
+	}
+
+	public void setAktionAuswahlHand(boolean aktionAuswahlHand) {
+		this.aktionAuswahlHand = aktionAuswahlHand;
+	}
+
 	public void setSeite(String seite) {
 		this.seite = seite;
 	}
@@ -182,12 +200,20 @@ public class Spieler {
 		this.aktionsAuswahl0 = aktionsAuswahl0;
 	}
 
-	public int getAktionsAuswahl1() {
-		return aktionsAuswahl1;
+	public int getAktionsAuswahlZeile() {
+		return aktionsAuswahlZeile;
 	}
 
-	public void setAktionsAuswahl1(int aktionsAuswahl1) {
-		this.aktionsAuswahl1 = aktionsAuswahl1;
+	public void setAktionsAuswahlZeile(int aktionsAuswahlZeile) {
+		this.aktionsAuswahlZeile = aktionsAuswahlZeile;
+	}
+
+	public int getAktionsAuswahlSpalte() {
+		return aktionsAuswahlSpalte;
+	}
+
+	public void setAktionsAuswahlSpalte(int aktionsAuswahlSpalte) {
+		this.aktionsAuswahlSpalte = aktionsAuswahlSpalte;
 	}
 
 	public int getGold() {

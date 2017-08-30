@@ -20,6 +20,22 @@ static Scanner input = new Scanner(System.in);
 
 	//Diese Funktion zeigt einem auf, wie man eine Karte(hier Einheit) nutzen kann und ruft dann die entsprechenden Funktionen auf (siehe unten)
 	public boolean nutzen(Feld spielbrett) {
+		
+		if(position[0]==-1) { //prüft ob die Karte noch auf der Hand ist.
+			this.ausspielen(spielbrett, besitzer.getAktionsAuswahlZeile(), besitzer.getAktionsAuswahlSpalte()); //keine Korrektur brauch korrekte Zeile und Spalte
+			return true;
+		}else {
+			if(bereit==0) { //das sollte vorher schon abgefangen werden, wird es derzeit noch nicht 
+				return false;
+			}
+			if(spielbrett.besetzt(besitzer.getAktionsAuswahlZeile(), besitzer.getAktionsAuswahlSpalte())){ //braucht korrekte zeile und spalte
+				this.angreifen(spielbrett, besitzer.getAktionsAuswahlZeile(), besitzer.getAktionsAuswahlSpalte());
+			}
+			else this.bewegen(spielbrett, besitzer.getAktionsAuswahlZeile(), besitzer.getAktionsAuswahlSpalte());
+			return true;
+		}
+		
+		/* alte version
 		if(position[0]==-1) { //prüft ob die Karte noch auf der Hand ist.
 			System.out.println("Diese Karte k�nnen Sie ausspielen. Geben Sie Zeile und Spalte eines freien Feldes in Ihrem Spielbereich an, auf welches Sie die Karte spielen wollen.");
 			System.out.println("Geben Sie die Zeile an, oder -1 um abzubrechen");
@@ -67,6 +83,7 @@ static Scanner input = new Scanner(System.in);
 			else this.bewegen(spielbrett, x, y);
 			return true;
 		}
+		*/
 	}	
 	
 	//die drei Funktionen, die nutzen aufruft

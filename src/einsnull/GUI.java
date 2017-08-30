@@ -235,6 +235,7 @@ public class GUI extends JFrame{
 		        public void actionPerformed(ActionEvent arg0){
 		            optionenZeigenHandkarte(links.getHand().get(final_i), spielbrett);
 		            links.setAktionsAuswahl0(final_i);
+		            links.setAktionAuswahlHand(true);
 		        }
 		    });
 		    lLabel.add(linksHandkarten[i]);	
@@ -276,7 +277,7 @@ public class GUI extends JFrame{
 				staerkeKarte[c][d].setLayout(null);
 				staerkeKarte[c][d].setForeground(new Color(0,55,55));
 				staerkeKarte[c][d].setBounds(50,0,10,10);
-				staerkeKarte[c][d].setText(Integer.toString(c+d));
+				staerkeKarte[c][d].setText("L�ckenf�ller");
 
 				feldButtons[c][d] = new JButton();
 				feldButtons[c][d].setLayout(null);
@@ -284,24 +285,16 @@ public class GUI extends JFrame{
 				feldButtons[c][d].setContentAreaFilled(false);
 				//feldButtons[0][0].setIcon(new ImageIcon(((new ImageIcon("bilder/einheiten/hasenritter.jpg")).getImage()).getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH)));
 				feldButtons[c][d].add(staerkeKarte[c][d]);
+				final int zeile = c;
+				final int spalte = d;
 				feldButtons[c][d].addActionListener(new ActionListener(){
-
 					//muss noch abgeändert werden, da bisher der attbttn(für angreifbare einheiten) genutzt wird(auch wenn freies feld)
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
-						JButton freebttn = new JButton();
-						freebttn.setLayout(null);
-						freebttn.setSize(getPreferredSize());
-						freebttn.setForeground(mitte.getForeground());
-						if(freebttn == null){
-							System.out.println("Das Feld ist leer");
-						}
-	
-						JButton attbttn = new JButton();
-						if(attbttn != null){
-							attbttn.setBackground(Color.red);
-							System.out.println("Das Feld ist besetzt von");//karte des gegners einfÃ¼gen
-						}
+						links.setAktionsAuswahlZeile(zeile);
+						rechts.setAktionsAuswahlZeile(zeile);
+						links.setAktionsAuswahlSpalte(spalte);
+						rechts.setAktionsAuswahlSpalte(spalte);
 					}
 				});
 			mLabel.add(feldButtons[c][d]);	 
@@ -335,10 +328,18 @@ public class GUI extends JFrame{
 			rechtsHandkarten[i]= new JButton();
 			rechtsHandkarten[i].setOpaque(false);
 			rechtsHandkarten[i].setContentAreaFilled(false);
-			//rechtsHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(rechts.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH)));
+			final int final_i=i;
+		    rechtsHandkarten[i].addActionListener(new ActionListener(){
+		        @Override
+		        public void actionPerformed(ActionEvent arg0){
+		            optionenZeigenHandkarte(rechts.getHand().get(final_i), spielbrett);
+		            rechts.setAktionsAuswahl0(final_i);
+		            rechts.setAktionAuswahlHand(true);
+		        }
+		    });
 			rLabel.add(rechtsHandkarten[i]);	
 		}
-		
+				
 		//Verziehrung rechts
 		Icon oIcon1 = new ImageIcon(getClass().getResource("ornament1.png"));
 		JLabel rOrnament = new JLabel(oIcon1);
@@ -480,7 +481,9 @@ public class GUI extends JFrame{
 			if(auszuspielende.getBesitzer().getSeite()=="links"){
 				for (int i = 0; i < 6; i++) {
 					for (int j = 0; j < 2; j++) {
-						feldButtons[i][j].setEnabled(true);
+						if(!spielbrett.besetzt(i, j)){
+							feldButtons[i][j].setEnabled(true);
+						}
 					}
 				}
 			}else{ //rechter Spieler setzt auf die rechte Seite

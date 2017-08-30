@@ -14,7 +14,7 @@ import einheitenkarten.Schildziege;
 
 public class KI extends Spieler {
 	
-	private String name = "KI";
+	private String name = "dösender Doktor";
 	private ArrayList<Karte> hand = new ArrayList<Karte>();
 	private ArrayList<Einheit> truppen = new ArrayList<Einheit>();
 	private int gold = 1000;
