@@ -9,35 +9,35 @@ public class Main {
 	
 	//Zugreihenfolge: llrrrrllllrrrrllllrrrr....
 	//ziehen ist jetzt in Spieler
-	static void runde(Spieler links, Spieler rechts, Feld f) {
+	static void runde(Spieler links, Spieler rechts, Feld f, GUI anzeige) {
 		
-		links.ziehen(f);//der erste muss nicht überprüft werden, ob das spiel zuende ist, weil das in der while schleife schon passiert ist.
+		links.ziehen(f, anzeige);//der erste muss nicht überprüft werden, ob das spiel zuende ist, weil das in der while schleife schon passiert ist.
 		
 		if((!links.getHand().isEmpty() || !links.getTruppen().isEmpty()) && (!rechts.getHand().isEmpty() || !rechts.getTruppen().isEmpty())) {
-			links.ziehen(f);
+			links.ziehen(f, anzeige);
 		}
 		links.resetBereit();
 		
 		//rechts	
 		if((!links.getHand().isEmpty() || !links.getTruppen().isEmpty()) && (!rechts.getHand().isEmpty() || !rechts.getTruppen().isEmpty())) {
-			rechts.ziehen(f);
+			rechts.ziehen(f, anzeige);
 		}
 		if((!links.getHand().isEmpty() || !links.getTruppen().isEmpty()) && (!rechts.getHand().isEmpty() || !rechts.getTruppen().isEmpty())) {
-			rechts.ziehen(f);
+			rechts.ziehen(f, anzeige);
 		}
 		if((!links.getHand().isEmpty() || !links.getTruppen().isEmpty()) && (!rechts.getHand().isEmpty() || !rechts.getTruppen().isEmpty())) {
-			rechts.ziehen(f);
+			rechts.ziehen(f, anzeige);
 		}
 		if((!links.getHand().isEmpty() || !links.getTruppen().isEmpty()) && (!rechts.getHand().isEmpty() || !rechts.getTruppen().isEmpty())) {
-			rechts.ziehen(f);
+			rechts.ziehen(f, anzeige);
 		}
 		rechts.resetBereit();
 		
 		if((!links.getHand().isEmpty() || !links.getTruppen().isEmpty()) && (!rechts.getHand().isEmpty() || !rechts.getTruppen().isEmpty())) {
-			links.ziehen(f);
+			links.ziehen(f, anzeige);
 		}
 		if((!links.getHand().isEmpty() || !links.getTruppen().isEmpty()) && (!rechts.getHand().isEmpty() || !rechts.getTruppen().isEmpty())) {
-			links.ziehen(f);
+			links.ziehen(f, anzeige);
 		}
 	}
 
@@ -69,7 +69,7 @@ public class Main {
 				&& (!rechts.getHand().isEmpty() || !rechts.getTruppen().isEmpty())
 				|| links.getGold()==1000 //da nicht gewartet wird bis kaufen fertig ist..
 			){
-			runde(links, rechts, spielbrett);
+			runde(links, rechts, spielbrett, anzeige);
 		}
 		
 		//Sieger bekanntgeben

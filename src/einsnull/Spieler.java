@@ -19,6 +19,8 @@ public class Spieler {
 	private ArrayList<Einheit> truppen = new ArrayList<Einheit>();
 	private int gold = 1000;
 	private String seite;
+	private int aktionsAuswahl0;
+	private int aktionsAuswahl1;
 	
 	static Scanner input = new Scanner(System.in);
 	
@@ -118,9 +120,11 @@ public class Spieler {
 	
 	//eigentliches Spielen
 	//bewegt aus main
-	void ziehen(Feld spielbrett){
+	void ziehen(Feld spielbrett, GUI anzeige){
 		//auswählen
 		//TODO: switch from console to GUI
+		anzeige.optionenZeigenSpieler(this);
+		
 		
 		System.out.println("Hand von " + this.getName());
 		this.printHand();
@@ -170,7 +174,22 @@ public class Spieler {
 		this.seite = seite;
 	}
 
-	
+	public int getAktionsAuswahl0() {
+		return aktionsAuswahl0;
+	}
+
+	public void setAktionsAuswahl0(int aktionsAuswahl0) {
+		this.aktionsAuswahl0 = aktionsAuswahl0;
+	}
+
+	public int getAktionsAuswahl1() {
+		return aktionsAuswahl1;
+	}
+
+	public void setAktionsAuswahl1(int aktionsAuswahl1) {
+		this.aktionsAuswahl1 = aktionsAuswahl1;
+	}
+
 	public int getGold() {
 		return gold;
 	}

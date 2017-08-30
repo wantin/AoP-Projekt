@@ -30,6 +30,8 @@ public class GUI extends JFrame{
 	private JLabel lfeld;
 	private JLabel rfeld;
 
+	private JButton abbrechenLinks = new JButton();
+	private JButton abbrechenRechts = new JButton();
 	private JButton[] kaufButtons= new JButton[3];
 	private JButton[][] feldButtons;
 	private JButton[] linksHandkarten = new JButton[8];
@@ -224,21 +226,21 @@ public class GUI extends JFrame{
 		lLabel.addMouseListener(bleibHier);
 
 		for(int i = 0; i < 8; i++){  //8 als Handkartenlimit
-			linksHandkarten[i]= new JButton();
-			linksHandkarten[i].setOpaque(false);
-			linksHandkarten[i].setContentAreaFilled(false); 
-			//linksHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(links.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH)));
-			/*lbttn.addActionListener(new ActionListener(){
-			 	@Override
-				public void actionPerformed(ActionEvent arg0){
-					aktion();
-				}
-			});*/
-			lLabel.add(linksHandkarten[i]);	
+		    linksHandkarten[i]= new JButton();
+		    linksHandkarten[i].setOpaque(false);
+		    linksHandkarten[i].setContentAreaFilled(false); 
+		    final int final_i=i;
+		    linksHandkarten[i].addActionListener(new ActionListener(){
+		        @Override
+		        public void actionPerformed(ActionEvent arg0){
+		            optionenZeigenHandkarte(links.getHand().get(final_i), spielbrett);
+		            links.setAktionsAuswahl0(final_i);
+		        }
+		    });
+		    lLabel.add(linksHandkarten[i]);	
 		}
-
 		
-		//Verziehrung links
+		//Verzierung links
 		Icon oIcon = new ImageIcon(getClass().getResource("ornament.png"));
 		JLabel lOrnament = new JLabel(oIcon);
 		lOrnament.setVisible(true);
@@ -452,16 +454,85 @@ public class GUI extends JFrame{
 		auswahl.add(pkbttn);
 		auswahl.add(start);
 	}
+	
+	public void optionenKeine(){
+		for (int i = 0; i < rechtsHandkarten.length; i++) {
+			rechtsHandkarten[i].setEnabled(false);
+			linksHandkarten[i].setEnabled(false);
+		}
+		for (int i = 0; i < feldButtons.length; i++) {
+			for (int j = 0; j < feldButtons[0].length; j++) {
+				feldButtons[i][j].setEnabled(false);
+			}
+		}
+		abbrechenLinks.setEnabled(false);
+		abbrechenRechts.setEnabled(false);
+	}
+	
+	public void optionenZeigenHandkarte(Karte auszuspielende, Feld spielbrett){
+		optionenKeine();
+		if(auszuspielende.getBesitzer().getSeite()=="links"){
+			abbrechenLinks.setEnabled(true);
+		}else{
+			abbrechenRechts.setEnabled(true);
+		}
+		if(auszuspielende.getArt()=="einheit"){
+			if(auszuspielende.getBesitzer().getSeite()=="links"){
+				for (int i = 0; i < 6; i++) {
+					for (int j = 0; j < 2; j++) {
+						feldButtons[i][j].setEnabled(true);
+					}
+				}
+			}else{ //rechter Spieler setzt auf die rechte Seite
+				for (int i = 0; i < 6; i++) {
+					for (int j = 4; j < 6; j++) {
+						feldButtons[i][j].setEnabled(true);
+					}
+				}
+			}
+		}else{ //Effektkarten Ziel wählen
+			if(auszuspielende.getArt()=="fluch"){ //flüche wirkt man auf gegner
+				for (int i = 0; i < 6; i++) {
+					for (int j = 0; j < 6; j++) {
+						if(spielbrett.besetzt(i, j)){ //vermeiden einer nullpointerexception bei dem nächsten Test
+							if(spielbrett.getEinheit(i, j).getBesitzer() != auszuspielende.getBesitzer()){
+								feldButtons[i][j].setEnabled(true);
+							}
+						}
+					}
+				}
+			}else{ //da es kein Fluch ist muss es ein Segen sein.
+				for (int i = 0; i < 6; i++) {
+					for (int j = 0; j < 6; j++) {
+						if(spielbrett.besetzt(i, j)){
+							if(spielbrett.getEinheit(i, j).getBesitzer() == auszuspielende.getBesitzer()){ //Diesmal muss es eine eigene Einheit sein
+								feldButtons[i][j].setEnabled(true);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	public void optionenZeigenSpieler(Spieler aktiverSpieler){
+		optionenKeine();
+		if(aktiverSpieler.getSeite()=="links"){
+			for (int i = 0; i < linksHandkarten.length; i++) {
+				linksHandkarten[i].setEnabled(true);
+			}
+		}else{
+			for (int i = 0; i < rechtsHandkarten.length; i++) {
+				rechtsHandkarten[i].setEnabled(true);
+			}
+		}
+	}
 
 	
 	//oben genutzte Methode, die auf Buttoneingabe reagiert.
 	public void setPlayer(Spieler rechts, boolean human){
 		if(human);
 		else rechts= new KI();
-	}
-
-	public void versteckeKauf(){
-		kaufPane.setVisible(false);
 	}
 
 	//was ist das?
@@ -473,7 +544,6 @@ public class GUI extends JFrame{
 		Karte[] angebot = new Karte[3];
 		int minPreis = 50;
 		int maxHand = 8;
-		
 		for(int i = 0; i <= 2; i++) {
 			angebot[i] = kaufender.generateEinheit();
 			while (kaufender.getGold() < angebot[i].getPreis() && kaufender.getGold() >= minPreis) {
@@ -482,7 +552,7 @@ public class GUI extends JFrame{
 			kaufButtons[i].setIcon(new ImageIcon(((new ImageIcon(angebot[i].getBildPfad())).getImage()).getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH)));
 			preisLabel[i].setText(Integer.toString(angebot[i].getPreis()));
 			
-			final int innerI = i; //was macht das?
+			final int innerI = i;
 			
 			ActionListener l = new ActionListener() {
 				@Override
@@ -496,7 +566,9 @@ public class GUI extends JFrame{
 					}
 					content.repaint();
 					
-					if (kaufender.getHand().size() < maxHand && kaufender.getGold() >= minPreis) kaufen(kaufender, anderer); //weitereinkaufen
+					if (kaufender.getHand().size() < maxHand && kaufender.getGold() >= minPreis){ //weitereinkaufen
+						kaufen(kaufender, anderer); 
+					}
 					else{
 						if(anderer.getHand().size() == 0){ //der andere kauft
 							anderer.kaufen(anzeige, kaufender);

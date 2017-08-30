@@ -11,6 +11,7 @@ public class GottesSegen extends Effekt {
 		name = "Gottes Segen";
 		preis = 50;
 		bildPfad = "bilder/effekte/gottessegen.jpg";
+		art = "segen";
 	}
 	
 	@Override
