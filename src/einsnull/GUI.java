@@ -58,44 +58,15 @@ public class GUI extends JFrame{
 
 	Random zufall = new Random();
 	
-	//braucht es nicht mehr da alles JLabel ist(rollover effekt ex. nicht mehr
-	//wird als anzeige für dongs erstellte Ansichten genutzt(geht noch nicht)
-	MouseListener bleibHier = new MouseListener(){
-
-		@Override
-		public void mouseClicked(MouseEvent arg0) {}
-
-		@Override
-		public void mouseEntered(MouseEvent arg0) {
-			Icon icon = new ImageIcon(getClass().getResource("feld.png"));
-			JLabel ansicht = new JLabel("blubb",icon, JLabel.CENTER);
-			ansicht.setLayout(null);
-			ansicht.setForeground(Color.white);
-			ansicht.setSize(100,100);           
-            ansicht.setToolTipText("blubb");
-            add(ansicht);
-		}
-
-		@Override
-		public void mouseExited(MouseEvent arg0) {}
-
-		@Override
-		public void mousePressed(MouseEvent arg0) {}
-
-		@Override
-		public void mouseReleased(MouseEvent arg0) {}
-
-	};
-	
 	public void aktualisierenHand(Spieler links, Spieler rechts){
 		
 		//Handkarten des linken Spielers aktualisiert darstellen
 		for(int i = 0; i < links.getHand().size(); i++){ 
-			linksHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(links.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH)));
+			linksHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(links.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(110, 110, java.awt.Image.SCALE_SMOOTH)));
 		}
 		//Handkarten des rechten Spielers aktualisiert darstellen
 		for(int i = 0; i < rechts.getHand().size(); i++){ 
-			rechtsHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(rechts.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH)));
+			rechtsHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(rechts.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(110, 110, java.awt.Image.SCALE_SMOOTH)));
 		}		
 	}
 	
@@ -117,7 +88,7 @@ public class GUI extends JFrame{
 		auswahl.setLayout(null);
 		auswahl.setForeground(Color.white);
 		auswahl.setBounds(275,150,650,400);		
-		//auswahl.setVisible(false); //falls man den Anfang überspringen will
+		auswahl.setVisible(false); //falls man den Anfang überspringen will
 		
 		//Karten kaufen
 		kaufPane = new JLabel(aIcon);
@@ -141,7 +112,6 @@ public class GUI extends JFrame{
 		kaufLabel.setBounds(100, 80, 1000, 30);
 		kaufPane.add(goldAnzeige);
 		kaufPane.add(kaufLabel);
-		kaufPane.addMouseListener(bleibHier);
 
 		text1.setText("Willkommen zu Vona!");
 		text1.setFont(new Font(text1.getText(), Font.ITALIC, 20));
@@ -219,15 +189,14 @@ public class GUI extends JFrame{
 		//Kartenfeld linkes Feld
 		JLabel lLabel = new JLabel();
 		lLabel.setLayout(null);
-		lLabel.setBounds(0,220,250,480);
-		lLabel.setLayout(new GridLayout(4,2,4,5));//Einteilung Panel und ZwischenabstÃ¤nde	
-		lLabel.addMouseListener(bleibHier);
+		lLabel.setBounds(0,230,240,470);
+		lLabel.setLayout(new GridLayout(4,2,4,2));//Einteilung Panel und ZwischenabstÃ¤nde	
 
 		for(int i = 0; i < 8; i++){  //8 als Handkartenlimit
 			linksHandkarten[i]= new JButton();
 			linksHandkarten[i].setOpaque(false);
 			linksHandkarten[i].setContentAreaFilled(false); 
-			//linksHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(links.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH)));
+			//linksHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(links.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(110, 110, java.awt.Image.SCALE_SMOOTH)));
 			/*lbttn.addActionListener(new ActionListener(){
 			 	@Override
 				public void actionPerformed(ActionEvent arg0){
@@ -264,7 +233,7 @@ public class GUI extends JFrame{
 		JLabel mLabel = new JLabel();
 		mLabel.setLayout(null);
 		mLabel.setBounds(0,0,700,700);
-		mLabel.setLayout(new GridLayout(6,6));
+		mLabel.setLayout(new GridLayout(6,6,4,2));
 		feldButtons = new JButton[m][n];
 		
 		for(int c = 0; c < m; c++){
@@ -280,7 +249,7 @@ public class GUI extends JFrame{
 				feldButtons[c][d].setLayout(null);
 				feldButtons[c][d].setOpaque(false);
 				feldButtons[c][d].setContentAreaFilled(false);
-				//feldButtons[0][0].setIcon(new ImageIcon(((new ImageIcon("bilder/einheiten/hasenritter.jpg")).getImage()).getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH)));
+				feldButtons[0][0].setIcon(new ImageIcon(((new ImageIcon("bilder/einheiten/hasenritter.jpg")).getImage()).getScaledInstance(110, 110, java.awt.Image.SCALE_SMOOTH)));
 				feldButtons[c][d].add(staerkeKarte[c][d]);
 				feldButtons[c][d].addActionListener(new ActionListener(){
 
@@ -302,11 +271,10 @@ public class GUI extends JFrame{
 						}
 					}
 				});
-			mLabel.add(feldButtons[c][d]);	 
+			mLabel.add(feldButtons[c][d]);			
 			}
 		}
 		mitte.add(mLabel);
-		mitte.addMouseListener(bleibHier);
 
 		//spieler 2 im rechten Feld
 		Icon rIcon = new ImageIcon(getClass().getResource("seiten.png"));
@@ -324,16 +292,14 @@ public class GUI extends JFrame{
 		//Kartenfeld rechtes Feld
 		JLabel rLabel = new JLabel();
 		rLabel.setLayout(null);
-		rLabel.setBounds(0, 220, 250, 480);
-		rLabel.setLayout(new GridLayout(4,2,4,5));//Einteilung Panel und ZwischenabstÃ¤ndes
-		rLabel.addMouseListener(bleibHier);
+		rLabel.setBounds(10,230,240,470);
+		rLabel.setLayout(new GridLayout(4,2,4,2));//Einteilung Panel und ZwischenabstÃ¤ndes
 		
 		//neu
 		for(int i = 0; i < 8; i++){  //8 als Handkartenlimit
 			rechtsHandkarten[i]= new JButton();
 			rechtsHandkarten[i].setOpaque(false);
 			rechtsHandkarten[i].setContentAreaFilled(false);
-			//rechtsHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(rechts.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH)));
 			rLabel.add(rechtsHandkarten[i]);	
 		}
 		
@@ -353,6 +319,7 @@ public class GUI extends JFrame{
 		content.add(mitte);
 		content.add(lfeld);
 		content.add(rfeld);
+
 	}
 
 	//Namen wÃ¤helen
@@ -402,26 +369,24 @@ public class GUI extends JFrame{
 				String rname = rechterplyr.getText();
 
 				if (ppbttn != null){
-				if(lname.length() != 0 && rname.length() != 0){
-					if(lname.length() < 21 && rname.length() < 21){//anfangen bei PvP
-
-						start.isEnabled();
-						auswahl.setVisible(false);
-						links.setName(lname);
-						rechts.setName(rname);
-						plyr2.setText(rechts.getName());
-						plyr1.setText(links.getName());
-						kaufPane.setVisible(true);
-						links.kaufen(anzeige, rechts);
+					if(lname.length() != 0 && rname.length() != 0){
+						if(lname.length() < 21 && rname.length() < 21){//anfangen bei PvP	
+							start.isEnabled();
+							auswahl.setVisible(false);
+							links.setName(lname);
+							rechts.setName(rname);
+							plyr2.setText(rechts.getName());
+							plyr1.setText(links.getName());
+							kaufPane.setVisible(true);
+							links.kaufen(anzeige, rechts);
+						}
+						else{//nicht anfangen
+							start.isEnabled();
+							auswahl.setVisible(true);
+						}
 					}
-					else{//nicht anfangen
-						start.isEnabled();
-						auswahl.setVisible(true);
-					}
-				}
-				if(pkbttn != null){ //anfangen bei PvE
-					if(lname.length() != 0 && lname.length() < 21){
-
+					if(pkbttn != null){ //anfangen bei PvE
+						if(lname.length() != 0 && lname.length() < 21){
 							start.isEnabled();
 							auswahl.setVisible(false);
 							links.setName(lname);
@@ -430,14 +395,12 @@ public class GUI extends JFrame{
 							plyr2.setText(rechts.getName());
 							kaufPane.setVisible(true);
 							links.kaufen(anzeige, rechts);
-					}
+						}
 						else{//nicht anfangen
 							start.isEnabled();
 							auswahl.setVisible(true);
 						}
-					
-				}
-
+					}	
 				}
 			}
 		});
