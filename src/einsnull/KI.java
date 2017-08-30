@@ -9,8 +9,8 @@ import effektkarten.GottesSegen;
 import effektkarten.Saeuregranate;
 import einheitenkarten.Bogenschuetzen;
 import einheitenkarten.Ritter;
-import einheitenkarten.SoeldnerTest;
-import einheitenkarten.SoeldnerTest2;
+import einheitenkarten.Soeldner;
+import einheitenkarten.Schildziege;
 
 public class KI extends Spieler {
 	
@@ -92,9 +92,9 @@ public class KI extends Spieler {
 		int zufZahl = zufall.nextInt(7); 	// Zahl muss manuell je nach Anzahl der existierenden Klassen in 'einheitenkarten' ge�ndert werden
 		switch (zufZahl) {					// case int AnzahlKarten: return new KartenTyp(this);
 			case 0:
-				return new SoeldnerTest(this);
+				return new Soeldner(this);
 			case 1:
-				return new SoeldnerTest2(this);
+				return new Schildziege(this);
 			case 2:
 				return new Ritter(this);
 			case 3:
