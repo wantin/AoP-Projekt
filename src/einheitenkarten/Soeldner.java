@@ -3,9 +3,9 @@ package einheitenkarten;
 import einsnull.Einheit;
 import einsnull.Spieler;
 
-public class SoeldnerTest extends Einheit{
+public class Soeldner extends Einheit{
 	
-	public SoeldnerTest(Spieler besitzer) {
+	public Soeldner(Spieler besitzer) {
 		this.besitzer= besitzer;
 		bildPfad = "bilder/einheiten/soldner.jpg";
 		int vor =1;
