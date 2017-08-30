@@ -21,6 +21,8 @@ public class Main_Revised_Fitz {
          * Objekte groß schreiben, einfache Datentypen/Methoden notieren und klein schreiben
          * Diese Methode, sowie der Prozeß sollten nicht unbedingt in der Main Klasse deklariert sein.
          * Man kann & sollte dies auslagern.
+         * 
+         * @author wantin in Spieler, oder?
          */
         public static boolean bPlayersContinue(Spieler Drawing, Spieler Pending) {
             return bPlayerContinue(Drawing) && bPlayerContinue(Pending);
@@ -33,6 +35,8 @@ public class Main_Revised_Fitz {
          * Hier wird deutlich, dass eine Auslagerung 
          * des Prozesses in eine eigene Klasse von Vorteil wäre.
          * Die Methode erhält unnötig viele Parameter, da "Spielfeld" keine Membervariable ist.
+         * 
+         * @author wantin auch das in Spieler, oder?
          */
         public static void emulateDraw(Spieler Drawing, Spieler Pending, Feld Spielfeld) {
             if(bPlayersContinue(Drawing, Pending)) {
@@ -44,22 +48,27 @@ public class Main_Revised_Fitz {
 	
 	//Zugreihenfolge: llrrrrllllrrrrllllrrrr....
 	//ziehen ist jetzt in Spieler
+	/**
+	 * @author wantin aber das in Spieler zu verschieben w�re doch etwas komisch, oder?
+	 * weil das ist ja nicht nur ein Spieler..
+	 * also nach Feld?
+	 */
 	static void runde(Spieler links, Spieler rechts, Feld spielfeld) {
                 
-                /** 
+                /** @author wantin 
+                 * mein Deutsch ist herrlich
                  * Der erste muss nicht überprüft werden, ob das spiel zuende ist, 
                  * weil das in der while schleife schon passiert ist. 
                  */
-		links.ziehen(spielfeld);
-                
-                emulateDraw(links, rechts, spielfeld);
+		links.ziehen(spielfeld);        
+        emulateDraw(links, rechts, spielfeld);
 		links.resetBereit();
 		
 		//rechts	
-                emulateDraw(rechts, links, spielfeld);
-		emulateDraw(rechts, links, spielfeld);
-                emulateDraw(rechts, links, spielfeld);
-                emulateDraw(rechts, links, spielfeld);
+        emulateDraw(rechts, links, spielfeld);
+        emulateDraw(rechts, links, spielfeld);
+        emulateDraw(rechts, links, spielfeld);
+        emulateDraw(rechts, links, spielfeld);
 		rechts.resetBereit();
 		
 		emulateDraw(links, rechts, spielfeld);
