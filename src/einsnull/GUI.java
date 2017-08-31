@@ -30,6 +30,7 @@ public class GUI extends JFrame{
 	private JLabel kaufPane;
 	private JLabel lfeld;
 	private JLabel rfeld;
+	private JLabel sieg;
 
 	private JButton abbrechenLinks = new JButton();
 	private JButton abbrechenRechts = new JButton();
@@ -56,6 +57,8 @@ public class GUI extends JFrame{
 	private JLabel text2 = new JLabel();
 	private JLabel text3 = new JLabel();
 	private JLabel text4 = new JLabel();
+	private JLabel text5 = new JLabel();
+	private JLabel text6 = new JLabel();
 
 	private JTextArea linkerplyr = new JTextArea();
 	private JTextArea rechterplyr = new JTextArea();
@@ -159,70 +162,7 @@ public class GUI extends JFrame{
 		kaufLabel.setBounds(100, 80, 1000, 30);
 		kaufPane.add(goldAnzeige);
 		kaufPane.add(kaufLabel);
-		/*vermutlich nicht mehr nötig
-		text1.setText("Willkommen zu Vona!");
-		text1.setFont(new Font(text1.getText(), Font.ITALIC, 20));
-		text1.setBounds(250,20,500,60);
-		text1.setForeground(auswahl.getForeground());
-
-		text2.setText("Wollt Ihr gegen die KI spielen , oder zu zweit an einem Computer?");
-		text2.setFont(new Font(text2.getText(), Font.PLAIN, 16));
-		text2.setForeground(auswahl.getForeground());
-		text2.setBounds(100,110,500,30);
-
-		ppbttn.setVisible(true);
-		ppbttn.setLayout(null);
-		ppbttn.setOpaque(false);
-		ppbttn.setContentAreaFilled(false);
-		ppbttn.setForeground(auswahl.getForeground());
-		ppbttn.setBounds(100,200,200,50);
-		ppbttn.setBackground(auswahl.getBackground());
-		ppbttn.addActionListener(new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-
-				if(ppbttn != null){
-					text2.setVisible(false);
-					text3.setVisible(true);
-					pkbttn.setVisible(false);
-					ppbttn.setVisible(false);
-					linkerplyr.setVisible(true);
-					rechterplyr.setVisible(true);
-					start.setVisible(true);
-					setPlayer(rechts, true);
-				}
-			}
-		});
-		*/
-
-		//Spieler auf linker Seite deshalb bttn true
-		/* vermutlich nicht mehr nötig
-		pkbttn.setVisible(true);
-		pkbttn.setLayout(null);
-		pkbttn.setOpaque(false);
-		pkbttn.setContentAreaFilled(false);
-		pkbttn.setForeground(auswahl.getForeground());
-		pkbttn.setBounds(350,200,200,50);
-		pkbttn.setBackground(auswahl.getBackground());
-		pkbttn.addActionListener(new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				if(pkbttn != null){
-					text2.setVisible(false);
-					text4.setVisible(true);
-					pkbttn.setVisible(false);
-					ppbttn.setVisible(false);
-					linkerplyr.setVisible(true);
-					rechterplyr.setVisible(false);
-					start.setVisible(true);
-					setPlayer(rechts, false);
-				}
-			}
-		});
-		*/
-
+		
 		//spieler 1 im linken Feld
 		Icon lIcon = new ImageIcon(getClass().getResource("seiten.png"));
 		lfeld = new JLabel(lIcon);
@@ -448,12 +388,44 @@ public class GUI extends JFrame{
 		rfeld.add(passenRechts);
 		rfeld.add(rLabel);
 		rfeld.add(rOrnament);
+		
+		//Sieger Bekanntgabe
+		Icon sIcon = new ImageIcon(getClass().getResource("sieg.png"));
+		sieg = new JLabel(sIcon);
+		sieg.setLayout(null);
+		sieg.setVisible(true);
+		sieg.setBounds(275,150,650,400);
+		sieg.setForeground(Color.WHITE);
+
+		text5.setBounds(125,100,400,60);
+		text5.setFont(new Font(text5.getText(), Font.BOLD, 30));
+		text5.setForeground(sieg.getForeground());
+		text5.setHorizontalAlignment(SwingConstants.CENTER);
+		text6.setBounds(50,180,600,60);
+		text6.setFont(new Font(text6.getText(), Font.BOLD, 30));
+		text6.setForeground(sieg.getForeground());
+		text6.setHorizontalAlignment(SwingConstants.CENTER);
+		sieg.add(text5);
+		sieg.add(text6);
+		
+		if(!links.getHand().isEmpty() || !links.getTruppen().isEmpty()) {
+			text5.setText(links.getName());
+			text6.setText("hat gewonnen!!!");
+		}else {
+			if(!rechts.getHand().isEmpty() || !rechts.getTruppen().isEmpty()) {
+				text5.setText(rechts.getName());
+				text6.setText("hat gewonnen!!!");
+			}else {
+				text6.setText("Die Partie endet unentschieden.");
+			}
+		}	
 
 		content.add(auswahl);
 		content.add(kaufPane);
 		content.add(mitte);
 		content.add(lfeld);
 		content.add(rfeld);
+		content.add(sieg);
 
 	}
 
