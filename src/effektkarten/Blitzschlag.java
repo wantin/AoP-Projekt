@@ -23,6 +23,10 @@ public class Blitzschlag extends Effekt {
 		Random rnjesus = new Random();
 		//Einheit nimmt 4 absoluten Schaden
 		spielbrett.getEinheit(zeile, spalte).setStaerke(spielbrett.getEinheit(zeile, spalte).getStaerke()-4);
+		if(spielbrett.getEinheit(zeile, spalte).getStaerke() < 1) {
+			spielbrett.getEinheit(zeile, spalte).getBesitzer().getTruppen().remove(spielbrett.getEinheit(zeile, spalte));
+			spielbrett.getInhalt(zeile, spalte).remove(spielbrett.getEinheit(zeile, spalte));
+		}
 		for (int i = -1; i < 2; i++) {
 			for (int j = -1; j < 2; j++) {
 				if(zeile+i>-1 && zeile+i<6 && spalte+j>-1 && spalte+j<6){
@@ -37,10 +41,6 @@ public class Blitzschlag extends Effekt {
 					}
 				}
 			}
-		}
-		if(spielbrett.getEinheit(zeile, spalte).getStaerke() < 1) {
-			spielbrett.getEinheit(zeile, spalte).getBesitzer().getTruppen().remove(spielbrett.getEinheit(zeile, spalte));
-			spielbrett.getInhalt(zeile, spalte).remove(spielbrett.getEinheit(zeile, spalte));
 		}
 	}
 }

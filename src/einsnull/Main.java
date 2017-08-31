@@ -45,7 +45,7 @@ public class Main {
 	public static void main(String[] args) {		
 
 		Spieler links = new Spieler();
-		//buttonpress kann nicht eine einfache int, die an GUI übergeben wird ändern. 
+		//buttonpress kann nicht eine einfache int, die an GUI ï¿½bergeben wird ï¿½ndern. 
 		//das ist wohl das weniger elegante workaround
 		AuswahlGUI auswahl = new AuswahlGUI(links);
 		auswahl.setVisible(true);
@@ -70,19 +70,10 @@ public class Main {
 		//GUI
 		GUI anzeige = new GUI(spielbrett, links, rechts);
 		anzeige.setVisible(true);
-		
-		//Spieler oder KI auswÃ¤hlen
-		anzeige.setup0(links);
-
-		//Diese Namen sollten nur noch auftauchen, wenn setup1 nicht geklappt hat.
-		
-		/*links.setName("linkeEule");
-		rechts.setName("rechteRatte");*/
 		anzeige.setup1(links, rechts);
 		
 		//Karten wÃ¤hlen
-		
-		//kaufen ist jetz in spieler und wird über GUI aufgerufen
+		//kaufen ist in spieler und wird Ã¼ber GUI aufgerufen
 		
 		//Karten ausspielen oder benutzen
 		while((!links.getHand().isEmpty() || !links.getTruppen().isEmpty()) 
@@ -93,16 +84,8 @@ public class Main {
 		}
 		
 		//Sieger bekanntgeben
-		//TODO: switch from console to GUI
-		if(!links.getHand().isEmpty() || !links.getTruppen().isEmpty()) {
-			System.out.println(links.getName() + " hat gewonnen.");
-		}else {
-			if(!rechts.getHand().isEmpty() || !rechts.getTruppen().isEmpty()) {
-				System.out.println(rechts.getName() + " hat gewonnen.");
-			}else {
-				System.out.println("Die Partie endet unentschieden.");
-			}
-		}
+
+		anzeige.siegerBekanntgabe(links, rechts);
 	}
 
 }

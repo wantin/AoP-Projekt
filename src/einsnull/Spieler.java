@@ -26,7 +26,6 @@ public class Spieler {
 	protected Einheit aktionAuswahlEinheit = null;
 	protected int auswahlPhase;
 	protected boolean passen = false;
-	//diese variable h�tte an vielen Stellen genutzt werden k�nnen um den Code sch�ner zu machen
 	
 	public void resetBereit() {
 		for (int i = 0; i < truppen.size(); i++) {
@@ -34,21 +33,16 @@ public class Spieler {
 		}
 	}
 	
-	//diese Funktion ist hier, damit KI sie �berschreiben kann
+	//diese Funktion ist hier, damit KI sie überschreiben kann
 	public void kaufen(GUI anzeige, Spieler anderer) {
 		anzeige.kaufen(this, anderer);
 	}
 	
-	/* TODO(?): Verschiedene Chancen bestimmte Karten zu erhalten, vielleicht irgendwas mathematisches mit 
-	 * modulo und Runden? Vielleicht Case 1/2/3 ein Kartentyp, Case 4/5/6 ein anderer?
-	 * 
-	 * Methode zur Generierung zuf�lliger Einheiten, ein Case repr�sentiert einen Kartentyp
-	 * @param Der zugeh�rige Spieler f�r den die Einheit generiert werden soll, wichtig f�r Bewegungsrichtung links/rechts
-	 * @return jeweilige zuf�llige Karte wird zur�ckgegegeben
-	 */
+
+	 //Methode zur Generierung zufälliger Einheiten, ein Case repräsentiert einen Kartentyp
 	public Karte generateEinheit() {
 		Random zufall = new Random();
-		int zufZahl = zufall.nextInt(7); 	// Zahl muss manuell je nach Anzahl der existierenden Klassen in 'einheitenkarten' ge�ndert werden
+		int zufZahl = zufall.nextInt(7); 	// Zahl muss manuell je nach Anzahl der existierenden Klassen in 'einheitenkarten' geändert werden
 		switch (zufZahl) {					// case int AnzahlKarten: return new KartenTyp(this);
 			case 0:
 				return new Soeldner(this);
@@ -88,14 +82,14 @@ public class Spieler {
 			if(passen){
 				return;
 			}
-			trupp= (aktionAuswahlHand == false) && (aktionAuswahlEinheit != null); //man hat eine Truppe ausgew�hlt
-			aus= (aktionAuswahlHand == true) && (aktionsAuswahl0 != -1); //man hat eine Handkarte zum ausspielen gew�hlt
-			ziel= (aktionsAuswahlSpalte != -1) && (aktionsAuswahlZeile != -1); //man hat ein Ziel gew�hlt
+			trupp= (aktionAuswahlHand == false) && (aktionAuswahlEinheit != null); //man hat eine Truppe ausgewählt
+			aus= (aktionAuswahlHand == true) && (aktionsAuswahl0 != -1); //man hat eine Handkarte zum ausspielen gewählt
+			ziel= (aktionsAuswahlSpalte != -1) && (aktionsAuswahlZeile != -1); //man hat ein Ziel gewählt
 			try {
 				TimeUnit.MILLISECONDS.sleep(10);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
-				//ich wei� nicht, was ich hier machen soll...
+				//ich weiß nicht, was ich hier machen soll...
 				e.printStackTrace();
 			}
 		}

@@ -34,62 +34,12 @@ static Scanner input = new Scanner(System.in);
 			else this.bewegen(spielbrett, besitzer.getAktionsAuswahlZeile(), besitzer.getAktionsAuswahlSpalte());
 			return true;
 		}
-		
-		/* alte version
-		if(position[0]==-1) { //prüft ob die Karte noch auf der Hand ist.
-			System.out.println("Diese Karte k�nnen Sie ausspielen. Geben Sie Zeile und Spalte eines freien Feldes in Ihrem Spielbereich an, auf welches Sie die Karte spielen wollen.");
-			System.out.println("Geben Sie die Zeile an, oder -1 um abzubrechen");
-			int x, y;
-			x= input.nextInt();
-			if(x == -1) return false;
-			System.out.println("Geben Sie die Spalte an");
-			y= input.nextInt();
-			this.ausspielen(spielbrett, x, y); //keine Korrektur brauch korrekte x, y
-			return true;
-		}else {
-			if(bereit==0) {
-				System.out.println("Diese Einheit können Sie nicht benutzen, da sie sich schon bewegt hat");
-				return false;
-			}
-			System.out.println("Diese Karte können Sie angreifen lassen oder bewegen.");
-			System.out.println("Mögliche Bewegungen:");
-			for (int i = 0; i < bewegung.size(); i++) {
-				//check fuer Rand Feldgröße flexibel
-				if(position[0]+bewegung.get(i)[0] < spielbrett.getAnzahlZeilen() && position[0]+bewegung.get(i)[0] >= 0 && position[1]+bewegung.get(i)[1] < spielbrett.getAnzahlSpalten() && position[1]+bewegung.get(i)[1] >= 0
-						//es darf keine Einheit auf dem Feld sein
-						&& !spielbrett.besetzt(position[0]+bewegung.get(i)[0], position[1]+bewegung.get(i)[1]) 
-						) {
-					System.out.println((position[0]+bewegung.get(i)[0]) + ", " + (position[1]+bewegung.get(i)[1]));
-				}
-			}
-			System.out.println("Mögliche Angriffe:");
-			for (int i = 0; i < angriff.size(); i++) {
-				//check fuer Rand Feldgröße flexibel
-				if(position[0]+angriff.get(i)[0] < spielbrett.getAnzahlZeilen() && position[0]+angriff.get(i)[0] >= 0 && position[1]+angriff.get(i)[1] < spielbrett.getAnzahlSpalten() && position[1]+angriff.get(i)[1] >= 0
-						//es muss eine Einheit auf dem Feld sein
-						&& spielbrett.besetzt(position[0]+angriff.get(i)[0], position[1]+angriff.get(i)[1]) 
-						) {
-					System.out.println((position[0]+bewegung.get(i)[0]) + ", " + (position[1]+bewegung.get(i)[1]));
-				}
-			}
-			System.out.println("Bitte geben Sie die Zeile und Spalte des Feldes an, auf das Sie bewegen oder angreifen lassen wollen.");
-			System.out.println("Geben Sie die Zeile an. Geben Sie -1 an, wenn Sie abbrechen wollen.");
-			int x, y;
-			x= input.nextInt();
-			if(x == -1) return false;
-			System.out.println("Geben Sie die Spalte an");
-			y= input.nextInt();
-			if(spielbrett.besetzt(x, y)) this.angreifen(spielbrett, x, y); //benötigt korrekte x, y
-			else this.bewegen(spielbrett, x, y);
-			return true;
-		}
-		*/
 	}
 	
 	public ArrayList<int[]> zeigeAngriff(Feld spielbrett){
 		ArrayList<int[]> ausgabe = new ArrayList<int[]> ();
 		for (int i = 0; i < angriff.size(); i++) {
-			//check fuer Rand Feldgröße flexibel
+			//check fuer Rand Feldgr�ße flexibel
 			if(position[0]+angriff.get(i)[0] < spielbrett.getAnzahlZeilen() && position[0]+angriff.get(i)[0] >= 0 && position[1]+angriff.get(i)[1] < spielbrett.getAnzahlSpalten() && position[1]+angriff.get(i)[1] >= 0
 					//es muss eine Einheit auf dem Feld sein
 					&& spielbrett.besetzt(position[0]+angriff.get(i)[0], position[1]+angriff.get(i)[1])
@@ -138,7 +88,7 @@ static Scanner input = new Scanner(System.in);
 		bereit--;
 	}
 	
-	//zweigeteiltes Angreifen sollte spätere Effekte einfacher machen und sieht schöner aus
+	//zweigeteiltes Angreifen sollte sp�tere Effekte einfacher machen und sieht schöner aus
 	// angegriffene Einheit: spielbrett.getInhalt(zeile, spalte).get(0)
 	public void angreifen(Feld spielbrett, int zeile, int spalte) {
 		spielbrett.getInhalt(zeile, spalte).get(0).verteidigen(spielbrett, this);
@@ -146,14 +96,29 @@ static Scanner input = new Scanner(System.in);
 	}
 	
 	public void verteidigen(Feld spielbrett, Einheit angreifer) { //wird von der verteidigenden Einheit aus aufgerufen
-		if(angreifer.getStaerke()-ruestung < 1) { //check auf Schadenshöhe
+		if(angreifer.getStaerke()-ruestung < 1) { //check auf Schadensh�he
 			staerke--; //Mindestschaden
-		}else { //regulärer Schaden
+		}else { //regul�rer Schaden
 			staerke-= angreifer.getStaerke()-ruestung;
 		}
 		if(staerke<1) {
 			besitzer.getTruppen().remove(this);
 			spielbrett.getInhalt(position[0], position[1]).remove(this);
+		}
+	}
+	
+	//Kontrollausgaben; genutzt in KI
+	public void printBewegungen(Feld spielbrett) {
+		ArrayList<int[]> moeglicheBewegungen = this.zeigeBewegung(spielbrett);
+		for (int i = 0; i < moeglicheBewegungen.size(); i++) {
+			System.out.print("(" + moeglicheBewegungen.get(i)[0] + "/" + moeglicheBewegungen.get(i)[1] + ") ");
+		}
+	}
+	
+	public void printAngriffe(Feld spielbrett) {
+		ArrayList<int[]> moeglicheAngriffe = this.zeigeAngriff(spielbrett);
+		for (int i = 0; i < moeglicheAngriffe.size(); i++) {
+			System.out.print("(" + moeglicheAngriffe.get(i)[0] + "/" + moeglicheAngriffe.get(i)[1] + ") ");
 		}
 	}
 	

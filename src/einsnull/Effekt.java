@@ -18,7 +18,7 @@ public class Effekt extends Karte {
 		return true;
 	}
 	
-	//diese Funktion sollte im allgemeinen von den einzelnen Effekten Ã¼berschrieben werden.
+	//diese Funktion sollte im allgemeinen von den einzelnen Effekten überschrieben werden.
 	public void ausspielen(int x, int y, Feld spielbrett) {
 		System.out.println(besitzer.getName() + " hat " + name + " ausgespielt.");
 	}

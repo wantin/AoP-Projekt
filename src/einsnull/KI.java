@@ -2,25 +2,13 @@ package einsnull;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
-import effektkarten.Blitzschlag;
-import effektkarten.GottesSegen;
-import effektkarten.Saeuregranate;
-import einheitenkarten.Bogenschuetzen;
-import einheitenkarten.Ritter;
-import einheitenkarten.Soeldner;
-import einheitenkarten.Schildziege;
+import einheitenkarten.*;
 
 public class KI extends Spieler {
 	
-	private String name = "dösender Doktor";
-	private ArrayList<Karte> hand = new ArrayList<Karte>();
-	private ArrayList<Einheit> truppen = new ArrayList<Einheit>();
-	private int gold = 1000;
-	private String seite;
-	
-	static Scanner input = new Scanner(System.in);
+	String name = "Dösender Doktor";
 	
 	public void resetBereit() {
 		for (int i = 0; i < truppen.size(); i++) {
@@ -28,56 +16,24 @@ public class KI extends Spieler {
 		}
 	}
 	
-	//bewegt aus Main
-	public void kaufen() {
-		Karte[] auswahl = new Karte[3];
+	@Override
+	public void kaufen(GUI anzeige, Spieler anderer) {
 		int maxPreis = 50;
 		int maxHand = 8;
+		System.out.println("KI Kaufprozess beginnen. KI hat " + gold + " Gold.");
 		
-		System.out.println("Kaufprozess beginnen. Sie haben " + gold + " Gold.");
-		System.out.println("Suchen Sie sich eine der folgenden Karten aus:");
-		
-		loop:
-		while(gold >= maxPreis) {
-			for(int i = 0; i <= 2; i++) {
-				auswahl[i] = generateEinheit();
-				while (gold < auswahl[i].getPreis() && gold >= maxPreis) {
-					auswahl[i] = generateEinheit(); // System.out.println(i + "Nicht genug Gold. Generiere neue Einheit."); // Nur zum Testen.
-				}
-				System.out.println("["+i+"] " + auswahl[i].getName() + "("+auswahl[i].getPreis()+"g)");
+		while(gold >= maxPreis && hand.size() < maxHand) {
+			Einheit auswahl = generateEinheit();
+			while (gold < auswahl.getPreis() && gold >= maxPreis) {
+				auswahl = generateEinheit(); // System.out.println(i + "Nicht genug Gold. Generiere neue Einheit."); // Nur zum Testen.
 			}
-			int key;
-			do{
-				key = input.nextInt();
-				switch (key) {
-					case 0: 
-						hand.add(auswahl[0]);
-						gold -= auswahl[0].getPreis();
-						System.out.println(auswahl[key].getName() + " zur Hand hinzugefï¿½gt.");
-						System.out.println("Sie haben nun " + gold + " Gold.");
-						break;
-					case 1: 
-						hand.add(auswahl[1]);
-						gold -= auswahl[1].getPreis();
-						System.out.println(auswahl[key].getName() + " zur Hand hinzugefï¿½gt.");
-						System.out.println("Sie haben nun " + gold + " Gold.");
-						break;
-					case 2: 
-						hand.add(auswahl[2]);
-						gold -= auswahl[2].getPreis();
-						System.out.println(auswahl[key].getName() + " zur Hand hinzugefï¿½gt.");
-						System.out.println("Sie haben nun " + gold + " Gold.");
-						break;
-					default: 
-						System.out.println("Bitte korrekte Auswahl treffen.");
-					}
-				System.out.println("Sie haben nun " + hand.size() + " Karten auf der Hand");
-				if (hand.size() >= maxHand) {
-					System.out.println("Maximale Handkartenanzahl von '" + maxHand + "' erreicht.");
-					break loop;
-				}
-				}while (key < 0 || key > 2);
-			}
+			hand.add(auswahl);
+			this.setGold(this.getGold()-auswahl.getPreis());
+			System.out.println("Es wurde " + auswahl.getName() + " gekauft. Sie haben nun " + hand.size() + " Karten auf der Hand und " + this.getGold() + "g");
+			anzeige.aktualisierenHand(this);
+		}
+		//anzeige.aktualisierenHand(this);
+		anzeige.kaufenVerstecken();
 	}
 	
 	/* TODO(?): Verschiedene Chancen bestimmte Karten zu erhalten, vielleicht irgendwas mathematisches mit 
@@ -87,9 +43,9 @@ public class KI extends Spieler {
 	 * @param Der zugehï¿½rige Spieler fï¿½r den die Einheit generiert werden soll, wichtig fï¿½r Bewegungsrichtung links/rechts
 	 * @return jeweilige zufï¿½llige Karte wird zurï¿½ckgegegeben
 	 */
-	public Karte generateEinheit() {
+	public Einheit generateEinheit() {
 		Random zufall = new Random();
-		int zufZahl = zufall.nextInt(7); 	// Zahl muss manuell je nach Anzahl der existierenden Klassen in 'einheitenkarten' geï¿½ndert werden
+		int zufZahl = zufall.nextInt(4); 	// Zahl muss manuell je nach Anzahl der existierenden Klassen in 'einheitenkarten' geï¿½ndert werden
 		switch (zufZahl) {					// case int AnzahlKarten: return new KartenTyp(this);
 			case 0:
 				return new Soeldner(this);
@@ -99,12 +55,6 @@ public class KI extends Spieler {
 				return new Ritter(this);
 			case 3:
 				return new Bogenschuetzen(this);
-			case 4:
-				return new Blitzschlag(this);
-			case 5:
-				return new GottesSegen(this);
-			case 6:
-				return new Saeuregranate(this);
 			default:
 				return null; //sollte nicht vorkommen
 		}
@@ -112,35 +62,98 @@ public class KI extends Spieler {
 	
 	//eigentliches Spielen
 	//bewegt aus main
-	void ziehen(Feld spielbrett){
-		//auswÃ¤hlen
-		//TODO: switch from console to GUI
+	@Override
+	void ziehen(Feld spielbrett, GUI anzeige){
+		//reset
+		aktionsAuswahlZeile= -1;
+		aktionsAuswahlSpalte= -1;
 		
-		System.out.println("Hand von " + this.getName());
-		this.printHand();
-		System.out.println("Truppen von " + this.getName());
-		this.printTruppen();
-		System.out.println("Spielfeld:");
-		spielbrett.print();
 		int auswahl = 0;
-		boolean stop= false; //wird auf true gesetzt, wenn eine Aktion ausgefÃ¼hrt wurde.
+		Random zufall = new Random();
+		boolean bereiteTruppen = false;
+		boolean gespielt = false;
 		
-		do {
-			System.out.println("Wollen Sie eine Handkarte ausspielen(1), oder eine Einheit bewegen/mit ihr angreifen(2)?");
-			auswahl= input.nextInt();
-			if(auswahl == 1){
-				System.out.println("Welche Handkarte wollen Sie spielen? [0, " + (this.getHand().size()-1 ) + "]" );
-				auswahl= input.nextInt();
-				stop= this.getHand().get(auswahl).nutzen(spielbrett);
-			}else {
-				System.out.println("Welche Einheit wollen Sie bewegen? [0, " + (this.getTruppen().size()-1 ) + "]" );
-				auswahl= input.nextInt();
-				stop= this.getTruppen().get(auswahl).nutzen(spielbrett);
+		if (!hand.isEmpty()) { //wenn Karten auf Hand, spiele sie
+			do {
+				aktionsAuswahlZeile = zufall.nextInt(5);
+				aktionsAuswahlSpalte = zufall.nextInt(2)+4;
+				auswahl = zufall.nextInt(this.getHand().size());
+			}while(spielbrett.besetzt(this.getAktionsAuswahlZeile(), this.getAktionsAuswahlSpalte()));
+			anzeige.optionenZeigenSpieler(this);
+			try {
+				TimeUnit.MILLISECONDS.sleep(1421); //deal with it
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
-		}while(!stop);
+			this.hand.get(auswahl).nutzen(spielbrett);
+			System.out.println("Karten auf der Hand vorhanden. Eine Karte wird gespielt.");
+			gespielt = true;
+		} else { //ansonsten überprüfe ob bereite Truppen auf Feld
+		//	System.out.println("Überprüfe ob bereite Truppen auf Feld");
+			loop:
+			for (int i = 0; i < this.getTruppen().size(); i++) { 
+				if (truppen.get(i).getBereit() == 1) {
+					bereiteTruppen = true;
+					//System.out.println("Bereite Truppen auf Feld.");
+					break loop;
+				}
+			}
+		}
+		
+		if (bereiteTruppen == true && gespielt == false) { //wenn bereite Truppen auf Feld, benutze diese
+			loop:
+			//überprüfe ob angreifbare Einheit auf dem Feld, wenn ja greife an
+			for (int i = 0; i < this.getTruppen().size(); i++) { 
+				if (truppen.get(i).zeigeAngriff(spielbrett).size() > 0 && truppen.get(i).getBereit() == 1) { //überprüfe eine Einheit ob angreifbare Einheit in Reichweite hat
+					System.out.println(truppen.get(i).getName() + " kann angreifen.");
+					System.out.println(truppen.get(i).getName() + " Bereitschaft: " + truppen.get(i).getBereit());
+					int zufZahl = zufall.nextInt(truppen.get(i).zeigeAngriff(spielbrett).size()); 
+					ArrayList<int[]> moeglicheAngriffe = truppen.get(i).zeigeAngriff(spielbrett);
+					System.out.println(truppen.get(i).zeigeAngriff(spielbrett).size() + " mögliche Angriffe: ");truppen.get(i).printAngriffe(spielbrett); 
+					aktionsAuswahlZeile = moeglicheAngriffe.get(zufZahl)[0]; 
+					aktionsAuswahlSpalte = moeglicheAngriffe.get(zufZahl)[1];
+					System.out.println(truppen.get(i).getName() + " Angriff auf Zeile " + aktionsAuswahlZeile + " und Spalte " + aktionsAuswahlSpalte);
+					anzeige.optionenZeigenEinheit(truppen.get(i), spielbrett);
+					try {
+						TimeUnit.MILLISECONDS.sleep(1421); //deal with it
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					truppen.get(i).nutzen(spielbrett);
+					gespielt = true;
+					break loop;
+				} else System.out.println(truppen.get(i).getName() + " kann nicht angreifen. Probiere nächste Einheit.");
+			} System.out.println("________________________________________________________________________");
+		}
+		if (bereiteTruppen == true && gespielt == false) {
+			//wenn keine angreifbaren Einheiten, bewege Einheit
+			System.out.println("Keine angreifbaren Einheiten auf dem Feld. Bewege eine Einheit.");
+			do {
+				auswahl = zufall.nextInt(this.getTruppen().size());
+			} while (truppen.get(auswahl).getBereit() == 0);
+			System.out.print(truppen.get(auswahl).getName() + " :");truppen.get(auswahl).printBewegungen(spielbrett);	System.out.println();System.out.println("________________________________________________________________________");
+			ArrayList<int[]> moeglicheBewegungen = truppen.get(auswahl).zeigeBewegung(spielbrett);
+			int zufZahl = 0;
+			int abb = 0;
+			do {
+				abb++;
+				zufZahl = zufall.nextInt(truppen.get(auswahl).zeigeBewegung(spielbrett).size());
+				aktionsAuswahlZeile = moeglicheBewegungen.get(zufZahl)[0];
+				aktionsAuswahlSpalte = moeglicheBewegungen.get(zufZahl)[1];
+				System.out.println("Versuche Bewegung: (" + aktionsAuswahlZeile + "/" + aktionsAuswahlSpalte + ")");
+			} while (moeglicheBewegungen.get(zufZahl)[1] > truppen.get(auswahl).getPosition()[1] && abb < 30);
+			anzeige.optionenZeigenEinheit(truppen.get(auswahl), spielbrett);
+			try {
+				TimeUnit.MILLISECONDS.sleep(1421); //deal with it
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			this.truppen.get(auswahl).nutzen(spielbrett);
+			gespielt = true;
+		}
+		anzeige.aktualisierenFeld(spielbrett);
+		anzeige.aktualisierenHand(this);
 	}
-	
-	//Kontrollausgabemethoden
 	
 	public void printTruppen() {
 		for (int i = 0; i < truppen.size(); i++) {
@@ -181,11 +194,11 @@ public class KI extends Spieler {
 		this.name = name;
 	}
 
-	public ArrayList<Karte> getHand() {
+	public ArrayList<Karte> getHandKI() {
 		return hand;
 	}
 
-	public void setHand(ArrayList<Karte> hand) {
+	public void setHandKI(ArrayList<Karte> hand) {
 		this.hand = hand;
 	}
 

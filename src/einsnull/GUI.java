@@ -5,8 +5,6 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -53,7 +51,6 @@ public class GUI extends JFrame{
 	private JLabel plyr2 = new JLabel ("Spieler 2");
 	private JLabel plyr1k = new JLabel ("Handkarten");
 	private JLabel plyr2k = new JLabel ("Handkarten");
-	private JLabel text1 = new JLabel();
 	private JLabel text2 = new JLabel();
 	private JLabel text3 = new JLabel();
 	private JLabel text4 = new JLabel();
@@ -467,24 +464,13 @@ public class GUI extends JFrame{
 		sieg.add(text5);
 		sieg.add(text6);
 		
-		if(!links.getHand().isEmpty() || !links.getTruppen().isEmpty()) {
-			text5.setText(links.getName());
-			text6.setText("hat gewonnen!!!");
-		}else {
-			if(!rechts.getHand().isEmpty() || !rechts.getTruppen().isEmpty()) {
-				text5.setText(rechts.getName());
-				text6.setText("hat gewonnen!!!");
-			}else {
-				text6.setText("Die Partie endet unentschieden.");
-			}
-		}	
-
+		content.add(sieg);
 		content.add(auswahl);
 		content.add(kaufPane);
 		content.add(mitte);
 		content.add(lfeld);
 		content.add(rfeld);
-		content.add(sieg);
+	
 
 	}
 
@@ -559,7 +545,6 @@ public class GUI extends JFrame{
 						start.isEnabled();
 						auswahl.setVisible(false);
 						links.setName(lname);
-						rechts.setName(rname);
 						plyr1.setText(links.getName());
 						plyr2.setText(rechts.getName());
 						kaufPane.setVisible(true);
@@ -580,6 +565,21 @@ public class GUI extends JFrame{
 		auswahl.add(ppbttn);
 		auswahl.add(pkbttn);
 		auswahl.add(start);
+	}
+	
+	public void siegerBekanntgabe(Spieler links, Spieler rechts){
+		if(!links.getHand().isEmpty() || !links.getTruppen().isEmpty()) {
+			text5.setText(links.getName());
+			text6.setText("hat gewonnen!!!");
+		}else {
+			if(!rechts.getHand().isEmpty() || !rechts.getTruppen().isEmpty()) {
+				text5.setText(rechts.getName());
+				text6.setText("hat gewonnen!!!");
+			}else {
+				text6.setText("Die Partie endet unentschieden.");
+			}
+		}	
+		sieg.setVisible(true);
 	}
 	
 	//Hilfsfunktion, die alle Buttons disabled
@@ -754,5 +754,10 @@ public class GUI extends JFrame{
 		
 		System.out.println(kaufender.getName() + " hat nun folgende Karten:");kaufender.printHand();
 	
+	}
+	
+	
+	public void kaufenVerstecken(){
+		kaufPane.setVisible(false);
 	}
 }
