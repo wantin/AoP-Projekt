@@ -43,7 +43,9 @@ public class Ritter extends Einheit {
 		for (int i = -1; i < 2; i++) {
 			for (int j = -1; j < 2; j++) {
 				if(zeile+i>-1 && zeile+i<6 && spalte+j>-1 && spalte+j<6){
-					if(!spielbrett.besetzt(zeile+i, spalte+j)){
+					if(!spielbrett.besetzt(zeile+i, spalte+j)
+							|| (position[0] == zeile+i && position[1] == spalte+j) // das Feld darf von dem Ritter selbst belegt sein	
+					){
 						int temp = Math.abs(position[0]-(zeile+i)) + Math.abs(position[1]-(spalte+j));
 						if(temp<min){
 							min = temp;

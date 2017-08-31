@@ -36,6 +36,8 @@ public class AuswahlGUI extends JFrame{
 	
 	//Konstruktor
 	public AuswahlGUI(Spieler links){
+		
+		this.setLocationRelativeTo(null);
 
 		AuswahlGUI diese = this; //benötigt für actionlistener
 		//Spielart und Namen auswahl
@@ -59,7 +61,7 @@ public class AuswahlGUI extends JFrame{
 		auswahl.add(ppbttn);
 		auswahl.add(pkbttn);
 
-		text1.setText("Willkommen zu Vona!");
+		text1.setText("Wir heißen eure Majästäten willkommen zu Eldotin.");
 		text1.setFont(new Font(text1.getText(), Font.ITALIC, 20));
 		text1.setBounds(250,20,500,60);
 		text1.setForeground(auswahl.getForeground());

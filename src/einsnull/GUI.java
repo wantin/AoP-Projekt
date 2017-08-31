@@ -134,10 +134,11 @@ public class GUI extends JFrame{
 	//Konstruktor
 	public GUI(Feld spielbrett, Spieler links, Spieler rechts){
 
-		this.setTitle("Vona");
+		this.setTitle("Eldotin");
 		this.setSize(1200, 730);
 		this.setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);	
+		this.setLocationRelativeTo(null);
 
 		//Hintergrund;
 		content = (JPanel) this.getContentPane();
@@ -663,7 +664,7 @@ public class GUI extends JFrame{
 		if(aktive.getBesitzer().getSeite() == "links"){
 			abbrechenLinks.setEnabled(true);
 		}else{
-			abbrechenRechts.setEnabled(false);
+			abbrechenRechts.setEnabled(true);
 		}
 	}
 	
