@@ -44,6 +44,7 @@ public class GUI extends JFrame{
 	private JButton start = new JButton("START");
 
 	private JLabel[] preisLabel = new JLabel[3];
+	private JLabel[][] ruestungKarte = new JLabel[6][6];
 	private JLabel[][] staerkeKarte = new JLabel[6][6];
 	private JLabel goldAnzeige = new JLabel();
 	private JLabel kaufLabel = new JLabel("Klicken Sie auf eine der drei Karten um sie zu kaufen.");
@@ -66,9 +67,9 @@ public class GUI extends JFrame{
 	public void aktualisierenHand(Spieler aktiver){
 		for (int i = 0; i < aktiver.getHand().size(); i++) {
 			if(aktiver.getSeite()=="links"){
-				linksHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(aktiver.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH)));
+				linksHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(aktiver.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(114, 114, java.awt.Image.SCALE_SMOOTH)));
 			}else{
-				rechtsHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(aktiver.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH)));
+				rechtsHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(aktiver.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(114, 114, java.awt.Image.SCALE_SMOOTH)));
 			}
 		}
 		for (int i = aktiver.getHand().size(); i < 8; i++) {
@@ -84,7 +85,7 @@ public class GUI extends JFrame{
 		
 		//Handkarten des linken Spielers aktualisiert darstellen
 		for(int i = 0; i < links.getHand().size(); i++){ 
-			linksHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(links.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH)));
+			linksHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(links.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(114, 114, java.awt.Image.SCALE_SMOOTH)));
 		}
 		//leere Felder leeren
 		for (int i = links.getHand().size(); i < 8; i++) {
@@ -92,7 +93,7 @@ public class GUI extends JFrame{
 		}
 		//Handkarten des rechten Spielers aktualisiert darstellen
 		for(int i = 0; i < rechts.getHand().size(); i++){ 
-			rechtsHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(rechts.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH)));
+			rechtsHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(rechts.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(114, 114, java.awt.Image.SCALE_SMOOTH)));
 		}
 		for (int i = rechts.getHand().size(); i < 8; i++) {
 			rechtsHandkarten[i].setIcon(null);
@@ -103,10 +104,14 @@ public class GUI extends JFrame{
 		for (int i = 0; i < feldButtons.length; i++) {
 			for (int j = 0; j < feldButtons.length; j++) {
 				if(spielbrett.besetzt(i, j)){
+					staerkeKarte[i][j].setText(Integer.toString(spielbrett.getEinheit(i, j).getStaerke()));
+					ruestungKarte[i][j].setText(Integer.toString(spielbrett.getEinheit(i, j).getRuestung()));
 					String pfad = spielbrett.getEinheit(i, j).getBildPfad();
-					feldButtons[i][j].setIcon(new ImageIcon(((new ImageIcon(pfad)).getImage()).getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH)));
+					feldButtons[i][j].setIcon(new ImageIcon(((new ImageIcon(pfad)).getImage()).getScaledInstance(114, 114, java.awt.Image.SCALE_SMOOTH)));
 				}else{
 					feldButtons[i][j].setIcon(null);
+					staerkeKarte[i][j].setText("");
+					ruestungKarte[i][j].setText("");
 				}
 			}
 		}
@@ -137,7 +142,6 @@ public class GUI extends JFrame{
 		kaufPane = new JLabel(aIcon);
 		kaufPane.setLayout(null);
 		kaufPane.setForeground(Color.white);
-		kaufPane.setBackground(new Color(150,100,50));
 		kaufPane.setBounds(275,150,650,400);
 		kaufPane.setVisible(false);
 		
@@ -155,7 +159,7 @@ public class GUI extends JFrame{
 		kaufLabel.setBounds(100, 80, 1000, 30);
 		kaufPane.add(goldAnzeige);
 		kaufPane.add(kaufLabel);
-
+		/*vermutlich nicht mehr n�tig
 		text1.setText("Willkommen zu Vona!");
 		text1.setFont(new Font(text1.getText(), Font.ITALIC, 20));
 		text1.setBounds(250,20,500,60);
@@ -190,8 +194,10 @@ public class GUI extends JFrame{
 				}
 			}
 		});
+		*/
 
 		//Spieler auf linker Seite deshalb bttn true
+		/* vermutlich nicht mehr n�tig
 		pkbttn.setVisible(true);
 		pkbttn.setLayout(null);
 		pkbttn.setOpaque(false);
@@ -215,10 +221,11 @@ public class GUI extends JFrame{
 				}
 			}
 		});
+		*/
 
 		//spieler 1 im linken Feld
 		Icon lIcon = new ImageIcon(getClass().getResource("seiten.png"));
-		JLabel lfeld = new JLabel(lIcon);
+		lfeld = new JLabel(lIcon);
 		lfeld.setBounds(0,0,250,730);		
 		lfeld.setLayout(null);
 		lfeld.setForeground(Color.white);
@@ -234,8 +241,8 @@ public class GUI extends JFrame{
 		//Kartenfeld linkes Feld
 		JLabel lLabel = new JLabel();
 		lLabel.setLayout(null);
-		lLabel.setBounds(0,230,240,470);
-		lLabel.setLayout(new GridLayout(4,2,4,2));//Einteilung Panel und Zwischenabstände	
+		lLabel.setBounds(0,235,232,465);
+		lLabel.setLayout(new GridLayout(4,2,4,4));//Einteilung Panel und Zwischenabstände	
 
 		for(int i = 0; i < 8; i++){  //8 als Handkartenlimit
 		    linksHandkarten[i]= new JButton();
@@ -310,7 +317,7 @@ public class GUI extends JFrame{
 		JLabel mLabel = new JLabel();
 		mLabel.setLayout(null);
 		mLabel.setBounds(0,0,700,700);
-		mLabel.setLayout(new GridLayout(6,6,4,2));
+		mLabel.setLayout(new GridLayout(6,6,4,4));
 		feldButtons = new JButton[m][n];
 		
 		for(int c = 0; c < m; c++){
@@ -318,14 +325,21 @@ public class GUI extends JFrame{
 				
 				staerkeKarte[c][d] = new JLabel();
 				staerkeKarte[c][d].setLayout(null);
-				staerkeKarte[c][d].setForeground(new Color(0,55,55));
-				staerkeKarte[c][d].setBounds(50,0,10,10);
-				staerkeKarte[c][d].setText("L�ckenf�ller");
+				staerkeKarte[c][d].setForeground(new Color(50,0,0));
+				staerkeKarte[c][d].setBounds(90,90,14,14);
+				staerkeKarte[c][d].setText("");
+				
+				ruestungKarte[c][d] = new JLabel();
+				ruestungKarte[c][d].setLayout(null);
+				ruestungKarte[c][d].setForeground(new Color(0,50,0));
+				ruestungKarte[c][d].setBounds(24,90,14,14);
+				ruestungKarte[c][d].setText("");
 
 				feldButtons[c][d] = new JButton();
 				feldButtons[c][d].setLayout(null);
 				feldButtons[c][d].setOpaque(false);
 				feldButtons[c][d].setContentAreaFilled(false);
+				feldButtons[c][d].add(ruestungKarte[c][d]);
 				feldButtons[c][d].add(staerkeKarte[c][d]);
 				final int zeile = c;
 				final int spalte = d;
@@ -340,6 +354,8 @@ public class GUI extends JFrame{
 							optionenZeigenEinheit(spielbrett.getEinheit(zeile, spalte), spielbrett);
 							links.setAuswahlPhase(1);
 							rechts.setAuswahlPhase(1);
+							links.setAktionAuswahlHand(false);
+							rechts.setAktionAuswahlHand(false);
 						}else{ //Ziel ausw�hlen
 							links.setAktionsAuswahlZeile(zeile);
 							rechts.setAktionsAuswahlZeile(zeile);
@@ -355,7 +371,7 @@ public class GUI extends JFrame{
 
 		//spieler 2 im rechten Feld
 		Icon rIcon = new ImageIcon(getClass().getResource("seiten.png"));
-		JLabel rfeld = new JLabel(rIcon);
+		rfeld = new JLabel(rIcon);
 		rfeld.setLayout(null);
 		rfeld.setForeground(Color.WHITE);
 		rfeld.setBounds(950, 0, 250, 730);
@@ -398,8 +414,8 @@ public class GUI extends JFrame{
 		//Kartenfeld rechtes Feld
 		JLabel rLabel = new JLabel();
 		rLabel.setLayout(null);
-		rLabel.setBounds(10,230,240,470);
-		rLabel.setLayout(new GridLayout(4,2,4,2));//Einteilung Panel und Zwischenabständes
+		rLabel.setBounds(18,235,232,465);
+		rLabel.setLayout(new GridLayout(4,2,4,4));//Einteilung Panel und Zwischenabständes
 		
 		//neu
 		for(int i = 0; i < 8; i++){  //8 als Handkartenlimit
@@ -443,34 +459,37 @@ public class GUI extends JFrame{
 
 	//Namen wÃ¤helen
 	public void setup1(Spieler links, Spieler rechts){
+		
+		if(rechts.getClass()==KI.class){
+			text3.setVisible(false);
+			rechterplyr.setVisible(false);
+			
+		}else{
+			text4.setVisible(false);
+		}
 
-		text3.setVisible(false);
 		text3.setText("Gebt Eure Titel ein (Max. 20 Zeichen):");
 		text3.setFont(text2.getFont());
 		text3.setBounds(100,100,270,20);
 		text3.setForeground(auswahl.getForeground());
 
-		linkerplyr.setVisible(false);
 		linkerplyr.setFont(new Font("", Font.ITALIC, 18));
 		linkerplyr.setBounds(100,200,200,30);
 		linkerplyr.setForeground(Color.white);
 		linkerplyr.setOpaque(false);
 		linkerplyr.setBorder(BorderFactory.createLineBorder(Color.darkGray));
 
-		rechterplyr.setVisible(false);
 		rechterplyr.setFont(linkerplyr.getFont());
 		rechterplyr.setBounds(370,200,200,30);
 		rechterplyr.setForeground(Color.black);
 		rechterplyr.setOpaque(false);
 		rechterplyr.setBorder(BorderFactory.createLineBorder(Color.lightGray));
 
-		text4.setVisible(false);
 		text4.setText("Gebt Euren Titel ein(Max. 20 Zeichen):");
 		text4.setFont(text2.getFont());
 		text4.setBounds(100,100,270,40);
 		text4.setForeground(auswahl.getForeground());
 
-		start.setVisible(false);
 		start.setOpaque(false);
 		start.setContentAreaFilled(false);
 		start.setBounds(320,300,160,60);
@@ -487,7 +506,7 @@ public class GUI extends JFrame{
 				String lname = linkerplyr.getText();
 				String rname = rechterplyr.getText();
 
-				if (ppbttn != null){
+				if (rechts.getClass()!=KI.class){
 					if(lname.length() != 0 && rname.length() != 0){
 						if(lname.length() < 21 && rname.length() < 21){//anfangen bei PvP	
 							start.isEnabled();
@@ -504,28 +523,25 @@ public class GUI extends JFrame{
 							auswahl.setVisible(true);
 						}
 					}
-					if(pkbttn != null){ //anfangen bei PvE
-						if(lname.length() != 0 && lname.length() < 21){
-							start.isEnabled();
-							auswahl.setVisible(false);
-							links.setName(lname);
-							rechts.setName(rname);
-							plyr1.setText(links.getName());
-							plyr2.setText(rechts.getName());
-							kaufPane.setVisible(true);
-							links.kaufen(anzeige, rechts);
-						}
-						else{//nicht anfangen
-							start.isEnabled();
-							auswahl.setVisible(true);
-						}
-					}	
+				}else{ //anfangen bei PvE
+					if(lname.length() != 0 && lname.length() < 21){
+						start.isEnabled();
+						auswahl.setVisible(false);
+						links.setName(lname);
+						rechts.setName(rname);
+						plyr1.setText(links.getName());
+						plyr2.setText(rechts.getName());
+						kaufPane.setVisible(true);
+						links.kaufen(anzeige, rechts);
+					}
+					else{//nicht anfangen
+						start.isEnabled();
+						auswahl.setVisible(true);
+					}
 				}
 			}
 		});
 
-		auswahl.add(text1);
-		auswahl.add(text2);
 		auswahl.add(text3);
 		auswahl.add(text4);
 		auswahl.add(linkerplyr);
@@ -659,7 +675,7 @@ public class GUI extends JFrame{
 			while (kaufender.getGold() < angebot[i].getPreis() && kaufender.getGold() >= minPreis) {
 				angebot[i] = kaufender.generateEinheit(); System.out.println(i + "Nicht genug Gold. Generiere neue Einheit."); // Nur zum Testen.
 			}
-			kaufButtons[i].setIcon(new ImageIcon(((new ImageIcon(angebot[i].getBildPfad())).getImage()).getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH)));
+			kaufButtons[i].setIcon(new ImageIcon(((new ImageIcon(angebot[i].getBildPfad())).getImage()).getScaledInstance(160, 160, java.awt.Image.SCALE_SMOOTH)));
 			preisLabel[i].setText(Integer.toString(angebot[i].getPreis()));
 			
 			final int innerI = i;

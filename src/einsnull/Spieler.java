@@ -20,7 +20,7 @@ public class Spieler {
 	private ArrayList<Einheit> truppen = new ArrayList<Einheit>();
 	private int gold = 1000;
 	private String seite;
-	private int aktionsAuswahl0;
+	private int aktionsAuswahl0 = -1;
 	private int aktionsAuswahlZeile= -1;
 	private int aktionsAuswahlSpalte= -1;
 	private boolean aktionAuswahlHand;

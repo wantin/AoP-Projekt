@@ -2,6 +2,7 @@ package einsnull;
 
 
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class Main {
 	
@@ -43,9 +44,28 @@ public class Main {
 
 	public static void main(String[] args) {		
 
+		Spieler links = new Spieler();
+		//buttonpress kann nicht eine einfache int, die an GUI übergeben wird ändern. 
+		//das ist wohl das weniger elegante workaround
+		AuswahlGUI auswahl = new AuswahlGUI(links);
+		auswahl.setVisible(true);
+		while(links.getAktionsAuswahl0()==-1){
+			try {
+				TimeUnit.MILLISECONDS.sleep(10);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		Spieler rechts;
 		Feld spielbrett = new Feld(6,6);
-		Spieler links = new Spieler();links.setSeite("links");
-		Spieler rechts = new Spieler();
+		links.setSeite("links");
+		if(links.getAktionsAuswahl0()==1){
+			rechts = new KI();
+		}else{
+			rechts = new Spieler();
+		}
+		rechts.setSeite("rechts");
 				
 		//GUI
 		GUI anzeige = new GUI(spielbrett, links, rechts);
