@@ -35,5 +35,9 @@ public class Blitzschlag extends Effekt {
 				}
 			}
 		}
+		if(spielbrett.getEinheit(zeile, spalte).getStaerke() < 1) {
+			spielbrett.getEinheit(zeile, spalte).getBesitzer().getTruppen().remove(spielbrett.getEinheit(zeile, spalte));
+			spielbrett.getInhalt(zeile, spalte).remove(spielbrett.getEinheit(zeile, spalte));
+		}
 	}
 }

@@ -86,7 +86,7 @@ static Scanner input = new Scanner(System.in);
 		*/
 	}
 	
-	public ArrayList<int[]> zeigeBewegung(Feld spielbrett){
+	public ArrayList<int[]> zeigeAngriff(Feld spielbrett){
 		ArrayList<int[]> ausgabe = new ArrayList<int[]> ();
 		for (int i = 0; i < angriff.size(); i++) {
 			//check fuer Rand Feldgröße flexibel
@@ -105,7 +105,7 @@ static Scanner input = new Scanner(System.in);
 		return ausgabe;
 	}
 	
-	public ArrayList<int[]> zeigeAngriff(Feld spielbrett){
+	public ArrayList<int[]> zeigeBewegung(Feld spielbrett){
 		ArrayList<int[]> ausgabe = new ArrayList<int[]> ();
 		for (int i = 0; i < bewegung.size(); i++) {
 			//check fuer Rand Feldgröße flexibel

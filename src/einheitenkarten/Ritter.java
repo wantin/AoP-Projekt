@@ -33,26 +33,36 @@ public class Ritter extends Einheit {
 	@Override
 	public void angreifen(Feld spielbrett, int zeile, int spalte) {
 		
-		System.out.println("Mögliche Felder um anzustürmen:");
-		for (int i = 0; i < bewegung.size(); i++) {
-			//check fuer Rand Feldgröße flexibel
-			if(position[0]+bewegung.get(i)[0] < spielbrett.getAnzahlZeilen() && position[0]+bewegung.get(i)[0] >= 0 && position[1]+bewegung.get(i)[1] < spielbrett.getAnzahlSpalten() && position[1]+bewegung.get(i)[1] >= 0
-					//es darf keine Einheit auf dem Feld sein
-					&& !spielbrett.besetzt(position[0]+bewegung.get(i)[0], position[1]+bewegung.get(i)[1])
-					//muss angrenzend an das angegriffene Feld sein.
-					&& (((position[0]+bewegung.get(i)[0]-zeile == -1 || position[0]+bewegung.get(i)[0]-zeile == 1) && position[1]+bewegung.get(i)[1]-zeile == 0) ||
-							((position[1]+bewegung.get(i)[1]-zeile == -1 || position[1]+bewegung.get(i)[1]-zeile == 1) && position[0]+bewegung.get(i)[0]-zeile == 0))
-					) {
-				System.out.println((position[0]+bewegung.get(i)[0]) + ", " + (position[1]+bewegung.get(i)[1]));
+		
+		
+		int x, y, bonus, min;
+		x= position[0];
+		y= position[1];
+		min = 100;
+		for (int i = -1; i < 2; i++) {
+			for (int j = -1; j < 2; j++) {
+				if(!spielbrett.besetzt(zeile+i, spalte+j)){
+					int temp = Math.abs(position[0]-(zeile+i)) + Math.abs(position[1]-(spalte+j));
+					if(temp<min){
+						min = temp;
+						x=zeile+i;
+						y=spalte+j;
+					}
+					
+				}
 			}
 		}
-		System.out.println("Geben Sie die Zeile an.");
-		int x, y, bonus;
-		x= input.nextInt();
-		System.out.println("Geben Sie die Spalte an.");
-		y= input.nextInt();
+		/* alt
+		boolean angrenzend = Math.abs(zeile-x)<=1 && Math.abs(spalte-y)<=1;
+		while(!angrenzend){
+			x=(zeile*2+x)/3;
+			y=(spalte*2+y)/3;
+			angrenzend = Math.abs(zeile-x)<=1 && Math.abs(spalte-y)<=1;
+		}
+		*/
+		
 		bonus= Math.max( Math.abs(x - position[0]), Math.abs(y-position[1])); //bonusschaden für anstürmen
-		this.bewegen(spielbrett, x, y);
+		bewegen(spielbrett, x, y);
 		staerke += bonus;
 		spielbrett.getInhalt(zeile, spalte).get(0).verteidigen(spielbrett, this);
 		staerke -= bonus;
