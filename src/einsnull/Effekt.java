@@ -44,4 +44,9 @@ public class Effekt extends Karte {
 	Spieler getBesitzer() {
 		return besitzer;
 	}
+	
+	@Override
+	String getTooltipPfad() {
+		return tooltipPfad;
+	}
 }

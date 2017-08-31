@@ -237,4 +237,9 @@ static Scanner input = new Scanner(System.in);
 	public int getPreis() {
 		return preis;
 	}
+
+	@Override
+	String getTooltipPfad() {
+		return tooltipPfad;
+	}
 }

@@ -26,7 +26,7 @@ public class Spieler {
 	protected Einheit aktionAuswahlEinheit = null;
 	protected int auswahlPhase;
 	protected boolean passen = false;
-	//diese variable hätte an vielen Stellen genutzt werden können um den Code schöner zu machen
+	//diese variable hï¿½tte an vielen Stellen genutzt werden kï¿½nnen um den Code schï¿½ner zu machen
 	
 	public void resetBereit() {
 		for (int i = 0; i < truppen.size(); i++) {
@@ -34,7 +34,7 @@ public class Spieler {
 		}
 	}
 	
-	//diese Funktion ist hier, damit KI sie überschreiben kann
+	//diese Funktion ist hier, damit KI sie ï¿½berschreiben kann
 	public void kaufen(GUI anzeige, Spieler anderer) {
 		anzeige.kaufen(this, anderer);
 	}
@@ -88,14 +88,14 @@ public class Spieler {
 			if(passen){
 				return;
 			}
-			trupp= (aktionAuswahlHand == false) && (aktionAuswahlEinheit != null); //man hat eine Truppe ausgewählt
-			aus= (aktionAuswahlHand == true) && (aktionsAuswahl0 != -1); //man hat eine Handkarte zum ausspielen gewählt
-			ziel= (aktionsAuswahlSpalte != -1) && (aktionsAuswahlZeile != -1); //man hat ein Ziel gewählt
+			trupp= (aktionAuswahlHand == false) && (aktionAuswahlEinheit != null); //man hat eine Truppe ausgewï¿½hlt
+			aus= (aktionAuswahlHand == true) && (aktionsAuswahl0 != -1); //man hat eine Handkarte zum ausspielen gewï¿½hlt
+			ziel= (aktionsAuswahlSpalte != -1) && (aktionsAuswahlZeile != -1); //man hat ein Ziel gewï¿½hlt
 			try {
 				TimeUnit.MILLISECONDS.sleep(10);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
-				//ich weiß nicht, was ich hier machen soll...
+				//ich weiï¿½ nicht, was ich hier machen soll...
 				e.printStackTrace();
 			}
 		}
@@ -105,7 +105,7 @@ public class Spieler {
 			aktionAuswahlEinheit.nutzen(spielbrett);
 		}
 		anzeige.aktualisierenFeld(spielbrett);
-		anzeige.aktualisierenHand(this);		
+		anzeige.aktualisierenHand(this);
 	}
 	
 	//Kontrollausgabemethoden

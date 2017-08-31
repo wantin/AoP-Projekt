@@ -16,6 +16,7 @@ public abstract class Karte {
 	abstract int getPreis();
 	abstract boolean nutzen(Feld spielbrett);
 	abstract Spieler getBesitzer();
+	abstract String getTooltipPfad();
 	//Bilder für karten in den Karten speichern.
 	
 }

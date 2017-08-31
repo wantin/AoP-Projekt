@@ -71,15 +71,19 @@ public class GUI extends JFrame{
 		for (int i = 0; i < aktiver.getHand().size(); i++) {
 			if(aktiver.getSeite()=="links"){
 				linksHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(aktiver.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(114, 114, java.awt.Image.SCALE_SMOOTH)));
+				linksHandkarten[i].setToolTipText("<html><img src=\"" + Main.class.getResource(aktiver.getHand().get(i).getTooltipPfad()));
 			}else{
 				rechtsHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(aktiver.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(114, 114, java.awt.Image.SCALE_SMOOTH)));
+				rechtsHandkarten[i].setToolTipText("<html><img src= \"" + Main.class.getResource(aktiver.getHand().get(i).getTooltipPfad()));
 			}
 		}
 		for (int i = aktiver.getHand().size(); i < 8; i++) {
 			if(aktiver.getSeite()=="links"){
 				linksHandkarten[i].setIcon(null);
+				linksHandkarten[i].setToolTipText("");
 			}else{
 				rechtsHandkarten[i].setIcon(null);
+				rechtsHandkarten[i].setToolTipText("");
 			}
 		}
 	}
@@ -89,17 +93,21 @@ public class GUI extends JFrame{
 		//Handkarten des linken Spielers aktualisiert darstellen
 		for(int i = 0; i < links.getHand().size(); i++){ 
 			linksHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(links.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(114, 114, java.awt.Image.SCALE_SMOOTH)));
+			linksHandkarten[i].setToolTipText("<html><img src= \"" + Main.class.getResource(links.getHand().get(i).getTooltipPfad()));
 		}
 		//leere Felder leeren
 		for (int i = links.getHand().size(); i < 8; i++) {
 			linksHandkarten[i].setIcon(null);
+			linksHandkarten[i].setToolTipText("");
 		}
 		//Handkarten des rechten Spielers aktualisiert darstellen
 		for(int i = 0; i < rechts.getHand().size(); i++){ 
 			rechtsHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(rechts.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(114, 114, java.awt.Image.SCALE_SMOOTH)));
+			rechtsHandkarten[i].setToolTipText("<html><img src= \"" + Main.class.getResource(rechts.getHand().get(i).getTooltipPfad()));
 		}
 		for (int i = rechts.getHand().size(); i < 8; i++) {
 			rechtsHandkarten[i].setIcon(null);
+			rechtsHandkarten[i].setToolTipText("");
 		}
 	}
 	
@@ -111,10 +119,12 @@ public class GUI extends JFrame{
 					ruestungKarte[i][j].setText(Integer.toString(spielbrett.getEinheit(i, j).getRuestung()));
 					String pfad = spielbrett.getEinheit(i, j).getBildPfad();
 					feldButtons[i][j].setIcon(new ImageIcon(((new ImageIcon(pfad)).getImage()).getScaledInstance(114, 114, java.awt.Image.SCALE_SMOOTH)));
+					feldButtons[i][j].setToolTipText("<html><img src=\"" + Main.class.getResource(spielbrett.getEinheit(i, j).getTooltipPfad()));
 				}else{
 					feldButtons[i][j].setIcon(null);
 					staerkeKarte[i][j].setText("");
 					ruestungKarte[i][j].setText("");
+					feldButtons[i][j].setToolTipText("");
 				}
 			}
 		}
@@ -210,6 +220,7 @@ public class GUI extends JFrame{
 		abbrechenLinks.setText("Aktion abbrechen");
 		abbrechenLinks.setForeground(lfeld.getForeground());
 		abbrechenLinks.setFont(new Font(abbrechenLinks.getText(), Font.BOLD, 14));
+		abbrechenLinks.setToolTipText("Eure Exzellenz: Wollt ihr eine andere Aktion wählen?");
 	    
 	    if (abbrechenLinks != null){
 	    	//zug rückgängig machen
@@ -223,6 +234,7 @@ public class GUI extends JFrame{
 		passenLinks.setText("Passen");
 		passenLinks.setForeground(lfeld.getForeground());
 		passenLinks.setFont(new Font(abbrechenLinks.getText(), Font.BOLD, 14));
+		passenLinks.setToolTipText("Eure Exzellenz: Hiermit lasst ihr eine eurer Aktionen verstreichen.");
 	    
 	    if (passenLinks != null){
 	    	//zug rückgängig machen
@@ -296,6 +308,7 @@ public class GUI extends JFrame{
 							rechts.setAuswahlPhase(1);
 							links.setAktionAuswahlHand(false);
 							rechts.setAktionAuswahlHand(false);
+							
 						}else{ //Ziel ausw�hlen
 							links.setAktionsAuswahlZeile(zeile);
 							rechts.setAktionsAuswahlZeile(zeile);
@@ -372,9 +385,10 @@ public class GUI extends JFrame{
 		abbrechenRechts.setBounds(50, 80, 150, 40);
 		abbrechenRechts.setOpaque(false);
 		abbrechenRechts.setContentAreaFilled(false);
-		abbrechenRechts.setText("Zug abbrechen");
+		abbrechenRechts.setText("Aktion abbrechen");
 		abbrechenRechts.setForeground(rfeld.getForeground());
 		abbrechenRechts.setFont(new Font(abbrechenLinks.getText(), Font.PLAIN, 14));
+		abbrechenRechts.setToolTipText("Eure Exzellenz: Wollt ihr eine andere Aktion wählen?");
 	    
 	    if (abbrechenRechts != null){
 	    	//zug rückgängig machen
@@ -389,6 +403,7 @@ public class GUI extends JFrame{
 		passenRechts.setText("Passen");
 		passenRechts.setForeground(rfeld.getForeground());
 		passenRechts.setFont(new Font(abbrechenLinks.getText(), Font.PLAIN, 14));
+		passenRechts.setToolTipText("Eure Exzellenz: Hiermit lasst ihr eine eurer Aktionen verstreichen.");
 	    
 	    if (passenRechts != null){
 	    	//zug rückgängig machen
@@ -644,7 +659,12 @@ public class GUI extends JFrame{
 			int x = aktive.zeigeAngriff(spielbrett).get(i)[0];
 			int y = aktive.zeigeAngriff(spielbrett).get(i)[1];
 			feldButtons[x][y].setEnabled(true);
-		}		
+		}
+		if(aktive.getBesitzer().getSeite() == "links"){
+			abbrechenLinks.setEnabled(true);
+		}else{
+			abbrechenRechts.setEnabled(false);
+		}
 	}
 	
 	//Zeigt an, was ein Spieler in seinem Zug tun kann
@@ -692,6 +712,7 @@ public class GUI extends JFrame{
 			}
 			kaufButtons[i].setIcon(new ImageIcon(((new ImageIcon(angebot[i].getBildPfad())).getImage()).getScaledInstance(160, 160, java.awt.Image.SCALE_SMOOTH)));
 			preisLabel[i].setText(Integer.toString(angebot[i].getPreis()));
+			kaufButtons[i].setToolTipText("<html><img src=\"" + Main.class.getResource(angebot[i].getTooltipPfad()));
 			
 			final int innerI = i;
 			

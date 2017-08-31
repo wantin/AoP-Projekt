@@ -42,25 +42,19 @@ public class Ritter extends Einheit {
 		min = 100;
 		for (int i = -1; i < 2; i++) {
 			for (int j = -1; j < 2; j++) {
-				if(!spielbrett.besetzt(zeile+i, spalte+j)){
-					int temp = Math.abs(position[0]-(zeile+i)) + Math.abs(position[1]-(spalte+j));
-					if(temp<min){
-						min = temp;
-						x=zeile+i;
-						y=spalte+j;
+				if(zeile+i>-1 && zeile+i<6 && spalte+j>-1 && spalte+j<6){
+					if(!spielbrett.besetzt(zeile+i, spalte+j)){
+						int temp = Math.abs(position[0]-(zeile+i)) + Math.abs(position[1]-(spalte+j));
+						if(temp<min){
+							min = temp;
+							x=zeile+i;
+							y=spalte+j;
+						}
+						
 					}
-					
 				}
 			}
 		}
-		/* alt
-		boolean angrenzend = Math.abs(zeile-x)<=1 && Math.abs(spalte-y)<=1;
-		while(!angrenzend){
-			x=(zeile*2+x)/3;
-			y=(spalte*2+y)/3;
-			angrenzend = Math.abs(zeile-x)<=1 && Math.abs(spalte-y)<=1;
-		}
-		*/
 		
 		bonus= Math.max( Math.abs(x - position[0]), Math.abs(y-position[1])); //bonusschaden für anstürmen
 		bewegen(spielbrett, x, y);
