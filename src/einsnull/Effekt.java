@@ -7,6 +7,7 @@ public class Effekt extends Karte {
 	protected Spieler besitzer;
 	protected int preis;
 	protected String bildPfad;
+	protected String art;
 	
 	static Scanner input = new Scanner(System.in);
 	
@@ -32,11 +33,20 @@ public class Effekt extends Karte {
 		return bildPfad;
 	}
 	
+	public String getArt() {
+		return art;
+	}
+
 	public String getName() {
 		return name;
 	}
 	
 	public int getPreis() {
 		return preis;
+	}
+
+	@Override
+	Spieler getBesitzer() {
+		return besitzer;
 	}
 }

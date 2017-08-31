@@ -13,6 +13,7 @@ public class Blitzschlag extends Effekt {
 		name = "Blitzschlag";
 		preis = 150;
 		bildPfad = "bilder/effekte/blitz.jpg";
+		art = "fluch";
 	}
 
 	@Override

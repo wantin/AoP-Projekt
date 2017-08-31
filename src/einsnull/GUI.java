@@ -18,6 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
 
 public class GUI extends JFrame{
 
@@ -30,6 +31,8 @@ public class GUI extends JFrame{
 	private JLabel lfeld;
 	private JLabel rfeld;
 
+	private JButton abbrechenLinks = new JButton();
+	private JButton abbrechenRechts = new JButton();
 	private JButton[] kaufButtons= new JButton[3];
 	private JButton[][] feldButtons;
 	private JButton[] linksHandkarten = new JButton[8];
@@ -88,7 +91,7 @@ public class GUI extends JFrame{
 		auswahl.setLayout(null);
 		auswahl.setForeground(Color.white);
 		auswahl.setBounds(275,150,650,400);		
-		auswahl.setVisible(false); //falls man den Anfang überspringen will
+		//auswahl.setVisible(false); //falls man den Anfang �berspringen will
 		
 		//Karten kaufen
 		kaufPane = new JLabel(aIcon);
@@ -181,8 +184,10 @@ public class GUI extends JFrame{
 		lfeld.setForeground(Color.white);
 
 		//angezeigter Text Spieler und Handkarten
-		plyr1.setBounds(100,10,200,40);
+		plyr1.setBounds(25,20,200,40);
+		plyr1.setHorizontalAlignment(SwingConstants.CENTER);
 		plyr1.setForeground(lfeld.getForeground());
+		plyr1.setFont(new Font(plyr1.getText(), Font.ITALIC, 16));
 		plyr1k.setBounds(100,180,90,40);
 		plyr1k.setForeground(lfeld.getForeground());
 
@@ -190,22 +195,35 @@ public class GUI extends JFrame{
 		JLabel lLabel = new JLabel();
 		lLabel.setLayout(null);
 		lLabel.setBounds(0,230,240,470);
-		lLabel.setLayout(new GridLayout(4,2,4,2));//Einteilung Panel und ZwischenabstÃ¤nde	
+		lLabel.setLayout(new GridLayout(4,2,4,2));//Einteilung Panel und Zwischenabstände	
 
 		for(int i = 0; i < 8; i++){  //8 als Handkartenlimit
-			linksHandkarten[i]= new JButton();
-			linksHandkarten[i].setOpaque(false);
-			linksHandkarten[i].setContentAreaFilled(false); 
-			//linksHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(links.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(110, 110, java.awt.Image.SCALE_SMOOTH)));
-			/*lbttn.addActionListener(new ActionListener(){
-			 	@Override
-				public void actionPerformed(ActionEvent arg0){
-					aktion();
-				}
-			});*/
-			lLabel.add(linksHandkarten[i]);	
-		}
-
+		    linksHandkarten[i]= new JButton();
+		    linksHandkarten[i].setOpaque(false);
+		    linksHandkarten[i].setContentAreaFilled(false); 
+		    final int final_i=i;
+		    linksHandkarten[i].addActionListener(new ActionListener(){
+		        @Override
+		        public void actionPerformed(ActionEvent arg0){
+		            optionenZeigenHandkarte(links.getHand().get(final_i), spielbrett);
+		            links.setAktionsAuswahl0(final_i);
+		        }
+		    });
+		    lLabel.add(linksHandkarten[i]);	
+		} 
+		
+		//Abbrechenbutton links
+		abbrechenLinks.setLayout(null);
+		abbrechenLinks.setBounds(50, 90, 150, 40);
+		abbrechenLinks.setOpaque(false);
+		abbrechenLinks.setContentAreaFilled(false);;
+		abbrechenLinks.setText("Zug abbrechen");
+		abbrechenLinks.setFont(new Font(abbrechenLinks.getText(), Font.PLAIN, 14));
+	    
+	    if (abbrechenLinks != null){
+	    	//zug rückgängig machen
+	    }
+		
 		
 		//Verziehrung links
 		Icon oIcon = new ImageIcon(getClass().getResource("ornament.png"));
@@ -216,6 +234,7 @@ public class GUI extends JFrame{
 
 		lfeld.add(plyr1);
 		lfeld.add(plyr1k);
+		lfeld.add(abbrechenLinks);
 		lfeld.add(lLabel);
 		lfeld.add(lOrnament);
 
@@ -226,7 +245,7 @@ public class GUI extends JFrame{
 		mitte.setForeground(Color.orange);
 		mitte.setBounds(250,0,700,730);
 		
-		//Schleife Buttons für mittleres Feld
+		//Schleife Buttons f�r mittleres Feld
 		int m,n;
 		m = 6;
 		n = 6;
@@ -253,7 +272,7 @@ public class GUI extends JFrame{
 				feldButtons[c][d].add(staerkeKarte[c][d]);
 				feldButtons[c][d].addActionListener(new ActionListener(){
 
-					//muss noch abgeändert werden, da bisher der attbttn(für angreifbare einheiten) genutzt wird(auch wenn freies feld)
+					//muss noch abge�ndert werden, da bisher der attbttn(f�r angreifbare einheiten) genutzt wird(auch wenn freies feld)
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						JButton freebttn = new JButton();
@@ -267,11 +286,11 @@ public class GUI extends JFrame{
 						JButton attbttn = new JButton();
 						if(attbttn != null){
 							attbttn.setBackground(Color.red);
-							System.out.println("Das Feld ist besetzt von");//karte des gegners einfÃ¼gen
+							System.out.println("Das Feld ist besetzt von");//karte des gegners einfügen
 						}
 					}
 				});
-			mLabel.add(feldButtons[c][d]);			
+			mLabel.add(feldButtons[c][d]);	 
 			}
 		}
 		mitte.add(mLabel);
@@ -284,16 +303,30 @@ public class GUI extends JFrame{
 		rfeld.setBounds(950, 0, 250, 730);
 
 		//angezeigter Text Spieler und Handkarten
-		plyr2.setBounds(100,10,200,40);
+		plyr2.setBounds(25,20,200,40);
+		plyr2.setHorizontalAlignment(SwingConstants.CENTER);
 		plyr2.setForeground(rfeld.getForeground());
+		plyr2.setFont(new Font(plyr1.getText(), Font.ITALIC, 16));
 		plyr2k.setBounds(100,180,90,40);
 		plyr2k.setForeground(rfeld.getForeground());
+		
+		//Abbruchbutton rechts
+		abbrechenRechts.setLayout(null);
+		abbrechenRechts.setBounds(50, 90, 150, 40);
+		abbrechenRechts.setOpaque(false);
+		abbrechenRechts.setContentAreaFilled(false);
+		abbrechenRechts.setText("Zug abbrechen");
+		abbrechenRechts.setFont(new Font(abbrechenLinks.getText(), Font.PLAIN, 14));
+	    
+	    if (abbrechenRechts != null){
+	    	//zug rückgängig machen
+	    }
 
 		//Kartenfeld rechtes Feld
 		JLabel rLabel = new JLabel();
 		rLabel.setLayout(null);
 		rLabel.setBounds(10,230,240,470);
-		rLabel.setLayout(new GridLayout(4,2,4,2));//Einteilung Panel und ZwischenabstÃ¤ndes
+		rLabel.setLayout(new GridLayout(4,2,4,2));//Einteilung Panel und Zwischenabständes
 		
 		//neu
 		for(int i = 0; i < 8; i++){  //8 als Handkartenlimit
@@ -311,6 +344,7 @@ public class GUI extends JFrame{
 
 		rfeld.add(plyr2);
 		rfeld.add(plyr2k);
+		rfeld.add(abbrechenRechts);
 		rfeld.add(rLabel);
 		rfeld.add(rOrnament);
 
@@ -358,8 +392,8 @@ public class GUI extends JFrame{
 		start.setForeground(auswahl.getForeground());
 		start.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		
-		//regelt die LÃ¤nge der Namen(beschrÃ¤nkt auf 20 Zeichen
-		//panel bleibt solange sichtbar bis richtige lÃ¤nge, dann unsichtbar
+		//regelt die Länge der Namen(beschränkt auf 20 Zeichen
+		//panel bleibt solange sichtbar bis richtige länge, dann unsichtbar
 		start.addActionListener(new ActionListener(){
 
 			@Override
@@ -415,16 +449,85 @@ public class GUI extends JFrame{
 		auswahl.add(pkbttn);
 		auswahl.add(start);
 	}
+	
+	public void optionenKeine(){
+		for (int i = 0; i < rechtsHandkarten.length; i++) {
+			rechtsHandkarten[i].setEnabled(false);
+			linksHandkarten[i].setEnabled(false);
+		}
+		for (int i = 0; i < feldButtons.length; i++) {
+			for (int j = 0; j < feldButtons[0].length; j++) {
+				feldButtons[i][j].setEnabled(false);
+			}
+		}
+		abbrechenLinks.setEnabled(false);
+		abbrechenRechts.setEnabled(false);
+	}
+	
+	public void optionenZeigenHandkarte(Karte auszuspielende, Feld spielbrett){
+		optionenKeine();
+		if(auszuspielende.getBesitzer().getSeite()=="links"){
+			abbrechenLinks.setEnabled(true);
+		}else{
+			abbrechenRechts.setEnabled(true);
+		}
+		if(auszuspielende.getArt()=="einheit"){
+			if(auszuspielende.getBesitzer().getSeite()=="links"){
+				for (int i = 0; i < 6; i++) {
+					for (int j = 0; j < 2; j++) {
+						feldButtons[i][j].setEnabled(true);
+					}
+				}
+			}else{ //rechter Spieler setzt auf die rechte Seite
+				for (int i = 0; i < 6; i++) {
+					for (int j = 4; j < 6; j++) {
+						feldButtons[i][j].setEnabled(true);
+					}
+				}
+			}
+		}else{ //Effektkarten Ziel w�hlen
+			if(auszuspielende.getArt()=="fluch"){ //fl�che wirkt man auf gegner
+				for (int i = 0; i < 6; i++) {
+					for (int j = 0; j < 6; j++) {
+						if(spielbrett.besetzt(i, j)){ //vermeiden einer nullpointerexception bei dem n�chsten Test
+							if(spielbrett.getEinheit(i, j).getBesitzer() != auszuspielende.getBesitzer()){
+								feldButtons[i][j].setEnabled(true);
+							}
+						}
+					}
+				}
+			}else{ //da es kein Fluch ist muss es ein Segen sein.
+				for (int i = 0; i < 6; i++) {
+					for (int j = 0; j < 6; j++) {
+						if(spielbrett.besetzt(i, j)){
+							if(spielbrett.getEinheit(i, j).getBesitzer() == auszuspielende.getBesitzer()){ //Diesmal muss es eine eigene Einheit sein
+								feldButtons[i][j].setEnabled(true);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	public void optionenZeigenSpieler(Spieler aktiverSpieler){
+		optionenKeine();
+		if(aktiverSpieler.getSeite()=="links"){
+			for (int i = 0; i < linksHandkarten.length; i++) {
+				linksHandkarten[i].setEnabled(true);
+			}
+		}else{
+			for (int i = 0; i < rechtsHandkarten.length; i++) {
+				rechtsHandkarten[i].setEnabled(true);
+			}
+		}
+	}
 
 	
 	//oben genutzte Methode, die auf Buttoneingabe reagiert.
 	public void setPlayer(Spieler rechts, boolean human){
 		if(human);
 		else rechts= new KI();
-	}
-
-	public void versteckeKauf(){
-		kaufPane.setVisible(false);
 	}
 
 	//was ist das?
@@ -436,7 +539,6 @@ public class GUI extends JFrame{
 		Karte[] angebot = new Karte[3];
 		int minPreis = 50;
 		int maxHand = 8;
-		
 		for(int i = 0; i <= 2; i++) {
 			angebot[i] = kaufender.generateEinheit();
 			while (kaufender.getGold() < angebot[i].getPreis() && kaufender.getGold() >= minPreis) {
@@ -445,7 +547,7 @@ public class GUI extends JFrame{
 			kaufButtons[i].setIcon(new ImageIcon(((new ImageIcon(angebot[i].getBildPfad())).getImage()).getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH)));
 			preisLabel[i].setText(Integer.toString(angebot[i].getPreis()));
 			
-			final int innerI = i; //was macht das?
+			final int innerI = i;
 			
 			ActionListener l = new ActionListener() {
 				@Override
@@ -459,7 +561,9 @@ public class GUI extends JFrame{
 					}
 					content.repaint();
 					
-					if (kaufender.getHand().size() < maxHand && kaufender.getGold() >= minPreis) kaufen(kaufender, anderer); //weitereinkaufen
+					if (kaufender.getHand().size() < maxHand && kaufender.getGold() >= minPreis){ //weitereinkaufen
+						kaufen(kaufender, anderer); 
+					}
 					else{
 						if(anderer.getHand().size() == 0){ //der andere kauft
 							anderer.kaufen(anzeige, kaufender);

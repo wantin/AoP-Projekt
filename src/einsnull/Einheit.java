@@ -14,6 +14,7 @@ public class Einheit extends Karte {
 	protected int preis;
 	int bereit;
 	protected String bildPfad;
+	protected String art = "einheit";
 
 static Scanner input = new Scanner(System.in);
 
@@ -110,6 +111,10 @@ static Scanner input = new Scanner(System.in);
 		return bildPfad;
 	}
 	
+	public String getArt() {
+		return art;
+	}
+
 	public int getBereit() {
 		return bereit;
 	}

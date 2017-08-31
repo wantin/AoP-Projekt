@@ -40,7 +40,7 @@ public class Main_Revised_Fitz {
          */
         public static void emulateDraw(Spieler Drawing, Spieler Pending, Feld Spielfeld) {
             if(bPlayersContinue(Drawing, Pending)) {
-		Drawing.ziehen(Spielfeld);
+		//Drawing.ziehen(Spielfeld);
             }
         }
 	
@@ -60,7 +60,7 @@ public class Main_Revised_Fitz {
                  * Der erste muss nicht überprüft werden, ob das spiel zuende ist, 
                  * weil das in der while schleife schon passiert ist. 
                  */
-		links.ziehen(spielfeld);        
+		//links.ziehen(spielfeld);        
         emulateDraw(links, rechts, spielfeld);
 		links.resetBereit();
 		

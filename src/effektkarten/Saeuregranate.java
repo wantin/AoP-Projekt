@@ -13,6 +13,7 @@ public class Saeuregranate extends Effekt {
 		name = "Säuregranate";
 		preis = 100;
 		bildPfad = "bilder/effekte/sauregranate.jpg";
+		art = "fluch";
 	}
 	
 	@Override
