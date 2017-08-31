@@ -12,13 +12,8 @@ public class Effekt extends Karte {
 	static Scanner input = new Scanner(System.in);
 	
 	public boolean nutzen(Feld spielbrett) {
-		System.out.println("Geben Sie das Feld der Einheit an, auf die Sie diese Karte anwenden wollen");
-		System.out.println("Geben Sie die Zeile an, oder geben Sie -1 ein, um abzubrechen.");
-		int x, y;
-		x = input.nextInt();
-		if(x == -1)	return false;
-		System.out.println("Geben Sie die Spalte an.");
-		y= input.nextInt();
+		int x = besitzer.getAktionsAuswahlZeile();
+		int y= besitzer.getAktionsAuswahlSpalte();
 		this.ausspielen(x,y, spielbrett);
 		return true;
 	}

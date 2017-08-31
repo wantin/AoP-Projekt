@@ -25,10 +25,12 @@ public class Blitzschlag extends Effekt {
 		for (int i = -1; i < 2; i++) {
 			for (int j = -1; j < 2; j++) {
 				if(i!=0 || j!=0) {
-					if(rnjesus.nextInt(3)==0) {
-						//springt weiter mit 1/3 Wahrscheinlichkeit
-						ausspielen(zeile+i, spalte+j, spielbrett);
-						//bisher kann der Blitz wieder zurückspringen. wenn wir das nicht wollen müssen wir das ändern.
+					if(spielbrett.besetzt(zeile+i, spalte+j)){
+						if(rnjesus.nextInt(3)==0) {
+							//springt weiter mit 1/3 Wahrscheinlichkeit
+							ausspielen(zeile+i, spalte+j, spielbrett);
+							//bisher kann der Blitz wieder zurückspringen. wenn wir das nicht wollen müssen wir das ändern.
+						}
 					}
 				}
 			}

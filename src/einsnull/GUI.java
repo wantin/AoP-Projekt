@@ -33,6 +33,8 @@ public class GUI extends JFrame{
 
 	private JButton abbrechenLinks = new JButton();
 	private JButton abbrechenRechts = new JButton();
+	private JButton passenLinks = new JButton();
+	private JButton passenRechts = new JButton();
 	private JButton[] kaufButtons= new JButton[3];
 	private JButton[][] feldButtons;
 	private JButton[] linksHandkarten = new JButton[8];
@@ -61,17 +63,55 @@ public class GUI extends JFrame{
 
 	Random zufall = new Random();
 	
+	public void aktualisierenHand(Spieler aktiver){
+		for (int i = 0; i < aktiver.getHand().size(); i++) {
+			if(aktiver.getSeite()=="links"){
+				linksHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(aktiver.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH)));
+			}else{
+				rechtsHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(aktiver.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH)));
+			}
+		}
+		for (int i = aktiver.getHand().size(); i < 8; i++) {
+			if(aktiver.getSeite()=="links"){
+				linksHandkarten[i].setIcon(null);
+			}else{
+				rechtsHandkarten[i].setIcon(null);
+			}
+		}
+	}
+	
 	public void aktualisierenHand(Spieler links, Spieler rechts){
 		
 		//Handkarten des linken Spielers aktualisiert darstellen
 		for(int i = 0; i < links.getHand().size(); i++){ 
-			linksHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(links.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(110, 110, java.awt.Image.SCALE_SMOOTH)));
+			linksHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(links.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH)));
+		}
+		//leere Felder leeren
+		for (int i = links.getHand().size(); i < 8; i++) {
+			linksHandkarten[i].setIcon(null);
 		}
 		//Handkarten des rechten Spielers aktualisiert darstellen
 		for(int i = 0; i < rechts.getHand().size(); i++){ 
-			rechtsHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(rechts.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(110, 110, java.awt.Image.SCALE_SMOOTH)));
-		}		
+			rechtsHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(rechts.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH)));
+		}
+		for (int i = rechts.getHand().size(); i < 8; i++) {
+			rechtsHandkarten[i].setIcon(null);
+		}
 	}
+	
+	public void aktualisierenFeld(Feld spielbrett){
+		for (int i = 0; i < feldButtons.length; i++) {
+			for (int j = 0; j < feldButtons.length; j++) {
+				if(spielbrett.besetzt(i, j)){
+					String pfad = spielbrett.getEinheit(i, j).getBildPfad();
+					feldButtons[i][j].setIcon(new ImageIcon(((new ImageIcon(pfad)).getImage()).getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH)));
+				}else{
+					feldButtons[i][j].setIcon(null);
+				}
+			}
+		}
+	}
+	
 	
 	//Konstruktor
 	public GUI(Feld spielbrett, Spieler links, Spieler rechts){
@@ -207,6 +247,9 @@ public class GUI extends JFrame{
 		        public void actionPerformed(ActionEvent arg0){
 		            optionenZeigenHandkarte(links.getHand().get(final_i), spielbrett);
 		            links.setAktionsAuswahl0(final_i);
+		            links.setAktionAuswahlHand(true);
+					links.setAuswahlPhase(1);
+					rechts.setAuswahlPhase(1);
 		        }
 		    });
 		    lLabel.add(linksHandkarten[i]);	
@@ -214,13 +257,27 @@ public class GUI extends JFrame{
 		
 		//Abbrechenbutton links
 		abbrechenLinks.setLayout(null);
-		abbrechenLinks.setBounds(50, 90, 150, 40);
+		abbrechenLinks.setBounds(50, 80, 150, 40);
 		abbrechenLinks.setOpaque(false);
 		abbrechenLinks.setContentAreaFilled(false);;
-		abbrechenLinks.setText("Zug abbrechen");
-		abbrechenLinks.setFont(new Font(abbrechenLinks.getText(), Font.PLAIN, 14));
+		abbrechenLinks.setText("Aktion abbrechen");
+		abbrechenLinks.setForeground(lfeld.getForeground());
+		abbrechenLinks.setFont(new Font(abbrechenLinks.getText(), Font.BOLD, 14));
 	    
 	    if (abbrechenLinks != null){
+	    	//zug rückgängig machen
+	    }
+	    
+		//Passenbutton links
+		passenLinks.setLayout(null);
+		passenLinks.setBounds(50, 130, 150, 40);
+		passenLinks.setOpaque(false);
+		passenLinks.setContentAreaFilled(false);;
+		passenLinks.setText("Passen");
+		passenLinks.setForeground(lfeld.getForeground());
+		passenLinks.setFont(new Font(abbrechenLinks.getText(), Font.BOLD, 14));
+	    
+	    if (passenLinks != null){
 	    	//zug rückgängig machen
 	    }
 		
@@ -235,6 +292,7 @@ public class GUI extends JFrame{
 		lfeld.add(plyr1);
 		lfeld.add(plyr1k);
 		lfeld.add(abbrechenLinks);
+		lfeld.add(passenLinks);
 		lfeld.add(lLabel);
 		lfeld.add(lOrnament);
 
@@ -262,31 +320,31 @@ public class GUI extends JFrame{
 				staerkeKarte[c][d].setLayout(null);
 				staerkeKarte[c][d].setForeground(new Color(0,55,55));
 				staerkeKarte[c][d].setBounds(50,0,10,10);
-				staerkeKarte[c][d].setText(Integer.toString(c+d));
+				staerkeKarte[c][d].setText("L�ckenf�ller");
 
 				feldButtons[c][d] = new JButton();
 				feldButtons[c][d].setLayout(null);
 				feldButtons[c][d].setOpaque(false);
 				feldButtons[c][d].setContentAreaFilled(false);
-				feldButtons[0][0].setIcon(new ImageIcon(((new ImageIcon("bilder/einheiten/hasenritter.jpg")).getImage()).getScaledInstance(110, 110, java.awt.Image.SCALE_SMOOTH)));
 				feldButtons[c][d].add(staerkeKarte[c][d]);
+				final int zeile = c;
+				final int spalte = d;
 				feldButtons[c][d].addActionListener(new ActionListener(){
-
-					//muss noch abge�ndert werden, da bisher der attbttn(f�r angreifbare einheiten) genutzt wird(auch wenn freies feld)
+					//muss noch abgeändert werden, da bisher der attbttn(für angreifbare einheiten) genutzt wird(auch wenn freies feld)
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
-						JButton freebttn = new JButton();
-						freebttn.setLayout(null);
-						freebttn.setSize(getPreferredSize());
-						freebttn.setForeground(mitte.getForeground());
-						if(freebttn == null){
-							System.out.println("Das Feld ist leer");
-						}
-	
-						JButton attbttn = new JButton();
-						if(attbttn != null){
-							attbttn.setBackground(Color.red);
-							System.out.println("Das Feld ist besetzt von");//karte des gegners einfügen
+						if(links.getAuswahlPhase() == 0 || rechts.getAuswahlPhase() == 0){ 
+							//Einheit ausw�hlen um Aktion durchzuf�hren
+							rechts.setAktionAuswahlEinheit(spielbrett.getEinheit(zeile, spalte));
+							links.setAktionAuswahlEinheit(spielbrett.getEinheit(zeile, spalte));
+							optionenZeigenEinheit(spielbrett.getEinheit(zeile, spalte), spielbrett);
+							links.setAuswahlPhase(1);
+							rechts.setAuswahlPhase(1);
+						}else{ //Ziel ausw�hlen
+							links.setAktionsAuswahlZeile(zeile);
+							rechts.setAktionsAuswahlZeile(zeile);
+							links.setAktionsAuswahlSpalte(spalte);
+							rechts.setAktionsAuswahlSpalte(spalte);
 						}
 					}
 				});
@@ -312,13 +370,28 @@ public class GUI extends JFrame{
 		
 		//Abbruchbutton rechts
 		abbrechenRechts.setLayout(null);
-		abbrechenRechts.setBounds(50, 90, 150, 40);
+		abbrechenRechts.setBounds(50, 80, 150, 40);
 		abbrechenRechts.setOpaque(false);
 		abbrechenRechts.setContentAreaFilled(false);
 		abbrechenRechts.setText("Zug abbrechen");
+		abbrechenRechts.setForeground(rfeld.getForeground());
 		abbrechenRechts.setFont(new Font(abbrechenLinks.getText(), Font.PLAIN, 14));
 	    
 	    if (abbrechenRechts != null){
+	    	//zug rückgängig machen
+	    }
+	    
+		//Passenbutton rechts
+
+		passenRechts.setLayout(null);
+		passenRechts.setBounds(50, 130, 150, 40);
+		passenRechts.setOpaque(false);
+		passenRechts.setContentAreaFilled(false);;
+		passenRechts.setText("Passen");
+		passenRechts.setForeground(rfeld.getForeground());
+		passenRechts.setFont(new Font(abbrechenLinks.getText(), Font.PLAIN, 14));
+	    
+	    if (passenRechts != null){
 	    	//zug rückgängig machen
 	    }
 
@@ -333,9 +406,20 @@ public class GUI extends JFrame{
 			rechtsHandkarten[i]= new JButton();
 			rechtsHandkarten[i].setOpaque(false);
 			rechtsHandkarten[i].setContentAreaFilled(false);
+			final int final_i=i;
+		    rechtsHandkarten[i].addActionListener(new ActionListener(){
+		        @Override
+		        public void actionPerformed(ActionEvent arg0){
+		            optionenZeigenHandkarte(rechts.getHand().get(final_i), spielbrett);
+		            rechts.setAktionsAuswahl0(final_i);
+		            rechts.setAktionAuswahlHand(true);
+					links.setAuswahlPhase(1);
+					rechts.setAuswahlPhase(1);
+		        }
+		    });
 			rLabel.add(rechtsHandkarten[i]);	
 		}
-		
+				
 		//Verziehrung rechts
 		Icon oIcon1 = new ImageIcon(getClass().getResource("ornament1.png"));
 		JLabel rOrnament = new JLabel(oIcon1);
@@ -345,6 +429,7 @@ public class GUI extends JFrame{
 		rfeld.add(plyr2);
 		rfeld.add(plyr2k);
 		rfeld.add(abbrechenRechts);
+		rfeld.add(passenRechts);
 		rfeld.add(rLabel);
 		rfeld.add(rOrnament);
 
@@ -450,6 +535,7 @@ public class GUI extends JFrame{
 		auswahl.add(start);
 	}
 	
+	//Hilfsfunktion, die alle Buttons disabled
 	public void optionenKeine(){
 		for (int i = 0; i < rechtsHandkarten.length; i++) {
 			rechtsHandkarten[i].setEnabled(false);
@@ -462,8 +548,11 @@ public class GUI extends JFrame{
 		}
 		abbrechenLinks.setEnabled(false);
 		abbrechenRechts.setEnabled(false);
+		passenLinks.setEnabled(false);
+		passenRechts.setEnabled(false);
 	}
 	
+	//Zeigt f�r eine Handkarte an, was man damit machen kann
 	public void optionenZeigenHandkarte(Karte auszuspielende, Feld spielbrett){
 		optionenKeine();
 		if(auszuspielende.getBesitzer().getSeite()=="links"){
@@ -475,7 +564,9 @@ public class GUI extends JFrame{
 			if(auszuspielende.getBesitzer().getSeite()=="links"){
 				for (int i = 0; i < 6; i++) {
 					for (int j = 0; j < 2; j++) {
-						feldButtons[i][j].setEnabled(true);
+						if(!spielbrett.besetzt(i, j)){
+							feldButtons[i][j].setEnabled(true);
+						}
 					}
 				}
 			}else{ //rechter Spieler setzt auf die rechte Seite
@@ -510,15 +601,39 @@ public class GUI extends JFrame{
 		}
 	}
 	
+	//zeigt an, was man mit einer ausgespielten Einheit f�r Optionen hat.
+	public void optionenZeigenEinheit(Einheit aktive, Feld spielbrett){
+		optionenKeine();
+		for (int i = 0; i < aktive.zeigeBewegung(spielbrett).size(); i++) {
+			int x = aktive.zeigeBewegung(spielbrett).get(i)[0];
+			int y = aktive.zeigeBewegung(spielbrett).get(i)[1];
+			feldButtons[x][y].setEnabled(true);
+		}
+		for (int i = 0; i < aktive.zeigeAngriff(spielbrett).size(); i++) {
+			int x = aktive.zeigeAngriff(spielbrett).get(i)[0];
+			int y = aktive.zeigeAngriff(spielbrett).get(i)[1];
+			feldButtons[x][y].setEnabled(true);
+		}		
+	}
+	
+	//Zeigt an, was ein Spieler in seinem Zug tun kann
 	public void optionenZeigenSpieler(Spieler aktiverSpieler){
 		optionenKeine();
 		if(aktiverSpieler.getSeite()=="links"){
+			passenLinks.setEnabled(true);
 			for (int i = 0; i < linksHandkarten.length; i++) {
 				linksHandkarten[i].setEnabled(true);
 			}
 		}else{
+			passenRechts.setEnabled(true);
 			for (int i = 0; i < rechtsHandkarten.length; i++) {
 				rechtsHandkarten[i].setEnabled(true);
+			}
+		}
+		for (int i = 0; i < aktiverSpieler.getTruppen().size(); i++) {
+			if(aktiverSpieler.getTruppen().get(i).getBereit() > 0){
+				int koordinaten[] = aktiverSpieler.getTruppen().get(i).getPosition();
+				feldButtons[koordinaten[0]][koordinaten[1]].setEnabled(true);
 			}
 		}
 	}

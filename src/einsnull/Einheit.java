@@ -20,6 +20,22 @@ static Scanner input = new Scanner(System.in);
 
 	//Diese Funktion zeigt einem auf, wie man eine Karte(hier Einheit) nutzen kann und ruft dann die entsprechenden Funktionen auf (siehe unten)
 	public boolean nutzen(Feld spielbrett) {
+		
+		if(position[0]==-1) { //prüft ob die Karte noch auf der Hand ist.
+			this.ausspielen(spielbrett, besitzer.getAktionsAuswahlZeile(), besitzer.getAktionsAuswahlSpalte()); //keine Korrektur brauch korrekte Zeile und Spalte
+			return true;
+		}else {
+			if(bereit==0) { //das sollte vorher schon abgefangen werden, wird es derzeit noch nicht 
+				return false;
+			}
+			if(spielbrett.besetzt(besitzer.getAktionsAuswahlZeile(), besitzer.getAktionsAuswahlSpalte())){ //braucht korrekte zeile und spalte
+				this.angreifen(spielbrett, besitzer.getAktionsAuswahlZeile(), besitzer.getAktionsAuswahlSpalte());
+			}
+			else this.bewegen(spielbrett, besitzer.getAktionsAuswahlZeile(), besitzer.getAktionsAuswahlSpalte());
+			return true;
+		}
+		
+		/* alte version
 		if(position[0]==-1) { //prüft ob die Karte noch auf der Hand ist.
 			System.out.println("Diese Karte k�nnen Sie ausspielen. Geben Sie Zeile und Spalte eines freien Feldes in Ihrem Spielbereich an, auf welches Sie die Karte spielen wollen.");
 			System.out.println("Geben Sie die Zeile an, oder -1 um abzubrechen");
@@ -67,7 +83,42 @@ static Scanner input = new Scanner(System.in);
 			else this.bewegen(spielbrett, x, y);
 			return true;
 		}
-	}	
+		*/
+	}
+	
+	public ArrayList<int[]> zeigeBewegung(Feld spielbrett){
+		ArrayList<int[]> ausgabe = new ArrayList<int[]> ();
+		for (int i = 0; i < angriff.size(); i++) {
+			//check fuer Rand Feldgröße flexibel
+			if(position[0]+angriff.get(i)[0] < spielbrett.getAnzahlZeilen() && position[0]+angriff.get(i)[0] >= 0 && position[1]+angriff.get(i)[1] < spielbrett.getAnzahlSpalten() && position[1]+angriff.get(i)[1] >= 0
+					//es muss eine Einheit auf dem Feld sein
+					&& spielbrett.besetzt(position[0]+angriff.get(i)[0], position[1]+angriff.get(i)[1])
+			) {
+				//die Einheit darf nicht eine eigene sein
+				//dieser Test ist innen, damit getEinheit nicht bei einem leeren Feld aufgerufen wird
+				if(spielbrett.getEinheit(position[0]+angriff.get(i)[0], position[1]+angriff.get(i)[1]).getBesitzer() != this.besitzer){
+					int[] temp = {position[0]+angriff.get(i)[0], position[1]+angriff.get(i)[1]};
+					ausgabe.add(temp);
+				}
+			}
+		}
+		return ausgabe;
+	}
+	
+	public ArrayList<int[]> zeigeAngriff(Feld spielbrett){
+		ArrayList<int[]> ausgabe = new ArrayList<int[]> ();
+		for (int i = 0; i < bewegung.size(); i++) {
+			//check fuer Rand Feldgröße flexibel
+			if(position[0]+bewegung.get(i)[0] < spielbrett.getAnzahlZeilen() && position[0]+bewegung.get(i)[0] >= 0 && position[1]+bewegung.get(i)[1] < spielbrett.getAnzahlSpalten() && position[1]+bewegung.get(i)[1] >= 0
+					//es darf keine Einheit auf dem Feld sein
+					&& !spielbrett.besetzt(position[0]+bewegung.get(i)[0], position[1]+bewegung.get(i)[1]) 
+					) {
+				int[] temp = {position[0]+bewegung.get(i)[0], position[1]+bewegung.get(i)[1]};
+				ausgabe.add(temp);
+			}
+		}
+		return ausgabe;
+	}
 	
 	//die drei Funktionen, die nutzen aufruft
 	public void ausspielen(Feld spielbrett, int zeile, int spalte){

@@ -3,6 +3,7 @@ package einsnull;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 import effektkarten.Blitzschlag;
 import effektkarten.GottesSegen;
@@ -20,7 +21,11 @@ public class Spieler {
 	private int gold = 1000;
 	private String seite;
 	private int aktionsAuswahl0;
-	private int aktionsAuswahl1;
+	private int aktionsAuswahlZeile= -1;
+	private int aktionsAuswahlSpalte= -1;
+	private boolean aktionAuswahlHand;
+	private Einheit aktionAuswahlEinheit = null;
+	private int auswahlPhase;
 	
 	static Scanner input = new Scanner(System.in);
 	
@@ -121,11 +126,39 @@ public class Spieler {
 	//eigentliches Spielen
 	//bewegt aus main
 	void ziehen(Feld spielbrett, GUI anzeige){
-		//ausw√§hlen
-		//TODO: switch from console to GUI
+		//reset
+		aktionsAuswahlZeile= -1;
+		aktionsAuswahlSpalte= -1;
+		aktionsAuswahl0= -1;
+		aktionAuswahlEinheit=null;
+		auswahlPhase = 0;
+		
 		anzeige.optionenZeigenSpieler(this);
 		
+		boolean trupp = false;
+		boolean aus = false;
+		boolean ziel = false;
+		while(!((trupp || aus) && ziel)){
+			trupp= (aktionAuswahlHand == false) && (aktionAuswahlEinheit != null); //man hat eine Truppe ausgew‰hlt
+			aus= (aktionAuswahlHand == true) && (aktionsAuswahl0 != -1); //man hat eine Handkarte zum ausspielen gew‰hlt
+			ziel= (aktionsAuswahlSpalte != -1) && (aktionsAuswahlZeile != -1); //man hat ein Ziel gew‰hlt
+			try {
+				TimeUnit.MILLISECONDS.sleep(10);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				//ich weiﬂ nicht, was ich hier machen soll...
+				e.printStackTrace();
+			}
+		}
+		if(aus){
+			hand.get(aktionsAuswahl0).nutzen(spielbrett);
+		}else{ //da wir aus der schleife raus sind gilt: aus xor trupp
+			aktionAuswahlEinheit.nutzen(spielbrett);
+		}
+		anzeige.aktualisierenFeld(spielbrett);
+		anzeige.aktualisierenHand(this);
 		
+		/*alt
 		System.out.println("Hand von " + this.getName());
 		this.printHand();
 		System.out.println("Truppen von " + this.getName());
@@ -148,6 +181,7 @@ public class Spieler {
 				stop= this.getTruppen().get(auswahl).nutzen(spielbrett);
 			}
 		}while(!stop);
+		*/
 	}
 	
 	//Kontrollausgabemethoden
@@ -169,6 +203,30 @@ public class Spieler {
 	public String getSeite() {
 		return seite;
 	}
+		
+	public Einheit getAktionAuswahlEinheit() {
+		return aktionAuswahlEinheit;
+	}
+
+	public int getAuswahlPhase() {
+		return auswahlPhase;
+	}
+
+	public void setAuswahlPhase(int auswahlPhase) {
+		this.auswahlPhase = auswahlPhase;
+	}
+
+	public void setAktionAuswahlEinheit(Einheit aktionAuswahlEinheit) {
+		this.aktionAuswahlEinheit = aktionAuswahlEinheit;
+	}
+
+	public boolean isAktionAuswahlHand() {
+		return aktionAuswahlHand;
+	}
+
+	public void setAktionAuswahlHand(boolean aktionAuswahlHand) {
+		this.aktionAuswahlHand = aktionAuswahlHand;
+	}
 
 	public void setSeite(String seite) {
 		this.seite = seite;
@@ -182,12 +240,20 @@ public class Spieler {
 		this.aktionsAuswahl0 = aktionsAuswahl0;
 	}
 
-	public int getAktionsAuswahl1() {
-		return aktionsAuswahl1;
+	public int getAktionsAuswahlZeile() {
+		return aktionsAuswahlZeile;
 	}
 
-	public void setAktionsAuswahl1(int aktionsAuswahl1) {
-		this.aktionsAuswahl1 = aktionsAuswahl1;
+	public void setAktionsAuswahlZeile(int aktionsAuswahlZeile) {
+		this.aktionsAuswahlZeile = aktionsAuswahlZeile;
+	}
+
+	public int getAktionsAuswahlSpalte() {
+		return aktionsAuswahlSpalte;
+	}
+
+	public void setAktionsAuswahlSpalte(int aktionsAuswahlSpalte) {
+		this.aktionsAuswahlSpalte = aktionsAuswahlSpalte;
 	}
 
 	public int getGold() {
