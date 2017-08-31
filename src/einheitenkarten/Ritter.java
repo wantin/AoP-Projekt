@@ -17,8 +17,9 @@ public class Ritter extends Einheit {
 		//vor (vorzeichen) sollte 1 für den linken Spieler und -1 für den rechten Spieler sein
 		staerke= 9;
 		ruestung= 5;
-		name= "Ritter";
+		name= "Hasenritter";
 		preis = 400;
+		tooltipPfad = "Hasenritter_anzeige.jpg";
 		
 		//eleganter und so
 		for (int i = -2; i < 3; i++) {

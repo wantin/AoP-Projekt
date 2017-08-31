@@ -14,6 +14,7 @@ public class Blitzschlag extends Effekt {
 		preis = 150;
 		bildPfad = "bilder/effekte/blitz.jpg";
 		art = "fluch";
+		tooltipPfad = "Blitzsturm_anzeige.jpg";
 	}
 
 	@Override

@@ -12,6 +12,7 @@ public class Bogenschuetzen extends Einheit {
 		ruestung= 0;
 		name= "Bogenschütze";
 		preis = 100;
+		tooltipPfad = "Bogenschütze_anzeige.jpg";
 		
 		//eleganter und so
 		for (int i = -1; i < 2; i++) {

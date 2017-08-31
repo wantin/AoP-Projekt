@@ -14,6 +14,7 @@ public class Saeuregranate extends Effekt {
 		preis = 100;
 		bildPfad = "bilder/effekte/sauregranate.jpg";
 		art = "fluch";
+		tooltipPfad = "Säuregranate_anzeige.jpg";
 	}
 	
 	@Override

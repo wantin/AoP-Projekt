@@ -12,6 +12,7 @@ public class GottesSegen extends Effekt {
 		preis = 50;
 		bildPfad = "bilder/effekte/gottessegen.jpg";
 		art = "segen";
+		tooltipPfad = "GottesSegen_anzeige.jpg";
 	}
 	
 	@Override

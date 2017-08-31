@@ -125,7 +125,7 @@ public class GUI extends JFrame{
 	public GUI(Feld spielbrett, Spieler links, Spieler rechts){
 
 		this.setTitle("Vona");
-		this.setBounds(400, 100, 1200, 730);
+		this.setSize(1200, 730);
 		this.setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);	
 
@@ -309,6 +309,49 @@ public class GUI extends JFrame{
 		}
 		mitte.add(mLabel);
 
+		passenLinks.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				links.setPassen(true);
+			}
+		});
+		passenRechts.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				rechts.setPassen(true);
+			}
+		});
+		
+		abbrechenLinks.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//reset
+				links.setPassen(false);
+				links.setAktionsAuswahlZeile(-1);
+				links.setAktionsAuswahlSpalte(-1);
+				links.setAktionsAuswahl0(-1);
+				links.setAktionAuswahlEinheit(null);
+				links.setAuswahlPhase(0);
+				optionenZeigenSpieler(links);
+			}
+		});
+		
+		abbrechenRechts.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//reset
+				rechts.setPassen(false);
+				rechts.setAktionsAuswahlZeile(-1);
+				rechts.setAktionsAuswahlSpalte(-1);
+				rechts.setAktionsAuswahl0(-1);
+				rechts.setAktionAuswahlEinheit(null);
+				rechts.setAuswahlPhase(0);
+				optionenZeigenSpieler(rechts);
+			}
+		});
+		
 		//spieler 2 im rechten Feld
 		Icon rIcon = new ImageIcon(getClass().getResource("seiten.png"));
 		rfeld = new JLabel(rIcon);

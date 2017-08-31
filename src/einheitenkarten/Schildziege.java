@@ -14,8 +14,9 @@ public class Schildziege extends Einheit{
 		//vor (vorzeichen) sollte 1 für den linken Spieler und -1 für den rechten Spieler sein
 		staerke= 7;
 		ruestung= 3;
-		name= "Doppelsoldner";
+		name= "Schildziege";
 		preis = 200;
+		tooltipPfad = "Schildziege_anzeige.jpg";
 		//ich weiß nicht, ob das nicht eleganter geht..
 		
 		//also so sollte das uebrigens eleganter und k�rzer sein, falls ich das richtig verstanden habe

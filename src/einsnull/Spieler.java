@@ -2,7 +2,6 @@ package einsnull;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 import effektkarten.Blitzschlag;
@@ -15,19 +14,19 @@ import einheitenkarten.Schildziege;
 
 public class Spieler {
 	
-	private String name;
-	private ArrayList<Karte> hand = new ArrayList<Karte>();
-	private ArrayList<Einheit> truppen = new ArrayList<Einheit>();
-	private int gold = 1000;
-	private String seite;
-	private int aktionsAuswahl0 = -1;
-	private int aktionsAuswahlZeile= -1;
-	private int aktionsAuswahlSpalte= -1;
-	private boolean aktionAuswahlHand;
-	private Einheit aktionAuswahlEinheit = null;
-	private int auswahlPhase;
-	
-	static Scanner input = new Scanner(System.in);
+	protected String name;
+	protected ArrayList<Karte> hand = new ArrayList<Karte>();
+	protected ArrayList<Einheit> truppen = new ArrayList<Einheit>();
+	protected int gold = 1000;
+	protected String seite;
+	protected int aktionsAuswahl0 = -1;
+	protected int aktionsAuswahlZeile= -1;
+	protected int aktionsAuswahlSpalte= -1;
+	protected boolean aktionAuswahlHand;
+	protected Einheit aktionAuswahlEinheit = null;
+	protected int auswahlPhase;
+	protected boolean passen = false;
+	//diese variable hätte an vielen Stellen genutzt werden können um den Code schöner zu machen
 	
 	public void resetBereit() {
 		for (int i = 0; i < truppen.size(); i++) {
@@ -35,62 +34,9 @@ public class Spieler {
 		}
 	}
 	
-	//bewegt aus Main
+	//diese Funktion ist hier, damit KI sie überschreiben kann
 	public void kaufen(GUI anzeige, Spieler anderer) {
-		
 		anzeige.kaufen(this, anderer);
-		
-		/* Ich lass das mal noch drin, bis ich kaufen bei der KI auch drin habe, aber ich glaube dann brauchen wir das wirklich nicht mehr.
-		
-		Karte[] auswahl = new Karte[3];
-		int maxPreis = 50;
-		int maxHand = 8;
-		
-		System.out.println("Kaufprozess beginnen. Sie haben " + gold + " Gold.");
-		System.out.println("Suchen Sie sich eine der folgenden Karten aus:");
-		
-		loop:
-		while(gold >= maxPreis) {
-			for(int i = 0; i <= 2; i++) {
-				auswahl[i] = generateEinheit();
-				while (gold < auswahl[i].getPreis() && gold >= maxPreis) {
-					auswahl[i] = generateEinheit(); // System.out.println(i + "Nicht genug Gold. Generiere neue Einheit."); // Nur zum Testen.
-				}
-				System.out.println("["+i+"] " + auswahl[i].getName() + "("+auswahl[i].getPreis()+"g)");
-			}
-			int key;
-			do{
-				key = input.nextInt();
-				switch (key) {
-					case 0: 
-						hand.add(auswahl[0]);
-						gold -= auswahl[0].getPreis();
-						System.out.println(auswahl[key].getName() + " zur Hand hinzugefï¿½gt.");
-						System.out.println("Sie haben nun " + gold + " Gold.");
-						break;
-					case 1: 
-						hand.add(auswahl[1]);
-						gold -= auswahl[1].getPreis();
-						System.out.println(auswahl[key].getName() + " zur Hand hinzugefï¿½gt.");
-						System.out.println("Sie haben nun " + gold + " Gold.");
-						break;
-					case 2: 
-						hand.add(auswahl[2]);
-						gold -= auswahl[2].getPreis();
-						System.out.println(auswahl[key].getName() + " zur Hand hinzugefï¿½gt.");
-						System.out.println("Sie haben nun " + gold + " Gold.");
-						break;
-					default: 
-						System.out.println("Bitte korrekte Auswahl treffen.");
-					}
-				System.out.println("Sie haben nun " + hand.size() + " Karten auf der Hand");
-				if (hand.size() >= maxHand) {
-					System.out.println("Maximale Handkartenanzahl von '" + maxHand + "' erreicht.");
-					break loop;
-				}
-				}while (key < 0 || key > 2);
-			}
-			*/
 	}
 	
 	/* TODO(?): Verschiedene Chancen bestimmte Karten zu erhalten, vielleicht irgendwas mathematisches mit 
@@ -124,9 +70,9 @@ public class Spieler {
 	}	
 	
 	//eigentliches Spielen
-	//bewegt aus main
 	void ziehen(Feld spielbrett, GUI anzeige){
 		//reset
+		passen= false;
 		aktionsAuswahlZeile= -1;
 		aktionsAuswahlSpalte= -1;
 		aktionsAuswahl0= -1;
@@ -139,6 +85,9 @@ public class Spieler {
 		boolean aus = false;
 		boolean ziel = false;
 		while(!((trupp || aus) && ziel)){
+			if(passen){
+				return;
+			}
 			trupp= (aktionAuswahlHand == false) && (aktionAuswahlEinheit != null); //man hat eine Truppe ausgewählt
 			aus= (aktionAuswahlHand == true) && (aktionsAuswahl0 != -1); //man hat eine Handkarte zum ausspielen gewählt
 			ziel= (aktionsAuswahlSpalte != -1) && (aktionsAuswahlZeile != -1); //man hat ein Ziel gewählt
@@ -156,32 +105,7 @@ public class Spieler {
 			aktionAuswahlEinheit.nutzen(spielbrett);
 		}
 		anzeige.aktualisierenFeld(spielbrett);
-		anzeige.aktualisierenHand(this);
-		
-		/*alt
-		System.out.println("Hand von " + this.getName());
-		this.printHand();
-		System.out.println("Truppen von " + this.getName());
-		this.printTruppen();
-		System.out.println("Spielfeld:");
-		spielbrett.print();
-		int auswahl = 0;
-		boolean stop= false; //wird auf true gesetzt, wenn eine Aktion ausgefÃ¼hrt wurde.
-		
-		do {
-			System.out.println("Wollen Sie eine Handkarte ausspielen(1), oder eine Einheit bewegen/mit ihr angreifen(2)?");
-			auswahl= input.nextInt();
-			if(auswahl == 1){
-				System.out.println("Welche Handkarte wollen Sie spielen? [0, " + (this.getHand().size()-1 ) + "]" );
-				auswahl= input.nextInt();
-				stop= this.getHand().get(auswahl).nutzen(spielbrett);
-			}else {
-				System.out.println("Welche Einheit wollen Sie bewegen? [0, " + (this.getTruppen().size()-1 ) + "]" );
-				auswahl= input.nextInt();
-				stop= this.getTruppen().get(auswahl).nutzen(spielbrett);
-			}
-		}while(!stop);
-		*/
+		anzeige.aktualisierenHand(this);		
 	}
 	
 	//Kontrollausgabemethoden
@@ -206,6 +130,14 @@ public class Spieler {
 		
 	public Einheit getAktionAuswahlEinheit() {
 		return aktionAuswahlEinheit;
+	}
+
+	public boolean isPassen() {
+		return passen;
+	}
+
+	public void setPassen(boolean passen) {
+		this.passen = passen;
 	}
 
 	public int getAuswahlPhase() {
