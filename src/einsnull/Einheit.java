@@ -84,7 +84,41 @@ static Scanner input = new Scanner(System.in);
 			return true;
 		}
 		*/
-	}	
+	}
+	
+	public ArrayList<int[]> zeigeBewegung(Feld spielbrett){
+		ArrayList<int[]> ausgabe = new ArrayList<int[]> ();
+		for (int i = 0; i < angriff.size(); i++) {
+			//check fuer Rand Feldgröße flexibel
+			if(position[0]+angriff.get(i)[0] < spielbrett.getAnzahlZeilen() && position[0]+angriff.get(i)[0] >= 0 && position[1]+angriff.get(i)[1] < spielbrett.getAnzahlSpalten() && position[1]+angriff.get(i)[1] >= 0
+					//es muss eine Einheit auf dem Feld sein
+					&& spielbrett.besetzt(position[0]+angriff.get(i)[0], position[1]+angriff.get(i)[1])
+			) {
+				//die Einheit darf nicht eine eigene sein
+				//dieser Test ist innen, damit getEinheit nicht bei einem leeren Feld aufgerufen wird
+				if(spielbrett.getEinheit(position[0]+angriff.get(i)[0], position[1]+angriff.get(i)[1]).getBesitzer() != this.besitzer){
+					int[] temp = {position[0]+angriff.get(i)[0], position[1]+angriff.get(i)[1]};
+					ausgabe.add(temp);
+				}
+			}
+		}
+		return ausgabe;
+	}
+	
+	public ArrayList<int[]> zeigeAngriff(Feld spielbrett){
+		ArrayList<int[]> ausgabe = new ArrayList<int[]> ();
+		for (int i = 0; i < bewegung.size(); i++) {
+			//check fuer Rand Feldgröße flexibel
+			if(position[0]+bewegung.get(i)[0] < spielbrett.getAnzahlZeilen() && position[0]+bewegung.get(i)[0] >= 0 && position[1]+bewegung.get(i)[1] < spielbrett.getAnzahlSpalten() && position[1]+bewegung.get(i)[1] >= 0
+					//es darf keine Einheit auf dem Feld sein
+					&& !spielbrett.besetzt(position[0]+bewegung.get(i)[0], position[1]+bewegung.get(i)[1]) 
+					) {
+				int[] temp = {position[0]+bewegung.get(i)[0], position[1]+bewegung.get(i)[1]};
+				ausgabe.add(temp);
+			}
+		}
+		return ausgabe;
+	}
 	
 	//die drei Funktionen, die nutzen aufruft
 	public void ausspielen(Feld spielbrett, int zeile, int spalte){

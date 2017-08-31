@@ -275,6 +275,8 @@ public class GUI extends JFrame{
 		            optionenZeigenHandkarte(links.getHand().get(final_i), spielbrett);
 		            links.setAktionsAuswahl0(final_i);
 		            links.setAktionAuswahlHand(true);
+					links.setAuswahlPhase(1);
+					rechts.setAuswahlPhase(1);
 		        }
 		    });
 		    lLabel.add(linksHandkarten[i]);	
@@ -330,10 +332,19 @@ public class GUI extends JFrame{
 					//muss noch abgeÃ¤ndert werden, da bisher der attbttn(fÃ¼r angreifbare einheiten) genutzt wird(auch wenn freies feld)
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
-						links.setAktionsAuswahlZeile(zeile);
-						rechts.setAktionsAuswahlZeile(zeile);
-						links.setAktionsAuswahlSpalte(spalte);
-						rechts.setAktionsAuswahlSpalte(spalte);
+						if(links.getAuswahlPhase() == 0 || rechts.getAuswahlPhase() == 0){ 
+							//Einheit auswählen um Aktion durchzuführen
+							rechts.setAktionAuswahlEinheit(spielbrett.getEinheit(zeile, spalte));
+							links.setAktionAuswahlEinheit(spielbrett.getEinheit(zeile, spalte));
+							optionenZeigenEinheit(spielbrett.getEinheit(zeile, spalte), spielbrett);
+							links.setAuswahlPhase(1);
+							rechts.setAuswahlPhase(1);
+						}else{ //Ziel auswählen
+							links.setAktionsAuswahlZeile(zeile);
+							rechts.setAktionsAuswahlZeile(zeile);
+							links.setAktionsAuswahlSpalte(spalte);
+							rechts.setAktionsAuswahlSpalte(spalte);
+						}
 					}
 				});
 			mLabel.add(feldButtons[c][d]);	 
@@ -374,6 +385,8 @@ public class GUI extends JFrame{
 		            optionenZeigenHandkarte(rechts.getHand().get(final_i), spielbrett);
 		            rechts.setAktionsAuswahl0(final_i);
 		            rechts.setAktionAuswahlHand(true);
+					links.setAuswahlPhase(1);
+					rechts.setAuswahlPhase(1);
 		        }
 		    });
 			rLabel.add(rechtsHandkarten[i]);	
@@ -561,6 +574,21 @@ public class GUI extends JFrame{
 		}
 	}
 	
+	//zeigt an, was man mit einer ausgespielten Einheit für Optionen hat.
+	public void optionenZeigenEinheit(Einheit aktive, Feld spielbrett){
+		optionenKeine();
+		for (int i = 0; i < aktive.zeigeBewegung(spielbrett).size(); i++) {
+			int x = aktive.zeigeBewegung(spielbrett).get(i)[0];
+			int y = aktive.zeigeBewegung(spielbrett).get(i)[1];
+			feldButtons[x][y].setEnabled(true);
+		}
+		for (int i = 0; i < aktive.zeigeAngriff(spielbrett).size(); i++) {
+			int x = aktive.zeigeAngriff(spielbrett).get(i)[0];
+			int y = aktive.zeigeAngriff(spielbrett).get(i)[1];
+			feldButtons[x][y].setEnabled(true);
+		}		
+	}
+	
 	//Zeigt an, was ein Spieler in seinem Zug tun kann
 	public void optionenZeigenSpieler(Spieler aktiverSpieler){
 		optionenKeine();
@@ -576,7 +604,7 @@ public class GUI extends JFrame{
 			}
 		}
 		for (int i = 0; i < aktiverSpieler.getTruppen().size(); i++) {
-			if(aktiverSpieler.getTruppen().get(i).getBereit() > 1){
+			if(aktiverSpieler.getTruppen().get(i).getBereit() > 0){
 				int koordinaten[] = aktiverSpieler.getTruppen().get(i).getPosition();
 				feldButtons[koordinaten[0]][koordinaten[1]].setEnabled(true);
 			}

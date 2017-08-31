@@ -24,6 +24,8 @@ public class Spieler {
 	private int aktionsAuswahlZeile= -1;
 	private int aktionsAuswahlSpalte= -1;
 	private boolean aktionAuswahlHand;
+	private Einheit aktionAuswahlEinheit = null;
+	private int auswahlPhase;
 	
 	static Scanner input = new Scanner(System.in);
 	
@@ -128,10 +130,18 @@ public class Spieler {
 		aktionsAuswahlZeile= -1;
 		aktionsAuswahlSpalte= -1;
 		aktionsAuswahl0= -1;
+		aktionAuswahlEinheit=null;
+		auswahlPhase = 0;
 		
 		anzeige.optionenZeigenSpieler(this);
 		
-		while(aktionsAuswahl0 == -1 || aktionsAuswahlSpalte == -1){
+		boolean trupp = false;
+		boolean aus = false;
+		boolean ziel = false;
+		while(!((trupp || aus) && ziel)){
+			trupp= (aktionAuswahlHand == false) && (aktionAuswahlEinheit != null); //man hat eine Truppe ausgewählt
+			aus= (aktionAuswahlHand == true) && (aktionsAuswahl0 != -1); //man hat eine Handkarte zum ausspielen gewählt
+			ziel= (aktionsAuswahlSpalte != -1) && (aktionsAuswahlZeile != -1); //man hat ein Ziel gewählt
 			try {
 				TimeUnit.MILLISECONDS.sleep(10);
 			} catch (InterruptedException e) {
@@ -140,13 +150,14 @@ public class Spieler {
 				e.printStackTrace();
 			}
 		}
-		if(aktionAuswahlHand){
-			this.getHand().get(aktionsAuswahl0).nutzen(spielbrett);
-		}else{
-			this.getTruppen().get(aktionsAuswahl0).nutzen(spielbrett);
+		if(aus){
+			hand.get(aktionsAuswahl0).nutzen(spielbrett);
+		}else{ //da wir aus der schleife raus sind gilt: aus xor trupp
+			aktionAuswahlEinheit.nutzen(spielbrett);
 		}
 		anzeige.aktualisierenFeld(spielbrett);
 		anzeige.aktualisierenHand(this);
+		
 		/*alt
 		System.out.println("Hand von " + this.getName());
 		this.printHand();
@@ -191,6 +202,22 @@ public class Spieler {
 	
 	public String getSeite() {
 		return seite;
+	}
+		
+	public Einheit getAktionAuswahlEinheit() {
+		return aktionAuswahlEinheit;
+	}
+
+	public int getAuswahlPhase() {
+		return auswahlPhase;
+	}
+
+	public void setAuswahlPhase(int auswahlPhase) {
+		this.auswahlPhase = auswahlPhase;
+	}
+
+	public void setAktionAuswahlEinheit(Einheit aktionAuswahlEinheit) {
+		this.aktionAuswahlEinheit = aktionAuswahlEinheit;
 	}
 
 	public boolean isAktionAuswahlHand() {
