@@ -32,6 +32,8 @@ public class GUI extends JFrame{
 
 	private JButton abbrechenLinks = new JButton();
 	private JButton abbrechenRechts = new JButton();
+	private JButton passenLinks = new JButton();
+	private JButton passenRechts = new JButton();
 	private JButton[] kaufButtons= new JButton[3];
 	private JButton[][] feldButtons;
 	private JButton[] linksHandkarten = new JButton[8];
@@ -89,16 +91,53 @@ public class GUI extends JFrame{
 
 	};
 	
+	public void aktualisierenHand(Spieler aktiver){
+		for (int i = 0; i < aktiver.getHand().size(); i++) {
+			if(aktiver.getSeite()=="links"){
+				linksHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(aktiver.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH)));
+			}else{
+				rechtsHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(aktiver.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH)));
+			}
+		}
+		for (int i = aktiver.getHand().size(); i < 8; i++) {
+			if(aktiver.getSeite()=="links"){
+				linksHandkarten[i].setIcon(null);
+			}else{
+				rechtsHandkarten[i].setIcon(null);
+			}
+		}
+	}
+	
 	public void aktualisierenHand(Spieler links, Spieler rechts){
 		
 		//Handkarten des linken Spielers aktualisiert darstellen
 		for(int i = 0; i < links.getHand().size(); i++){ 
 			linksHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(links.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH)));
 		}
+		//leere Felder leeren
+		for (int i = links.getHand().size(); i < 8; i++) {
+			linksHandkarten[i].setIcon(null);
+		}
 		//Handkarten des rechten Spielers aktualisiert darstellen
 		for(int i = 0; i < rechts.getHand().size(); i++){ 
 			rechtsHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(rechts.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH)));
-		}		
+		}
+		for (int i = rechts.getHand().size(); i < 8; i++) {
+			rechtsHandkarten[i].setIcon(null);
+		}
+	}
+	
+	public void aktualisierenFeld(Feld spielbrett){
+		for (int i = 0; i < feldButtons.length; i++) {
+			for (int j = 0; j < feldButtons.length; j++) {
+				if(spielbrett.besetzt(i, j)){
+					String pfad = spielbrett.getEinheit(i, j).getBildPfad();
+					feldButtons[i][j].setIcon(new ImageIcon(((new ImageIcon(pfad)).getImage()).getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH)));
+				}else{
+					feldButtons[i][j].setIcon(null);
+				}
+			}
+		}
 	}
 	
 	//Konstruktor
@@ -456,6 +495,7 @@ public class GUI extends JFrame{
 		auswahl.add(start);
 	}
 	
+	//Hilfsfunktion, die alle Buttons disabled
 	public void optionenKeine(){
 		for (int i = 0; i < rechtsHandkarten.length; i++) {
 			rechtsHandkarten[i].setEnabled(false);
@@ -468,8 +508,11 @@ public class GUI extends JFrame{
 		}
 		abbrechenLinks.setEnabled(false);
 		abbrechenRechts.setEnabled(false);
+		passenLinks.setEnabled(false);
+		passenRechts.setEnabled(false);
 	}
 	
+	//Zeigt für eine Handkarte an, was man damit machen kann
 	public void optionenZeigenHandkarte(Karte auszuspielende, Feld spielbrett){
 		optionenKeine();
 		if(auszuspielende.getBesitzer().getSeite()=="links"){
@@ -518,15 +561,24 @@ public class GUI extends JFrame{
 		}
 	}
 	
+	//Zeigt an, was ein Spieler in seinem Zug tun kann
 	public void optionenZeigenSpieler(Spieler aktiverSpieler){
 		optionenKeine();
 		if(aktiverSpieler.getSeite()=="links"){
+			passenLinks.setEnabled(true);
 			for (int i = 0; i < linksHandkarten.length; i++) {
 				linksHandkarten[i].setEnabled(true);
 			}
 		}else{
+			passenRechts.setEnabled(true);
 			for (int i = 0; i < rechtsHandkarten.length; i++) {
 				rechtsHandkarten[i].setEnabled(true);
+			}
+		}
+		for (int i = 0; i < aktiverSpieler.getTruppen().size(); i++) {
+			if(aktiverSpieler.getTruppen().get(i).getBereit() > 1){
+				int koordinaten[] = aktiverSpieler.getTruppen().get(i).getPosition();
+				feldButtons[koordinaten[0]][koordinaten[1]].setEnabled(true);
 			}
 		}
 	}

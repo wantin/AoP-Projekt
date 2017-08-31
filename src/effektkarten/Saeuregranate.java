@@ -22,12 +22,14 @@ public class Saeuregranate extends Effekt {
 		Random rnjesus = new Random();
 		for (int i = -1; i < 2; i++) {
 			for (int j = -1; j < 2; j++) {
-				spielbrett.getEinheit(zeile+i, spalte+j).setRuestung(
-					Math.max(0, //Rüstung nie unter 0
-							spielbrett.getEinheit(zeile+i, spalte+j).getRuestung()
-							-rnjesus.nextInt(6)
-					)
-				);
+				if(spielbrett.besetzt(zeile+i, spalte+j)){
+					spielbrett.getEinheit(zeile+i, spalte+j).setRuestung(
+						Math.max(0, //nie unter 0
+								spielbrett.getEinheit(zeile+i, spalte+j).getRuestung()
+								-rnjesus.nextInt(6) //reduziert um bis zu 6
+						)
+					);
+				}
 			}
 		}
 	}

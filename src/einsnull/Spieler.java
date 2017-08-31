@@ -3,6 +3,7 @@ package einsnull;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 import effektkarten.Blitzschlag;
 import effektkarten.GottesSegen;
@@ -123,17 +124,29 @@ public class Spieler {
 	//eigentliches Spielen
 	//bewegt aus main
 	void ziehen(Feld spielbrett, GUI anzeige){
-		//ausw√§hlen
-		//TODO: switch from console to GUI
+		//reset
+		aktionsAuswahlZeile= -1;
+		aktionsAuswahlSpalte= -1;
+		aktionsAuswahl0= -1;
+		
 		anzeige.optionenZeigenSpieler(this);
 		
-		while(aktionsAuswahl0==-1){
-			if(aktionAuswahlHand){
-				this.getHand().get(aktionsAuswahl0).nutzen(spielbrett);
-			}else{
-				this.getTruppen().get(aktionsAuswahl0).nutzen(spielbrett);
+		while(aktionsAuswahl0 == -1 || aktionsAuswahlSpalte == -1){
+			try {
+				TimeUnit.MILLISECONDS.sleep(10);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				//ich weiﬂ nicht, was ich hier machen soll...
+				e.printStackTrace();
 			}
 		}
+		if(aktionAuswahlHand){
+			this.getHand().get(aktionsAuswahl0).nutzen(spielbrett);
+		}else{
+			this.getTruppen().get(aktionsAuswahl0).nutzen(spielbrett);
+		}
+		anzeige.aktualisierenFeld(spielbrett);
+		anzeige.aktualisierenHand(this);
 		/*alt
 		System.out.println("Hand von " + this.getName());
 		this.printHand();
