@@ -449,7 +449,7 @@ public class GUI extends JFrame{
 		Icon sIcon = new ImageIcon(getClass().getResource("sieg.png"));
 		sieg = new JLabel(sIcon);
 		sieg.setLayout(null);
-		sieg.setVisible(true);
+		sieg.setVisible(false);
 		sieg.setBounds(275,150,650,400);
 		sieg.setForeground(Color.WHITE);
 
