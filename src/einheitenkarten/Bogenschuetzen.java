@@ -23,8 +23,8 @@ public class Bogenschuetzen extends Einheit {
 		}
 		
 		for (int i = -3; i < 4; i++) {
-			for (int j = -3; j < 4; j++) {
-				if(Math.abs(i)+Math.abs(j)<5 && Math.abs(i)>1 &&Math.abs(j)>1) {
+			for (int j = -3; j < 4; j++) { 
+				if(Math.abs(i)+Math.abs(j)<5 && (Math.abs(i)>1 || Math.abs(j)>1)) {
 					int[] temp= {i, j};
 					angriff.add(temp);
 				}
