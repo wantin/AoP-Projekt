@@ -200,7 +200,7 @@ public class GUI extends JFrame{
 		    linksHandkarten[i].addActionListener(new ActionListener(){
 		        @Override
 		        public void actionPerformed(ActionEvent arg0){
-		            optionenZeigenHandkarte(links.getHand().get(final_i), spielbrett);
+		            optionenZeigenHandkarte(links.getHand().get(final_i), spielbrett);	// erzeugt IOOB-error!!!
 		            links.setAktionsAuswahl0(final_i);
 		            links.setAktionAuswahlHand(true);
 					links.setAuswahlPhase(1);

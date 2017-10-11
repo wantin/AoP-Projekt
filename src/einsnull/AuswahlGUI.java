@@ -21,8 +21,8 @@ public class AuswahlGUI extends JFrame{
 	private JPanel content;
 	private JLabel auswahl;
 
-	private JButton ppbttn = new JButton("Player vs. Player");
-	private JButton pkbttn = new JButton("Player vs. KI");
+	private JButton ppbttn = new JButton("Spieler vs. Spieler");
+	private JButton pkbttn = new JButton("Spieler vs. KI");
 
 	private JLabel text1 = new JLabel();
 	private JLabel text2 = new JLabel();
@@ -30,7 +30,8 @@ public class AuswahlGUI extends JFrame{
 	//Konstruktor
 	public AuswahlGUI(Spieler links){
 
-		AuswahlGUI diese = this; //benötigt für actionlistener
+		AuswahlGUI diese = this; //benoetigt fuer actionlistener
+		
 		//Spielart und Namen auswahl
 		Icon aIcon = new ImageIcon(getClass().getResource("feld.png"));
 		auswahl = new JLabel(aIcon);
@@ -47,23 +48,24 @@ public class AuswahlGUI extends JFrame{
 		setLocationRelativeTo(null);
 		
 		
-		//auswahl.setVisible(false); //falls man den Anfang ï¿½berspringen will
+		//auswahl.setVisible(false); //falls man den Anfang ueberspringen will
 		
 		auswahl.add(text1);
 		auswahl.add(text2);
 		auswahl.add(ppbttn);
 		auswahl.add(pkbttn);
 
-		text1.setText("Wir heißen eure Majästäten willkommen zu Eldotin.");
+		text1.setText("Wir hei\u00dfen eure Majest\u00e4ten willkommen zu Eldotin.");
 		text1.setFont(new Font(text1.getText(), Font.ITALIC, 20));
-		text1.setSize(650, 30);
-		text1.setHorizontalAlignment(SwingConstants.CENTER);
 		text1.setForeground(auswahl.getForeground());
+		text1.setBounds(0, 40, 650, 30);
+		text1.setHorizontalAlignment(SwingConstants.CENTER);
 
-		text2.setText("Wollt Ihr gegen die KI spielen , oder zu zweit an einem Computer?");
+		text2.setText("Wollt Ihr gegen die KI spielen oder zu zweit an einem Computer?");
 		text2.setFont(new Font(text2.getText(), Font.PLAIN, 16));
 		text2.setForeground(auswahl.getForeground());
-		text2.setBounds(100,110,500,30);
+		text2.setBounds(0, 110, 650, 30);
+		text2.setHorizontalAlignment(SwingConstants.CENTER);
 
 		ppbttn.setVisible(true);
 		ppbttn.setLayout(null);
@@ -86,12 +88,12 @@ public class AuswahlGUI extends JFrame{
 		pkbttn.setOpaque(false);
 		pkbttn.setContentAreaFilled(false);
 		pkbttn.setForeground(auswahl.getForeground());
-		pkbttn.setBounds(350,200,200,50);
-		pkbttn.addActionListener(new ActionListener(){
+		pkbttn.setBounds(350, 200, 200, 50);
+		pkbttn.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if(pkbttn != null){
+				if(pkbttn != null) {
 					links.setAktionsAuswahl0(1);
 					diese.setVisible(false);
 				}

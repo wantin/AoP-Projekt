@@ -45,7 +45,7 @@ public class Main {
 	public static void main(String[] args) {		
 
 		Spieler links = new Spieler();
-		//buttonpress kann nicht eine einfache int, die an GUI �bergeben wird �ndern. 
+		//buttonpress kann nicht eine einfache int, die an GUI uebergeben wird aendern. 
 		//das ist wohl das weniger elegante workaround
 		AuswahlGUI auswahl = new AuswahlGUI(links);
 		auswahl.setVisible(true);
