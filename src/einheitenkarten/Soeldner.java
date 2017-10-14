@@ -3,20 +3,21 @@ package einheitenkarten;
 import einsnull.Einheit;
 import einsnull.Spieler;
 
-public class Soeldner extends Einheit{
+public class Soeldner extends Einheit {
 	
 	public Soeldner(Spieler besitzer) {
-		this.besitzer= besitzer;
+		this.besitzer = besitzer;
 		bildPfad = "bilder/einheiten/soldner.jpg";
-		int vor =1;
-		if (besitzer.getSeite()=="rechts")vor=-1;
-		//vor (vorzeichen) sollte 1 für den linken Spieler und -1 für den rechten Spieler sein
-		staerke= 5;
-		ruestung= 2;
-		name= "Soldner";
+		int vor = 1;
+		if (besitzer.getSeite()=="rechts")
+			vor = -1;	//vor (vorzeichen) sollte 1 für den linken Spieler und -1 für den rechten Spieler sein
+		staerke = 5;
+		ruestung = 2;
+		name = "Soeldner";
 		preis = 100;
-		tooltipPfad = "S�ldner_anzeige.jpg";
-		//ich wei� nicht, ob das nicht eleganter geht..
+		tooltipPfad = "Soeldner_anzeige.jpg";
+		
+		//ich weiss nicht, ob das nicht eleganter geht..
 		int[] a= {1*vor,0*vor};bewegung.add(a);
 		int[] b= {1*vor,1*vor};bewegung.add(b);
 		int[] c= {0*vor,1*vor};bewegung.add(c);
@@ -34,8 +35,5 @@ public class Soeldner extends Einheit{
 		int[] u= {0*vor,-1*vor};angriff.add(u);
 		int[] t= {1*vor,-1*vor};angriff.add(t);
 		int[] s= {-1*vor,-1*vor};angriff.add(s);
-
 	}
-
 }
-//abcdefghijklmnopqrstuvwxyz

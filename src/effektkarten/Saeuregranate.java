@@ -10,11 +10,11 @@ public class Saeuregranate extends Effekt {
 	
 	public Saeuregranate(Spieler besitzer) {
 		this.besitzer = besitzer;
-		name = "SÃ¤uregranate";
+		name = "Saeuregranate";
 		preis = 100;
 		bildPfad = "bilder/effekte/sauregranate.jpg";
 		art = "fluch";
-		tooltipPfad = "Säuregranate_anzeige.jpg";
+		tooltipPfad = "Saeuregranate_anzeige.jpg";
 	}
 	
 	@Override
@@ -23,12 +23,11 @@ public class Saeuregranate extends Effekt {
 		Random rnjesus = new Random();
 		for (int i = -1; i < 2; i++) {
 			for (int j = -1; j < 2; j++) {
-				if(zeile+i>-1 && zeile+i<6 && spalte+j>-1 && spalte+j<6){
-					if(spielbrett.besetzt(zeile+i, spalte+j)){
+				if (zeile+i>-1 && zeile+i<6 && spalte+j>-1 && spalte+j<6) {
+					if (spielbrett.besetzt(zeile+i, spalte+j)) {
 						spielbrett.getEinheit(zeile+i, spalte+j).setRuestung(
-							Math.max(0, //nie unter 0
-									spielbrett.getEinheit(zeile+i, spalte+j).getRuestung()
-									-rnjesus.nextInt(6) //reduziert um bis zu 6
+								Math.max(0, //nie unter 0
+									spielbrett.getEinheit(zeile+i, spalte+j).getRuestung()-rnjesus.nextInt(6)	//reduziert um bis zu 6
 							)
 						);
 					}
@@ -36,5 +35,4 @@ public class Saeuregranate extends Effekt {
 			}
 		}
 	}
-
 }

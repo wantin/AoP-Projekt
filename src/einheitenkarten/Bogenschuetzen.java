@@ -10,9 +10,9 @@ public class Bogenschuetzen extends Einheit {
 		bildPfad = "bilder/einheiten/bogenschutze.jpg";
 		staerke= 5;
 		ruestung= 0;
-		name= "Bogenschütze";
+		name= "Bogenschuetze";
 		preis = 100;
-		tooltipPfad = "Bogenschütze_anzeige.jpg";
+		tooltipPfad = "Bogenschuetze_anzeige.jpg";
 		
 		//eleganter und so
 		for (int i = -1; i < 2; i++) {
@@ -31,5 +31,4 @@ public class Bogenschuetzen extends Einheit {
 			}
 		}
 	}	
-
 }
