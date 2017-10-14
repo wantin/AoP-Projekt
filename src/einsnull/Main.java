@@ -1,6 +1,5 @@
 package einsnull;
 
-
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
@@ -60,7 +59,7 @@ public class Main {
 		Spieler rechts;
 		Feld spielbrett = new Feld(6,6);
 		links.setSeite("links");
-		if (links.getAktionsAuswahl0()==1) {
+		if (links.getAktionsAuswahl0() == 1) {
 			rechts = new KI();
 		} else {
 			rechts = new Spieler();
