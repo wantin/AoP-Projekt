@@ -33,13 +33,13 @@ public class Spieler {
 		}
 	}
 	
-	//diese Funktion ist hier, damit KI sie überschreiben kann
+	// diese Funktion ist hier, damit KI sie überschreiben kann
 	public void kaufen(GUI anzeige, Spieler anderer) {
 		anzeige.kaufen(this, anderer);
 	}
 	
 
-	 //Methode zur Generierung zufälliger Einheiten, ein Case repräsentiert einen Kartentyp
+	 // Methode zur Generierung zufälliger Einheiten, ein Case repräsentiert einen Kartentyp
 	public Karte generateEinheit() {
 		Random zufall = new Random();
 		int zufZahl = zufall.nextInt(7); 	// Zahl muss manuell je nach Anzahl der existierenden Klassen in 'einheitenkarten' geändert werden
@@ -63,61 +63,57 @@ public class Spieler {
 		}
 	}	
 	
-	//eigentliches Spielen
+	// eigentliches Spielen
 	void ziehen(Feld spielbrett, GUI anzeige){
-		//reset
-		passen= false;
-		aktionsAuswahlZeile= -1;
-		aktionsAuswahlSpalte= -1;
-		aktionsAuswahl0= -1;
-		aktionAuswahlEinheit=null;
+		// reset
+		passen = false;
+		aktionsAuswahlZeile = -1;
+		aktionsAuswahlSpalte = -1;
+		aktionsAuswahl0 = -1;
+		aktionAuswahlEinheit = null;
 		auswahlPhase = 0;
 		
 		anzeige.optionenZeigenSpieler(this);
 		
 		boolean trupp = false;
-		boolean aus = false;
+		boolean ausspielen = false;
 		boolean ziel = false;
-		while(!((trupp || aus) && ziel)){
-			if(passen){
+		while(!((trupp || ausspielen) && ziel)){
+			if (passen)
+				// TODO noetig?! break/... geht net?
 				return;
-			}
-			trupp= (aktionAuswahlHand == false) && (aktionAuswahlEinheit != null); //man hat eine Truppe ausgewählt
-			aus= (aktionAuswahlHand == true) && (aktionsAuswahl0 != -1); //man hat eine Handkarte zum ausspielen gewählt
-			ziel= (aktionsAuswahlSpalte != -1) && (aktionsAuswahlZeile != -1); //man hat ein Ziel gewählt
+			trupp = (aktionAuswahlHand == false) && (aktionAuswahlEinheit != null);	//man hat eine Truppe ausgewählt
+			ausspielen = (aktionAuswahlHand == true) && (aktionsAuswahl0 != -1);			//man hat eine Handkarte zum ausspielen gewählt
+			ziel = (aktionsAuswahlSpalte != -1) && (aktionsAuswahlZeile != -1);		//man hat ein Ziel gewählt
 			try {
 				TimeUnit.MILLISECONDS.sleep(10);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				//ich weiß nicht, was ich hier machen soll...
 				e.printStackTrace();
 			}
 		}
-		if(aus){
+		if (ausspielen)
 			hand.get(aktionsAuswahl0).nutzen(spielbrett);
-		}else{ //da wir aus der schleife raus sind gilt: aus xor trupp
+		else	//da wir aus der schleife raus sind gilt: aus xor trupp
 			aktionAuswahlEinheit.nutzen(spielbrett);
-		}
+		
 		anzeige.aktualisierenFeld(spielbrett);
 		anzeige.aktualisierenHand(this);
 	}
 	
-	//Kontrollausgabemethoden
 	
+	// Kontrollausgabemethoden
 	public void printTruppen() {
-		for (int i = 0; i < truppen.size(); i++) {
+		for (int i = 0; i < truppen.size(); i++)
 			System.out.println(truppen.get(i).getName());
-		}
 	}
 	
 	public void printHand() {
-		for (int i = 0; i < hand.size(); i++) {
+		for (int i = 0; i < hand.size(); i++)
 			System.out.println(hand.get(i).getName());
-		}
 	}
 	
-	//Setter und Getter
 	
+	// Getter und Setter
 	public String getSeite() {
 		return seite;
 	}

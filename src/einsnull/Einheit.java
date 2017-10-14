@@ -21,32 +21,36 @@ static Scanner input = new Scanner(System.in);
 	//Diese Funktion zeigt einem auf, wie man eine Karte(hier Einheit) nutzen kann und ruft dann die entsprechenden Funktionen auf (siehe unten)
 	public boolean nutzen(Feld spielbrett) {
 		
-		if(position[0]==-1) { //pr√ºft ob die Karte noch auf der Hand ist.
+		if (position[0] == -1) { //pr√ºft ob die Karte noch auf der Hand ist.
 			this.ausspielen(spielbrett, besitzer.getAktionsAuswahlZeile(), besitzer.getAktionsAuswahlSpalte()); //keine Korrektur brauch korrekte Zeile und Spalte
 			return true;
-		}else {
-			if(bereit==0) { //das sollte vorher schon abgefangen werden, wird es derzeit noch nicht 
+		} else {
+			if (bereit == 0) //das sollte vorher schon abgefangen werden, wird es derzeit noch nicht 
 				return false;
-			}
-			if(spielbrett.besetzt(besitzer.getAktionsAuswahlZeile(), besitzer.getAktionsAuswahlSpalte())){ //braucht korrekte zeile und spalte
+			
+			if (spielbrett.besetzt(besitzer.getAktionsAuswahlZeile(), besitzer.getAktionsAuswahlSpalte()))		//braucht korrekte zeile und spalte
 				this.angreifen(spielbrett, besitzer.getAktionsAuswahlZeile(), besitzer.getAktionsAuswahlSpalte());
-			}
-			else this.bewegen(spielbrett, besitzer.getAktionsAuswahlZeile(), besitzer.getAktionsAuswahlSpalte());
-			return true;
+			
+			else
+				this.bewegen(spielbrett, besitzer.getAktionsAuswahlZeile(), besitzer.getAktionsAuswahlSpalte());
+			return true;	// TODO returnt immer dasselbe, wirklich als bool noetig?
 		}
 	}
 	
-	public ArrayList<int[]> zeigeAngriff(Feld spielbrett){
+	public ArrayList<int[]> zeigeAngriff(Feld spielbrett) {
 		ArrayList<int[]> ausgabe = new ArrayList<int[]> ();
 		for (int i = 0; i < angriff.size(); i++) {
-			//check fuer Rand Feldgrˆ√üe flexibel
-			if(position[0]+angriff.get(i)[0] < spielbrett.getAnzahlZeilen() && position[0]+angriff.get(i)[0] >= 0 && position[1]+angriff.get(i)[1] < spielbrett.getAnzahlSpalten() && position[1]+angriff.get(i)[1] >= 0
-					//es muss eine Einheit auf dem Feld sein
-					&& spielbrett.besetzt(position[0]+angriff.get(i)[0], position[1]+angriff.get(i)[1])
-			) {
+			//check fuer Rand Feldgroesse flexibel
+			if (position[0]+angriff.get(i)[0] < spielbrett.getAnzahlZeilen()
+					&& position[0]+angriff.get(i)[0] >= 0
+					&& position[1]+angriff.get(i)[1] < spielbrett.getAnzahlSpalten()
+					&& position[1]+angriff.get(i)[1] >= 0	//es muss eine Einheit auf dem Feld sein
+					&& spielbrett.besetzt(position[0]+angriff.get(i)[0], position[1]+angriff.get(i)[1])) {
 				//die Einheit darf nicht eine eigene sein
 				//dieser Test ist innen, damit getEinheit nicht bei einem leeren Feld aufgerufen wird
-				if(spielbrett.getEinheit(position[0]+angriff.get(i)[0], position[1]+angriff.get(i)[1]).getBesitzer() != this.besitzer){
+				
+				// TODO kommentare hierueber anders anordnen, uebersichtlicher machen
+				if (spielbrett.getEinheit(position[0]+angriff.get(i)[0], position[1]+angriff.get(i)[1]).getBesitzer() != this.besitzer) {
 					int[] temp = {position[0]+angriff.get(i)[0], position[1]+angriff.get(i)[1]};
 					ausgabe.add(temp);
 				}
@@ -55,14 +59,13 @@ static Scanner input = new Scanner(System.in);
 		return ausgabe;
 	}
 	
-	public ArrayList<int[]> zeigeBewegung(Feld spielbrett){
+	public ArrayList<int[]> zeigeBewegung(Feld spielbrett) {
 		ArrayList<int[]> ausgabe = new ArrayList<int[]> ();
 		for (int i = 0; i < bewegung.size(); i++) {
 			//check fuer Rand Feldgr√∂√üe flexibel
-			if(position[0]+bewegung.get(i)[0] < spielbrett.getAnzahlZeilen() && position[0]+bewegung.get(i)[0] >= 0 && position[1]+bewegung.get(i)[1] < spielbrett.getAnzahlSpalten() && position[1]+bewegung.get(i)[1] >= 0
-					//es darf keine Einheit auf dem Feld sein
-					&& !spielbrett.besetzt(position[0]+bewegung.get(i)[0], position[1]+bewegung.get(i)[1]) 
-					) {
+			if (position[0]+bewegung.get(i)[0] < spielbrett.getAnzahlZeilen() && position[0]+bewegung.get(i)[0] >= 0
+					&& position[1]+bewegung.get(i)[1] < spielbrett.getAnzahlSpalten() && position[1]+bewegung.get(i)[1] >= 0	//es darf keine Einheit auf dem Feld sein
+					&& !spielbrett.besetzt(position[0]+bewegung.get(i)[0], position[1]+bewegung.get(i)[1])) {
 				int[] temp = {position[0]+bewegung.get(i)[0], position[1]+bewegung.get(i)[1]};
 				ausgabe.add(temp);
 			}
@@ -71,24 +74,24 @@ static Scanner input = new Scanner(System.in);
 	}
 	
 	//die drei Funktionen, die nutzen aufruft
-	public void ausspielen(Feld spielbrett, int zeile, int spalte){
+	public void ausspielen(Feld spielbrett, int zeile, int spalte) {
 		spielbrett.getInhalt(zeile, spalte).add(this);
 		besitzer.getHand().remove(this);
 		besitzer.getTruppen().add(this);
-		position[0]= zeile;
-		position[1]= spalte;
-		bereit=0;
+		position[0] = zeile;
+		position[1] = spalte;
+		bereit = 0;
 	}
 	
 	public void bewegen(Feld spielbrett, int zeile, int spalte) {
 		spielbrett.getInhalt(zeile, spalte).add(this);
 		spielbrett.getInhalt(position[0], position[1]).remove(this);
-		position[0]= zeile;
-		position[1]= spalte;
+		position[0] = zeile;
+		position[1] = spalte;
 		bereit--;
 	}
 	
-	//zweigeteiltes Angreifen sollte sp‰tere Effekte einfacher machen und sieht sch√∂ner aus
+	//zweigeteiltes Angreifen sollte spaetere Effekte einfacher machen und sieht sch√∂ner aus
 	// angegriffene Einheit: spielbrett.getInhalt(zeile, spalte).get(0)
 	public void angreifen(Feld spielbrett, int zeile, int spalte) {
 		spielbrett.getInhalt(zeile, spalte).get(0).verteidigen(spielbrett, this);
@@ -96,12 +99,11 @@ static Scanner input = new Scanner(System.in);
 	}
 	
 	public void verteidigen(Feld spielbrett, Einheit angreifer) { //wird von der verteidigenden Einheit aus aufgerufen
-		if(angreifer.getStaerke()-ruestung < 1) { //check auf Schadenshˆhe
+		if (angreifer.getStaerke()-ruestung < 1)	//check auf Schadenshoehe
 			staerke--; //Mindestschaden
-		}else { //regul‰rer Schaden
-			staerke-= angreifer.getStaerke()-ruestung;
-		}
-		if(staerke<1) {
+		else
+			staerke-= angreifer.getStaerke()-ruestung;	//regulaerer Schaden
+		if(staerke < 1) {
 			besitzer.getTruppen().remove(this);
 			spielbrett.getInhalt(position[0], position[1]).remove(this);
 		}
@@ -110,16 +112,14 @@ static Scanner input = new Scanner(System.in);
 	//Kontrollausgaben; genutzt in KI
 	public void printBewegungen(Feld spielbrett) {
 		ArrayList<int[]> moeglicheBewegungen = this.zeigeBewegung(spielbrett);
-		for (int i = 0; i < moeglicheBewegungen.size(); i++) {
+		for (int i = 0; i < moeglicheBewegungen.size(); i++)
 			System.out.print("(" + moeglicheBewegungen.get(i)[0] + "/" + moeglicheBewegungen.get(i)[1] + ") ");
-		}
 	}
 	
 	public void printAngriffe(Feld spielbrett) {
 		ArrayList<int[]> moeglicheAngriffe = this.zeigeAngriff(spielbrett);
-		for (int i = 0; i < moeglicheAngriffe.size(); i++) {
+		for (int i = 0; i < moeglicheAngriffe.size(); i++)
 			System.out.print("(" + moeglicheAngriffe.get(i)[0] + "/" + moeglicheAngriffe.get(i)[1] + ") ");
-		}
 	}
 	
 	//Setters und Getters

@@ -13,18 +13,18 @@ public class Effekt extends Karte {
 	
 	public boolean nutzen(Feld spielbrett) {
 		int x = besitzer.getAktionsAuswahlZeile();
-		int y= besitzer.getAktionsAuswahlSpalte();
-		this.ausspielen(x,y, spielbrett);
-		return true;
+		int y = besitzer.getAktionsAuswahlSpalte();
+		this.ausspielen(x, y, spielbrett);
+		return true;	// TODO returnt immer dasselbe, wirklich als bool noetig?
 	}
 	
-	//diese Funktion sollte im allgemeinen von den einzelnen Effekten überschrieben werden.
+	//diese Funktion sollte im allgemeinen von den einzelnen Effekten ueberschrieben werden.
 	public void ausspielen(int x, int y, Feld spielbrett) {
 		System.out.println(besitzer.getName() + " hat " + name + " ausgespielt.");
 	}
 
 	//Getters und Setters
-	public String getBildPfad(){
+	public String getBildPfad() {
 		return bildPfad;
 	}
 	

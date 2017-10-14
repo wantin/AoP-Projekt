@@ -92,7 +92,7 @@ public class AuswahlGUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if(pvkiBTN != null) {
+				if (pvkiBTN != null) {
 					links.setAktionsAuswahl0(1);
 					anzeige.setVisible(false);
 				}

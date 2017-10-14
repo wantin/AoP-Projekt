@@ -27,14 +27,13 @@ public class Schildziege extends Einheit {
 	}
 	@Override
 	public void verteidigen(Feld spielbrett, Einheit angreifer){
-		if (angreifer.getName() == "Bogenschuetze") {	//bessere verteidigung gegen Bogenschuetzen
+		if (angreifer.getName() == "Bogenschuetze")		//bessere verteidigung gegen Bogenschuetzen
 			staerke--;
-		} else {
-			if (angreifer.getStaerke()-ruestung < 1) {	// check auf Schadenshoehe
+		else {
+			if (angreifer.getStaerke()-ruestung < 1)	// check auf Schadenshoehe
 				staerke--;	//Mindestschaden
-			} else {				
+			else				
 				staerke-= angreifer.getStaerke()-ruestung;	// regulaerer Schaden
-			}
 		}
 		if (staerke < 1) {
 			besitzer.getTruppen().remove(this);

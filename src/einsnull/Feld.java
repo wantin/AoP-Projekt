@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /*
  * Die Klasse Feld ist eine Art Schachbrett auf dem die
  * Figuren bzw. Einheiten sich befinden. Durch bestimmte
- * Befehle k�nnen diese sich sp�ter darauf bewegen und 
+ * Befehle koennen diese sich spaeter darauf bewegen und 
  * andere sich auf dem Feld befindliche Einheiten angreifen. 
  */
 
@@ -30,28 +30,23 @@ public class Feld {
 		inhalt = new ArrayList<ArrayList<ArrayList<Einheit>>>(zeile);
 		for (int i = 0; i < zeile; i++) {
 			inhalt.add(new ArrayList<ArrayList<Einheit>>(spalte));
-			for (int j = 0; j < spalte; j++) {
+			for (int j = 0; j < spalte; j++)
 				inhalt.get(i).add(new ArrayList<Einheit>(1));
-			}
 		}
 	}
 	
 	//zur Kontrollausgabe
 	public void print () {
-		for (int i = 0; i < inhalt.size(); i++) {
-			for (int j = 0; j < inhalt.get(0).size(); j++) {
-				if(getInhalt(i, j).size()<2) {
-					if(besetzt(i, j)) {
+		for (int i = 0; i < inhalt.size(); i++)
+			for (int j = 0; j < inhalt.get(0).size(); j++)
+				if(getInhalt(i, j).size()<2)
+					if(besetzt(i, j))
 						System.out.print(getEinheit(i, j).getName() + " " + getEinheit(i, j).getStaerke() + "\t");
-					}else {
+					else
 						System.out.print("leer \t\t");
-					}
-				}else {
+				else
 					System.out.print("viele \t\t"); //sollte nach derzeitiger Planung nicht vorkommen
-				}
-			}
 			System.out.println("");
-		}
 	}
 	
 	//Ich glaube die beiden braucht es nicht wirklich weil man über getInhalt dann auch einfach außerhalb .size() benutzen kann
@@ -83,5 +78,4 @@ public class Feld {
 		if (inhalt.get(zeile).get(spalte).isEmpty()) return false;
 			else return true;
 	}
-
 }

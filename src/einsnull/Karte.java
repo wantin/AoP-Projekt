@@ -8,7 +8,7 @@ public abstract class Karte {
 	protected String tooltipPfad;
 	protected String bildPfad;
 	protected String art; 
-	//ich schaffe es nicht anders festzustellen, ob etwas eine Einheit oder ein Effekt ist.. wenn jemand da eine Lösung kennt können wir das ja einfach ändern indem man nach art sucht.
+	//ich schaffe es nicht anders festzustellen, ob etwas eine Einheit oder ein Effekt ist.. wenn jemand da eine Lï¿½sung kennt kï¿½nnen wir das ja einfach ï¿½ndern indem man nach art sucht.
 	
 	abstract String getArt();
 	abstract String getBildPfad();
@@ -17,6 +17,6 @@ public abstract class Karte {
 	abstract boolean nutzen(Feld spielbrett);
 	abstract Spieler getBesitzer();
 	abstract String getTooltipPfad();
-	//Bilder für karten in den Karten speichern.
+	//Bilder fuer karten in den Karten speichern.
 	
 }
