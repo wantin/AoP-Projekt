@@ -1,13 +1,10 @@
 package einheitenkarten;
 
-import java.util.Scanner;
 import einsnull.Einheit;
 import einsnull.Feld;
 import einsnull.Spieler;
 
 public class Ritter extends Einheit {
-	
-	static Scanner input= new Scanner(System.in);
 	
 	public Ritter(Spieler besitzer) {
 		this.besitzer= besitzer;
@@ -33,9 +30,7 @@ public class Ritter extends Einheit {
 	
 	@Override
 	public void angreifen(Feld spielbrett, int zeile, int spalte) {
-		
-		
-		
+				
 		int x, y, bonus, min;
 		x= position[0];
 		y= position[1];
@@ -63,6 +58,27 @@ public class Ritter extends Einheit {
 		staerke += bonus;
 		spielbrett.getInhalt(zeile, spalte).get(0).verteidigen(spielbrett, this);
 		staerke -= bonus;
+	}
+	
+	// Malus gegen Pikiniere
+	public void verteidigen(Feld spielbrett, Einheit angreifer) { //wird von der verteidigenden Einheit aus aufgerufen
+		if(angreifer.getName()=="Pikinier"){
+			angreifer.setStaerke(angreifer.getStaerke() +5);
+		}
+		if(angreifer.getStaerke()-ruestung < 1) { //check auf Schadensh�he
+			staerke--; //Mindestschaden
+		}else { //regul�rer Schaden
+			staerke-= angreifer.getStaerke()-ruestung;
+		}
+		if(staerke<1) {
+			besitzer.getTruppen().remove(this);
+			spielbrett.getInhalt(position[0], position[1]).remove(this);
+		}
+		
+		//temporären Bonus beenden
+		if(angreifer.getName()=="Pikinier"){
+			angreifer.setStaerke(angreifer.getStaerke() -5);
+		}
 	}
 
 }

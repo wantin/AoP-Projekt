@@ -15,8 +15,8 @@ public class Soeldner extends Einheit{
 		ruestung= 2;
 		name= "Soldner";
 		preis = 100;
-		tooltipPfad = "Söldner_anzeige.jpg";
-		//ich weiß nicht, ob das nicht eleganter geht..
+		tooltipPfad = "Soeldner_anzeige.jpg";
+		//ich weiï¿½ nicht, ob das nicht eleganter geht..
 		int[] a= {1*vor,0*vor};bewegung.add(a);
 		int[] b= {1*vor,1*vor};bewegung.add(b);
 		int[] c= {0*vor,1*vor};bewegung.add(c);

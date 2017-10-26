@@ -4,13 +4,8 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-import effektkarten.Blitzschlag;
-import effektkarten.GottesSegen;
-import effektkarten.Saeuregranate;
-import einheitenkarten.Bogenschuetzen;
-import einheitenkarten.Ritter;
-import einheitenkarten.Soeldner;
-import einheitenkarten.Schildziege;
+import einheitenkarten.*;
+import effektkarten.*;
 
 public class Spieler {
 	
@@ -42,7 +37,7 @@ public class Spieler {
 	 //Methode zur Generierung zufälliger Einheiten, ein Case repräsentiert einen Kartentyp
 	public Karte generateEinheit() {
 		Random zufall = new Random();
-		int zufZahl = zufall.nextInt(7); 	// Zahl muss manuell je nach Anzahl der existierenden Klassen in 'einheitenkarten' geändert werden
+		int zufZahl = zufall.nextInt(8); 	// Zahl muss manuell je nach Anzahl der existierenden Klassen in 'einheitenkarten' geändert werden
 		switch (zufZahl) {					// case int AnzahlKarten: return new KartenTyp(this);
 			case 0:
 				return new Soeldner(this);
@@ -58,6 +53,8 @@ public class Spieler {
 				return new GottesSegen(this);
 			case 6:
 				return new Saeuregranate(this);
+			case 7:
+				return new Pikinier(this);
 			default:
 				return null; //sollte nicht vorkommen
 		}
