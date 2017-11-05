@@ -59,7 +59,7 @@ public class GUI extends JFrame{
 
 	private JTextArea linkerplyr = new JTextArea();
 	private JTextArea rechterplyr = new JTextArea();
-	GUI anzeige = this;
+	GUI anzeige = this; // benötigt, um in Action Listenern auf die GUI zu verweisen
 
 
 	Random zufall = new Random();
@@ -696,11 +696,10 @@ public class GUI extends JFrame{
 		if(human);
 		else rechts= new KI();
 	}
-
-	//was ist das?
-	public void setup0(Spieler rechts){} //PvP (true) oder PvE (false)
-		//auswahl.setToolTipText(text); //wenn Cursor darÃƒÂ¼ber liegt erscheinender Text
-
+	
+	
+	/*
+	 * alte Version
 	public void kaufen(Spieler kaufender, Spieler anderer){
 		
 		Karte[] angebot = new Karte[3];
@@ -755,9 +754,98 @@ public class GUI extends JFrame{
 		System.out.println(kaufender.getName() + " hat nun folgende Karten:");kaufender.printHand();
 	
 	}
+	*/
+public void KI_kaufen(KI kaufender, Spieler anderer){
+		
+		int minPreis = 50;
+		int maxHand = 8;
+		Karte angebot = kaufender.generateEinheit();
+		while (kaufender.getGold() < angebot.getPreis() && kaufender.getGold() >= minPreis) {
+			angebot = kaufender.generateEinheit(); System.out.println( "Nicht genug Gold. Generiere neue Einheit."); // Nur zum Testen.
+		}
+		
+		kaufender.getHand().add(angebot);
+		kaufender.setGold(kaufender.getGold()-angebot.getPreis());
+		if(kaufender.getSeite()=="links"){
+			aktualisierenHand(kaufender, anderer);
+		}else{
+			aktualisierenHand(anderer, kaufender);
+		}
+		content.repaint();
+		
+		//Standart: es wechselt, wer kauft
+		if (anderer.getHand().size() < maxHand && anderer.getGold() >= minPreis){ 
+			anderer.kaufen(anzeige, kaufender);
+		}
+		//Wenn nicht gewechselt werden kann kauft, wer noch kann
+		else if(kaufender.getHand().size() < maxHand && kaufender.getGold() >= minPreis){
+			kaufender.kaufen(anzeige, kaufender);
+		}else{	//aufräumen
+			kaufPane.setVisible(false);
+		}
+
+		//Kontrollausgabe
+		System.out.println(kaufender.getName() + " hat "+ angebot.getName() + " gekauft. Jetziges Gold: " + kaufender.getGold() + " / Handkartenanzahl: " + kaufender.getHand().size());
+		
+		System.out.println(kaufender.getName() + " hat nun folgende Karten:");kaufender.printHand();
 	
-	
-	public void kaufenVerstecken(){
-		kaufPane.setVisible(false);
 	}
+	
+public void kaufen(Spieler kaufender, Spieler anderer){
+		
+		Karte[] angebot = new Karte[3];
+		int minPreis = 50;
+		int maxHand = 8;
+		for(int i = 0; i <= 2; i++) {
+			angebot[i] = kaufender.generateEinheit();
+			while (kaufender.getGold() < angebot[i].getPreis() && kaufender.getGold() >= minPreis) {
+				angebot[i] = kaufender.generateEinheit(); System.out.println(i + "Nicht genug Gold. Generiere neue Einheit."); // Nur zum Testen.
+			}
+			kaufButtons[i].setIcon(new ImageIcon(((new ImageIcon(angebot[i].getBildPfad())).getImage()).getScaledInstance(160, 160, java.awt.Image.SCALE_SMOOTH)));
+			preisLabel[i].setText(Integer.toString(angebot[i].getPreis()));
+			kaufButtons[i].setToolTipText("<html><img src=\"" + Main.class.getResource(angebot[i].getTooltipPfad()));
+			
+			final int innerI = i;
+			
+			ActionListener l = new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					kaufender.getHand().add(angebot[innerI]);
+					kaufender.setGold(kaufender.getGold()-angebot[innerI].getPreis());
+					if(kaufender.getSeite()=="links"){
+						aktualisierenHand(kaufender, anderer);
+					}else{
+						aktualisierenHand(anderer, kaufender);
+					}
+					content.repaint();
+					
+					//hier ist die Änderung, die dafür sorgt, dass als Grundannahme gewechselt wird
+					
+					//Standart: es wechselt, wer kauft
+					if (anderer.getHand().size() < maxHand && anderer.getGold() >= minPreis){ 
+						anderer.kaufen(anzeige, kaufender);
+					}
+					//Wenn nicht gewechselt werden kann kauft, wer noch kann
+					else if(kaufender.getHand().size() < maxHand && kaufender.getGold() >= minPreis){
+						kaufender.kaufen(anzeige, kaufender);
+					}else{	//aufräumen
+						kaufPane.setVisible(false);
+					}
+
+					//Kontrollausgabe
+					System.out.println(kaufender.getName() + " hat "+ angebot[innerI].getName() + " gekauft. Jetziges Gold: " + kaufender.getGold() + " / Handkartenanzahl: " + kaufender.getHand().size());
+				}
+			};
+			
+			for( ActionListener temp : kaufButtons[i].getActionListeners() ) {
+				kaufButtons[i].removeActionListener( temp );
+			}
+			kaufButtons[innerI].addActionListener(l);
+		}
+		goldAnzeige.setText(kaufender.getName() + ", Sie haben " + kaufender.getGold() + " Gulden.");
+		
+		System.out.println(kaufender.getName() + " hat nun folgende Karten:");kaufender.printHand();
+	
+	}
+	
 }

@@ -8,7 +8,7 @@ import einheitenkarten.*;
 
 public class KI extends Spieler {
 	
-	String name = "Dösender Doktor";
+	String name = "Dï¿½sender Doktor";
 	
 	public void resetBereit() {
 		for (int i = 0; i < truppen.size(); i++) {
@@ -17,6 +17,13 @@ public class KI extends Spieler {
 	}
 	
 	@Override
+public void kaufen(GUI anzeige, Spieler anderer){
+		
+		anzeige.KI_kaufen(this, anderer);
+	
+	}
+	/*
+	 * alte Version
 	public void kaufen(GUI anzeige, Spieler anderer) {
 		int maxPreis = 50;
 		int maxHand = 8;
@@ -35,14 +42,8 @@ public class KI extends Spieler {
 		//anzeige.aktualisierenHand(this);
 		anzeige.kaufenVerstecken();
 	}
+	*/
 	
-	/* TODO(?): Verschiedene Chancen bestimmte Karten zu erhalten, vielleicht irgendwas mathematisches mit 
-	 * modulo und Runden? Vielleicht Case 1/2/3 ein Kartentyp, Case 4/5/6 ein anderer?
-	 * 
-	 * Methode zur Generierung zufï¿½lliger Einheiten, ein Case reprï¿½sentiert einen Kartentyp
-	 * @param Der zugehï¿½rige Spieler fï¿½r den die Einheit generiert werden soll, wichtig fï¿½r Bewegungsrichtung links/rechts
-	 * @return jeweilige zufï¿½llige Karte wird zurï¿½ckgegegeben
-	 */
 	public Einheit generateEinheit() {
 		Random zufall = new Random();
 		int zufZahl = zufall.nextInt(4); 	// Zahl muss manuell je nach Anzahl der existierenden Klassen in 'einheitenkarten' geï¿½ndert werden
@@ -88,8 +89,8 @@ public class KI extends Spieler {
 			this.hand.get(auswahl).nutzen(spielbrett);
 			System.out.println("Karten auf der Hand vorhanden. Eine Karte wird gespielt.");
 			gespielt = true;
-		} else { //ansonsten überprüfe ob bereite Truppen auf Feld
-		//	System.out.println("Überprüfe ob bereite Truppen auf Feld");
+		} else { //ansonsten ï¿½berprï¿½fe ob bereite Truppen auf Feld
+		//	System.out.println("ï¿½berprï¿½fe ob bereite Truppen auf Feld");
 			loop:
 			for (int i = 0; i < this.getTruppen().size(); i++) { 
 				if (truppen.get(i).getBereit() == 1) {
@@ -102,14 +103,14 @@ public class KI extends Spieler {
 		
 		if (bereiteTruppen == true && gespielt == false) { //wenn bereite Truppen auf Feld, benutze diese
 			loop:
-			//überprüfe ob angreifbare Einheit auf dem Feld, wenn ja greife an
+			//ï¿½berprï¿½fe ob angreifbare Einheit auf dem Feld, wenn ja greife an
 			for (int i = 0; i < this.getTruppen().size(); i++) { 
-				if (truppen.get(i).zeigeAngriff(spielbrett).size() > 0 && truppen.get(i).getBereit() == 1) { //überprüfe eine Einheit ob angreifbare Einheit in Reichweite hat
+				if (truppen.get(i).zeigeAngriff(spielbrett).size() > 0 && truppen.get(i).getBereit() == 1) { //ï¿½berprï¿½fe eine Einheit ob angreifbare Einheit in Reichweite hat
 					System.out.println(truppen.get(i).getName() + " kann angreifen.");
 					System.out.println(truppen.get(i).getName() + " Bereitschaft: " + truppen.get(i).getBereit());
 					int zufZahl = zufall.nextInt(truppen.get(i).zeigeAngriff(spielbrett).size()); 
 					ArrayList<int[]> moeglicheAngriffe = truppen.get(i).zeigeAngriff(spielbrett);
-					System.out.println(truppen.get(i).zeigeAngriff(spielbrett).size() + " mögliche Angriffe: ");truppen.get(i).printAngriffe(spielbrett); 
+					System.out.println(truppen.get(i).zeigeAngriff(spielbrett).size() + " mï¿½gliche Angriffe: ");truppen.get(i).printAngriffe(spielbrett); 
 					aktionsAuswahlZeile = moeglicheAngriffe.get(zufZahl)[0]; 
 					aktionsAuswahlSpalte = moeglicheAngriffe.get(zufZahl)[1];
 					System.out.println(truppen.get(i).getName() + " Angriff auf Zeile " + aktionsAuswahlZeile + " und Spalte " + aktionsAuswahlSpalte);
@@ -122,7 +123,7 @@ public class KI extends Spieler {
 					truppen.get(i).nutzen(spielbrett);
 					gespielt = true;
 					break loop;
-				} else System.out.println(truppen.get(i).getName() + " kann nicht angreifen. Probiere nächste Einheit.");
+				} else System.out.println(truppen.get(i).getName() + " kann nicht angreifen. Probiere nï¿½chste Einheit.");
 			} System.out.println("________________________________________________________________________");
 		}
 		if (bereiteTruppen == true && gespielt == false) {
