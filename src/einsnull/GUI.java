@@ -56,77 +56,12 @@ public class GUI extends JFrame{
 	private JLabel text4 = new JLabel();
 	private JLabel text5 = new JLabel();
 	private JLabel text6 = new JLabel();
-
+	
 	private JTextArea linkerplyr = new JTextArea();
 	private JTextArea rechterplyr = new JTextArea();
 	GUI anzeige = this; // benötigt, um in Action Listenern auf die GUI zu verweisen
-
-
+	
 	Random zufall = new Random();
-	
-	public void aktualisierenHand(Spieler aktiver){
-		for (int i = 0; i < aktiver.getHand().size(); i++) {
-			if(aktiver.getSeite()=="links"){
-				linksHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(aktiver.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(114, 114, java.awt.Image.SCALE_SMOOTH)));
-				linksHandkarten[i].setToolTipText("<html><img src=\"" + Main.class.getResource(aktiver.getHand().get(i).getTooltipPfad()));
-			}else{
-				rechtsHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(aktiver.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(114, 114, java.awt.Image.SCALE_SMOOTH)));
-				rechtsHandkarten[i].setToolTipText("<html><img src= \"" + Main.class.getResource(aktiver.getHand().get(i).getTooltipPfad()));
-			}
-		}
-		for (int i = aktiver.getHand().size(); i < 8; i++) {
-			if(aktiver.getSeite()=="links"){
-				linksHandkarten[i].setIcon(null);
-				linksHandkarten[i].setToolTipText("");
-			}else{
-				rechtsHandkarten[i].setIcon(null);
-				rechtsHandkarten[i].setToolTipText("");
-			}
-		}
-	}
-	
-	public void aktualisierenHand(Spieler links, Spieler rechts){
-		
-		//Handkarten des linken Spielers aktualisiert darstellen
-		for(int i = 0; i < links.getHand().size(); i++){ 
-			linksHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(links.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(114, 114, java.awt.Image.SCALE_SMOOTH)));
-			linksHandkarten[i].setToolTipText("<html><img src= \"" + Main.class.getResource(links.getHand().get(i).getTooltipPfad()));
-		}
-		//leere Felder leeren
-		for (int i = links.getHand().size(); i < 8; i++) {
-			linksHandkarten[i].setIcon(null);
-			linksHandkarten[i].setToolTipText("");
-		}
-		//Handkarten des rechten Spielers aktualisiert darstellen
-		for(int i = 0; i < rechts.getHand().size(); i++){ 
-			rechtsHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(rechts.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(114, 114, java.awt.Image.SCALE_SMOOTH)));
-			rechtsHandkarten[i].setToolTipText("<html><img src= \"" + Main.class.getResource(rechts.getHand().get(i).getTooltipPfad()));
-		}
-		for (int i = rechts.getHand().size(); i < 8; i++) {
-			rechtsHandkarten[i].setIcon(null);
-			rechtsHandkarten[i].setToolTipText("");
-		}
-	}
-	
-	public void aktualisierenFeld(Feld spielbrett){
-		for (int i = 0; i < feldButtons.length; i++) {
-			for (int j = 0; j < feldButtons.length; j++) {
-				if(spielbrett.besetzt(i, j)){
-					staerkeKarte[i][j].setText(Integer.toString(spielbrett.getEinheit(i, j).getStaerke()));
-					ruestungKarte[i][j].setText(Integer.toString(spielbrett.getEinheit(i, j).getRuestung()));
-					String pfad = spielbrett.getEinheit(i, j).getBildPfad();
-					feldButtons[i][j].setIcon(new ImageIcon(((new ImageIcon(pfad)).getImage()).getScaledInstance(114, 114, java.awt.Image.SCALE_SMOOTH)));
-					feldButtons[i][j].setToolTipText("<html><img src=\"" + Main.class.getResource(spielbrett.getEinheit(i, j).getTooltipPfad()));
-				}else{
-					feldButtons[i][j].setIcon(null);
-					staerkeKarte[i][j].setText("");
-					ruestungKarte[i][j].setText("");
-					feldButtons[i][j].setToolTipText("");
-				}
-			}
-		}
-	}
-	
 	
 	//Konstruktor
 	public GUI(Feld spielbrett, Spieler links, Spieler rechts){
@@ -233,7 +168,7 @@ public class GUI extends JFrame{
 		passenLinks.setForeground(lfeld.getForeground());
 		passenLinks.setFont(new Font(abbrechenLinks.getText(), Font.BOLD, 14));
 		passenLinks.setToolTipText("Eure Exzellenz: Hiermit lasst ihr eine eurer Aktionen verstreichen.");
-	    
+		
 	    if (passenLinks != null){
 	    	//zug rückgängig machen
 	    }
@@ -345,6 +280,7 @@ public class GUI extends JFrame{
 				links.setAktionAuswahlEinheit(null);
 				links.setAuswahlPhase(0);
 				optionenZeigenSpieler(links);
+				aktualisierenFeld(spielbrett);
 			}
 		});
 		
@@ -360,6 +296,7 @@ public class GUI extends JFrame{
 				rechts.setAktionAuswahlEinheit(null);
 				rechts.setAuswahlPhase(0);
 				optionenZeigenSpieler(rechts);
+				aktualisierenFeld(spielbrett);
 			}
 		});
 		
@@ -480,7 +417,6 @@ public class GUI extends JFrame{
 		if(rechts.getClass()==KI.class){
 			text3.setVisible(false);
 			rechterplyr.setVisible(false);
-			
 		}else{
 			text4.setVisible(false);
 		}
@@ -582,6 +518,75 @@ public class GUI extends JFrame{
 		sieg.setVisible(true);
 	}
 	
+	public void aktualisierenHand(Spieler aktiver){
+		for (int i = 0; i < aktiver.getHand().size(); i++) {
+			if(aktiver.getSeite()=="links"){
+				linksHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(aktiver.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(114, 114, java.awt.Image.SCALE_SMOOTH)));
+				linksHandkarten[i].setToolTipText("<html><img src=\"" + Main.class.getResource(aktiver.getHand().get(i).getTooltipPfad()));
+			}else{
+				rechtsHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(aktiver.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(114, 114, java.awt.Image.SCALE_SMOOTH)));
+				rechtsHandkarten[i].setToolTipText("<html><img src= \"" + Main.class.getResource(aktiver.getHand().get(i).getTooltipPfad()));
+			}
+		}
+		for (int i = aktiver.getHand().size(); i < 8; i++) {
+			if(aktiver.getSeite()=="links"){
+				linksHandkarten[i].setIcon(null);
+				linksHandkarten[i].setToolTipText("");
+			}else{
+				rechtsHandkarten[i].setIcon(null);
+				rechtsHandkarten[i].setToolTipText("");
+			}
+		}
+	}
+	
+	public void aktualisierenHand(Spieler links, Spieler rechts){
+		
+		//Handkarten des linken Spielers aktualisiert darstellen
+		for(int i = 0; i < links.getHand().size(); i++){ 
+			linksHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(links.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(114, 114, java.awt.Image.SCALE_SMOOTH)));
+			linksHandkarten[i].setToolTipText("<html><img src= \"" + Main.class.getResource(links.getHand().get(i).getTooltipPfad()));
+		}
+		//leere Felder leeren
+		for (int i = links.getHand().size(); i < 8; i++) {
+			linksHandkarten[i].setIcon(null);
+			linksHandkarten[i].setToolTipText("");
+		}
+		//Handkarten des rechten Spielers aktualisiert darstellen
+		for(int i = 0; i < rechts.getHand().size(); i++){ 
+			rechtsHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(rechts.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(114, 114, java.awt.Image.SCALE_SMOOTH)));
+			rechtsHandkarten[i].setToolTipText("<html><img src= \"" + Main.class.getResource(rechts.getHand().get(i).getTooltipPfad()));
+		}
+		for (int i = rechts.getHand().size(); i < 8; i++) {
+			rechtsHandkarten[i].setIcon(null);
+			rechtsHandkarten[i].setToolTipText("");
+		}
+	}
+	
+	public void aktualisierenFeld(Feld spielbrett){
+		for (int i = 0; i < feldButtons.length; i++) {
+			for (int j = 0; j < feldButtons.length; j++) {
+				if(spielbrett.besetzt(i, j)){
+					staerkeKarte[i][j].setText(Integer.toString(spielbrett.getEinheit(i, j).getStaerke()));
+					ruestungKarte[i][j].setText(Integer.toString(spielbrett.getEinheit(i, j).getRuestung()));
+					String pfad = spielbrett.getEinheit(i, j).getBildPfad();
+					feldButtons[i][j].setIcon(new ImageIcon(((new ImageIcon(pfad)).getImage()).getScaledInstance(114, 114, java.awt.Image.SCALE_SMOOTH)));
+					feldButtons[i][j].setToolTipText("<html><img src=\"" + Main.class.getResource(spielbrett.getEinheit(i, j).getTooltipPfad()));
+					if (spielbrett.getEinheit(i, j).getBesitzer().getSeite() == "links") {
+						feldButtons[i][j].setBorder(BorderFactory.createLineBorder(Color.blue,5));
+					}else if (spielbrett.getEinheit(i, j).getBesitzer().getSeite() == "rechts") {
+						feldButtons[i][j].setBorder(BorderFactory.createLineBorder(Color.red,5));
+					}
+				}else{
+					feldButtons[i][j].setIcon(null);
+					staerkeKarte[i][j].setText("");
+					ruestungKarte[i][j].setText("");
+					feldButtons[i][j].setToolTipText("");
+					feldButtons[i][j].setBorder(BorderFactory.createLineBorder(Color.gray));
+				}
+			}
+		}
+	}
+	
 	//Hilfsfunktion, die alle Buttons disabled
 	public void optionenKeine(){
 		for (int i = 0; i < rechtsHandkarten.length; i++) {
@@ -591,6 +596,7 @@ public class GUI extends JFrame{
 		for (int i = 0; i < feldButtons.length; i++) {
 			for (int j = 0; j < feldButtons[0].length; j++) {
 				feldButtons[i][j].setEnabled(false);
+				feldButtons[i][j].setOpaque(false);
 			}
 		}
 		abbrechenLinks.setEnabled(false);
@@ -602,44 +608,46 @@ public class GUI extends JFrame{
 	//Zeigt f�r eine Handkarte an, was man damit machen kann
 	public void optionenZeigenHandkarte(Karte auszuspielende, Feld spielbrett){
 		optionenKeine();
-		if(auszuspielende.getBesitzer().getSeite()=="links"){
-			abbrechenLinks.setEnabled(true);
-		}else{
-			abbrechenRechts.setEnabled(true);
-		}
-		if(auszuspielende.getArt()=="einheit"){
+		if (auszuspielende.getBesitzer().getClass() != KI.class) {
 			if(auszuspielende.getBesitzer().getSeite()=="links"){
-				for (int i = 0; i < 6; i++) {
-					for (int j = 0; j < 2; j++) {
-						if(!spielbrett.besetzt(i, j)){
-							feldButtons[i][j].setEnabled(true);
-						}
-					}
-				}
-			}else{ //rechter Spieler setzt auf die rechte Seite
-				for (int i = 0; i < 6; i++) {
-					for (int j = 4; j < 6; j++) {
-						feldButtons[i][j].setEnabled(true);
-					}
-				}
+				abbrechenLinks.setEnabled(true);
+			}else{
+				abbrechenRechts.setEnabled(true);
 			}
-		}else{ //Effektkarten Ziel w�hlen
-			if(auszuspielende.getArt()=="fluch"){ //fl�che wirkt man auf gegner
-				for (int i = 0; i < 6; i++) {
-					for (int j = 0; j < 6; j++) {
-						if(spielbrett.besetzt(i, j)){ //vermeiden einer nullpointerexception bei dem n�chsten Test
-							if(spielbrett.getEinheit(i, j).getBesitzer() != auszuspielende.getBesitzer()){
+			if(auszuspielende.getArt()=="einheit"){
+				if(auszuspielende.getBesitzer().getSeite()=="links"){
+					for (int i = 0; i < 6; i++) {
+						for (int j = 0; j < 2; j++) {
+							if(!spielbrett.besetzt(i, j)){
 								feldButtons[i][j].setEnabled(true);
 							}
 						}
 					}
+				}else{ //rechter Spieler setzt auf die rechte Seite
+					for (int i = 0; i < 6; i++) {
+						for (int j = 4; j < 6; j++) {
+							feldButtons[i][j].setEnabled(true);
+						}
+					}
 				}
-			}else{ //da es kein Fluch ist muss es ein Segen sein.
-				for (int i = 0; i < 6; i++) {
-					for (int j = 0; j < 6; j++) {
-						if(spielbrett.besetzt(i, j)){
-							if(spielbrett.getEinheit(i, j).getBesitzer() == auszuspielende.getBesitzer()){ //Diesmal muss es eine eigene Einheit sein
-								feldButtons[i][j].setEnabled(true);
+			}else{ //Effektkarten Ziel w�hlen
+				if(auszuspielende.getArt()=="fluch"){ //fl�che wirkt man auf gegner
+					for (int i = 0; i < 6; i++) {
+						for (int j = 0; j < 6; j++) {
+							if(spielbrett.besetzt(i, j)){ //vermeiden einer nullpointerexception bei dem n�chsten Test
+								if(spielbrett.getEinheit(i, j).getBesitzer() != auszuspielende.getBesitzer()){
+									feldButtons[i][j].setEnabled(true);
+								}
+							}
+						}
+					}
+				}else{ //da es kein Fluch ist muss es ein Segen sein.
+					for (int i = 0; i < 6; i++) {
+						for (int j = 0; j < 6; j++) {
+							if(spielbrett.besetzt(i, j)){
+								if(spielbrett.getEinheit(i, j).getBesitzer() == auszuspielende.getBesitzer()){ //Diesmal muss es eine eigene Einheit sein
+									feldButtons[i][j].setEnabled(true);
+								}
 							}
 						}
 					}
@@ -651,57 +659,67 @@ public class GUI extends JFrame{
 	//zeigt an, was man mit einer ausgespielten Einheit f�r Optionen hat.
 	public void optionenZeigenEinheit(Einheit aktive, Feld spielbrett){
 		optionenKeine();
-		for (int i = 0; i < aktive.zeigeBewegung(spielbrett).size(); i++) {
-			int x = aktive.zeigeBewegung(spielbrett).get(i)[0];
-			int y = aktive.zeigeBewegung(spielbrett).get(i)[1];
-			feldButtons[x][y].setEnabled(true);
-		}
-		for (int i = 0; i < aktive.zeigeAngriff(spielbrett).size(); i++) {
-			int x = aktive.zeigeAngriff(spielbrett).get(i)[0];
-			int y = aktive.zeigeAngriff(spielbrett).get(i)[1];
-			feldButtons[x][y].setEnabled(true);
-		}
-		if(aktive.getBesitzer().getSeite() == "links"){
-			abbrechenLinks.setEnabled(true);
-		}else{
-			abbrechenRechts.setEnabled(true);
+		if (aktive.getBesitzer().getClass() != KI.class) {
+			for (int i = 0; i < aktive.zeigeBewegung(spielbrett).size(); i++) {
+				int x = aktive.zeigeBewegung(spielbrett).get(i)[0];
+				int y = aktive.zeigeBewegung(spielbrett).get(i)[1];
+				feldButtons[x][y].setEnabled(true);
+				feldButtons[x][y].setBorder(BorderFactory.createLineBorder(Color.green,3));
+				
+				//Methode 2: Feld ausmalen -> hässlich
+				/*feldButtons[x][y].setBackground(Color.green);
+				feldButtons[x][y].setOpaque(true);*/
+			}
+			for (int i = 0; i < aktive.zeigeAngriff(spielbrett).size(); i++) {
+				int x = aktive.zeigeAngriff(spielbrett).get(i)[0];
+				int y = aktive.zeigeAngriff(spielbrett).get(i)[1];
+				feldButtons[x][y].setEnabled(true);
+				
+				//nicht nötig da angegriffene Einheiten sowieso enabled und dadurch farbig werden
+				/*feldButtons[x][y].setBackground(Color.red);
+				feldButtons[x][y].setOpaque(true);*/
+			}
+			if(aktive.getBesitzer().getSeite() == "links"){
+				abbrechenLinks.setEnabled(true);
+			}else{
+				abbrechenRechts.setEnabled(true);
+			}
 		}
 	}
 	
 	//Zeigt an, was ein Spieler in seinem Zug tun kann
 	public void optionenZeigenSpieler(Spieler aktiverSpieler){
 		optionenKeine();
-		if(aktiverSpieler.getSeite()=="links"){
-			passenLinks.setEnabled(true);
-			for (int i = 0; i < linksHandkarten.length; i++) {
-				linksHandkarten[i].setEnabled(true);
+		if (aktiverSpieler.getClass() != KI.class) {
+			if(aktiverSpieler.getSeite()=="links"){
+				passenLinks.setEnabled(true);
+				for (int i = 0; i < linksHandkarten.length; i++) {
+					linksHandkarten[i].setEnabled(true);
+				}
+			}else{
+				passenRechts.setEnabled(true);
+				for (int i = 0; i < rechtsHandkarten.length; i++) {
+					rechtsHandkarten[i].setEnabled(true);
+				}
 			}
-		}else{
-			passenRechts.setEnabled(true);
-			for (int i = 0; i < rechtsHandkarten.length; i++) {
-				rechtsHandkarten[i].setEnabled(true);
-			}
-		}
-		for (int i = 0; i < aktiverSpieler.getTruppen().size(); i++) {
-			if(aktiverSpieler.getTruppen().get(i).getBereit() > 0){
-				int koordinaten[] = aktiverSpieler.getTruppen().get(i).getPosition();
-				feldButtons[koordinaten[0]][koordinaten[1]].setEnabled(true);
+			for (int i = 0; i < aktiverSpieler.getTruppen().size(); i++) {
+				if(aktiverSpieler.getTruppen().get(i).getBereit() > 0){
+					int koordinaten[] = aktiverSpieler.getTruppen().get(i).getPosition();
+					feldButtons[koordinaten[0]][koordinaten[1]].setEnabled(true);
+				}
 			}
 		}
 	}
 
-	
 	//oben genutzte Methode, die auf Buttoneingabe reagiert.
 	public void setPlayer(Spieler rechts, boolean human){
 		if(human);
 		else rechts= new KI();
 	}
 	
-	
 	/*
 	 * alte Version
 	public void kaufen(Spieler kaufender, Spieler anderer){
-		
 		Karte[] angebot = new Karte[3];
 		int minPreis = 50;
 		int maxHand = 8;
@@ -752,10 +770,9 @@ public class GUI extends JFrame{
 		goldAnzeige.setText(kaufender.getName() + ", Sie haben " + kaufender.getGold() + " Gulden.");
 		
 		System.out.println(kaufender.getName() + " hat nun folgende Karten:");kaufender.printHand();
-	
 	}
 	*/
-public void KI_kaufen(KI kaufender, Spieler anderer){
+	public void KI_kaufen(KI kaufender, Spieler anderer){
 		
 		int minPreis = 50;
 		int maxHand = 8;
@@ -766,11 +783,14 @@ public void KI_kaufen(KI kaufender, Spieler anderer){
 		
 		kaufender.getHand().add(angebot);
 		kaufender.setGold(kaufender.getGold()-angebot.getPreis());
-		if(kaufender.getSeite()=="links"){
+		/*if(kaufender.getSeite()=="links"){
 			aktualisierenHand(kaufender, anderer);
 		}else{
 			aktualisierenHand(anderer, kaufender);
-		}
+		}*/
+		aktualisierenHand(anderer);
+		aktualisierenHand(kaufender);
+		
 		content.repaint();
 		
 		//Standart: es wechselt, wer kauft
@@ -788,11 +808,11 @@ public void KI_kaufen(KI kaufender, Spieler anderer){
 		System.out.println(kaufender.getName() + " hat "+ angebot.getName() + " gekauft. Jetziges Gold: " + kaufender.getGold() + " / Handkartenanzahl: " + kaufender.getHand().size());
 		
 		System.out.println(kaufender.getName() + " hat nun folgende Karten:");kaufender.printHand();
-	
 	}
 	
-public void kaufen(Spieler kaufender, Spieler anderer){
-		
+	public void kaufen(Spieler kaufender, Spieler anderer){
+		//Test zum Bugfix, dass Buttons schon vor dem Kaufen enabled sind
+		//optionenKeine();
 		Karte[] angebot = new Karte[3];
 		int minPreis = 50;
 		int maxHand = 8;
@@ -812,11 +832,9 @@ public void kaufen(Spieler kaufender, Spieler anderer){
 				public void actionPerformed(ActionEvent e) {
 					kaufender.getHand().add(angebot[innerI]);
 					kaufender.setGold(kaufender.getGold()-angebot[innerI].getPreis());
-					if(kaufender.getSeite()=="links"){
-						aktualisierenHand(kaufender, anderer);
-					}else{
-						aktualisierenHand(anderer, kaufender);
-					}
+					aktualisierenHand(anderer);
+					aktualisierenHand(kaufender);
+					
 					content.repaint();
 					
 					//hier ist die Änderung, die dafür sorgt, dass als Grundannahme gewechselt wird
@@ -830,6 +848,17 @@ public void kaufen(Spieler kaufender, Spieler anderer){
 						kaufender.kaufen(anzeige, kaufender);
 					}else{	//aufräumen
 						kaufPane.setVisible(false);
+						
+						
+						//Test zum Bugfix, dass Buttons schon vor dem Kaufen enabled sind
+						
+						//Methode 1: Anfangender Spieler ist der, der als letzter kauft (oder als vorletzter, grad keine lust zu testen)
+						//optionenZeigenSpieler(anderer);
+						
+						//Methode 2: Der linke / rechte Spieler fängt an
+						/*if(kaufender.getSeite() == "links") {
+							optionenZeigenSpieler(kaufender);
+						}else optionenZeigenSpieler(anderer);*/
 					}
 
 					//Kontrollausgabe
@@ -845,7 +874,5 @@ public void kaufen(Spieler kaufender, Spieler anderer){
 		goldAnzeige.setText(kaufender.getName() + ", Sie haben " + kaufender.getGold() + " Gulden.");
 		
 		System.out.println(kaufender.getName() + " hat nun folgende Karten:");kaufender.printHand();
-	
 	}
-	
 }
