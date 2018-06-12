@@ -7,7 +7,7 @@ public class Soeldner extends Einheit{
 	
 	public Soeldner(Spieler besitzer) {
 		this.besitzer= besitzer;
-		bildPfad = "bilder/einheiten/soldner.jpg";
+		bildPfad = "soldner.jpg";
 		int vor =1;
 		if (besitzer.getSeite()=="rechts")vor=-1;
 		//vor (vorzeichen) sollte 1 für den linken Spieler und -1 für den rechten Spieler sein

@@ -70,6 +70,7 @@ public class GUI extends JFrame{
 		this.setSize(1200, 730);
 		this.setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);	
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 
 		//Hintergrund;
@@ -521,10 +522,13 @@ public class GUI extends JFrame{
 	public void aktualisierenHand(Spieler aktiver){
 		for (int i = 0; i < aktiver.getHand().size(); i++) {
 			if(aktiver.getSeite()=="links"){
-				linksHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(aktiver.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(114, 114, java.awt.Image.SCALE_SMOOTH)));
+				
+				//linksHandkarten[i].setIcon(new ImageIcon( getClass().getResource(aktiver.getHand().get(i).getBildPfad())));
+				linksHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(getClass().getResource(aktiver.getHand().get(i).getBildPfad()))).getImage()).getScaledInstance(114, 114, java.awt.Image.SCALE_SMOOTH)));
 				linksHandkarten[i].setToolTipText("<html><img src=\"" + Main.class.getResource(aktiver.getHand().get(i).getTooltipPfad()));
 			}else{
-				rechtsHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(aktiver.getHand().get(i).getBildPfad())).getImage()).getScaledInstance(114, 114, java.awt.Image.SCALE_SMOOTH)));
+				//rechtsHandkarten[i].setIcon(new ImageIcon( getClass().getResource(aktiver.getHand().get(i).getBildPfad())));
+				rechtsHandkarten[i].setIcon(new ImageIcon(((new ImageIcon(getClass().getResource(aktiver.getHand().get(i).getBildPfad()))).getImage()).getScaledInstance(114, 114, java.awt.Image.SCALE_SMOOTH)));
 				rechtsHandkarten[i].setToolTipText("<html><img src= \"" + Main.class.getResource(aktiver.getHand().get(i).getTooltipPfad()));
 			}
 		}
@@ -539,6 +543,11 @@ public class GUI extends JFrame{
 		}
 	}
 	
+	/**
+	 * sollte nicht mehr verwendet werden
+	 * @param links
+	 * @param rechts
+	 
 	public void aktualisierenHand(Spieler links, Spieler rechts){
 		
 		//Handkarten des linken Spielers aktualisiert darstellen
@@ -562,6 +571,10 @@ public class GUI extends JFrame{
 		}
 	}
 	
+	*/
+	
+	// TODO: continue
+	
 	public void aktualisierenFeld(Feld spielbrett){
 		for (int i = 0; i < feldButtons.length; i++) {
 			for (int j = 0; j < feldButtons.length; j++) {
@@ -569,7 +582,7 @@ public class GUI extends JFrame{
 					staerkeKarte[i][j].setText(Integer.toString(spielbrett.getEinheit(i, j).getStaerke()));
 					ruestungKarte[i][j].setText(Integer.toString(spielbrett.getEinheit(i, j).getRuestung()));
 					String pfad = spielbrett.getEinheit(i, j).getBildPfad();
-					feldButtons[i][j].setIcon(new ImageIcon(((new ImageIcon(pfad)).getImage()).getScaledInstance(114, 114, java.awt.Image.SCALE_SMOOTH)));
+					feldButtons[i][j].setIcon(new ImageIcon(((new ImageIcon(getClass().getResource(pfad))).getImage()).getScaledInstance(114, 114, java.awt.Image.SCALE_SMOOTH)));
 					feldButtons[i][j].setToolTipText("<html><img src=\"" + Main.class.getResource(spielbrett.getEinheit(i, j).getTooltipPfad()));
 					if (spielbrett.getEinheit(i, j).getBesitzer().getSeite() == "links") {
 						feldButtons[i][j].setBorder(BorderFactory.createLineBorder(Color.blue,5));
@@ -717,61 +730,6 @@ public class GUI extends JFrame{
 		else rechts= new KI();
 	}
 	
-	/*
-	 * alte Version
-	public void kaufen(Spieler kaufender, Spieler anderer){
-		Karte[] angebot = new Karte[3];
-		int minPreis = 50;
-		int maxHand = 8;
-		for(int i = 0; i <= 2; i++) {
-			angebot[i] = kaufender.generateEinheit();
-			while (kaufender.getGold() < angebot[i].getPreis() && kaufender.getGold() >= minPreis) {
-				angebot[i] = kaufender.generateEinheit(); System.out.println(i + "Nicht genug Gold. Generiere neue Einheit."); // Nur zum Testen.
-			}
-			kaufButtons[i].setIcon(new ImageIcon(((new ImageIcon(angebot[i].getBildPfad())).getImage()).getScaledInstance(160, 160, java.awt.Image.SCALE_SMOOTH)));
-			preisLabel[i].setText(Integer.toString(angebot[i].getPreis()));
-			kaufButtons[i].setToolTipText("<html><img src=\"" + Main.class.getResource(angebot[i].getTooltipPfad()));
-			
-			final int innerI = i;
-			
-			ActionListener l = new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					kaufender.getHand().add(angebot[innerI]);
-					kaufender.setGold(kaufender.getGold()-angebot[innerI].getPreis());
-					if(kaufender.getSeite()=="links"){
-						aktualisierenHand(kaufender, anderer);
-					}else{
-						aktualisierenHand(anderer, kaufender);
-					}
-					content.repaint();
-					
-					if (kaufender.getHand().size() < maxHand && kaufender.getGold() >= minPreis){ //weitereinkaufen
-						kaufen(kaufender, anderer); 
-					}
-					else{
-						if(anderer.getHand().size() == 0){ //der andere kauft
-							anderer.kaufen(anzeige, kaufender);
-						}else{	//aufräumen
-							kaufPane.setVisible(false);
-						}
-					}
-
-					//Kontrollausgabe
-					System.out.println(kaufender.getName() + " hat "+ angebot[innerI].getName() + " gekauft. Jetziges Gold: " + kaufender.getGold() + " / Handkartenanzahl: " + kaufender.getHand().size());
-				}
-			};
-			
-			for( ActionListener temp : kaufButtons[i].getActionListeners() ) {
-				kaufButtons[i].removeActionListener( temp );
-			}
-			kaufButtons[innerI].addActionListener(l);
-		}
-		goldAnzeige.setText(kaufender.getName() + ", Sie haben " + kaufender.getGold() + " Gulden.");
-		
-		System.out.println(kaufender.getName() + " hat nun folgende Karten:");kaufender.printHand();
-	}
-	*/
 	public void KI_kaufen(KI kaufender, Spieler anderer){
 		
 		int minPreis = 50;
@@ -821,7 +779,7 @@ public class GUI extends JFrame{
 			while (kaufender.getGold() < angebot[i].getPreis() && kaufender.getGold() >= minPreis) {
 				angebot[i] = kaufender.generateEinheit(); System.out.println(i + "Nicht genug Gold. Generiere neue Einheit."); // Nur zum Testen.
 			}
-			kaufButtons[i].setIcon(new ImageIcon(((new ImageIcon(angebot[i].getBildPfad())).getImage()).getScaledInstance(160, 160, java.awt.Image.SCALE_SMOOTH)));
+			kaufButtons[i].setIcon(new ImageIcon(((new ImageIcon(getClass().getResource(angebot[i].getBildPfad()))).getImage()).getScaledInstance(160, 160, java.awt.Image.SCALE_SMOOTH)));
 			preisLabel[i].setText(Integer.toString(angebot[i].getPreis()));
 			kaufButtons[i].setToolTipText("<html><img src=\"" + Main.class.getResource(angebot[i].getTooltipPfad()));
 			

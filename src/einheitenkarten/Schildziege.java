@@ -8,7 +8,7 @@ public class Schildziege extends Einheit{
 	
 	public Schildziege(Spieler besitzer) {
 		this.besitzer= besitzer;
-		bildPfad = "bilder/einheiten/schildziege.jpg";
+		bildPfad = "schildziege.jpg";
 		int vor =1;
 		if (besitzer.getSeite()=="rechts")vor=-1;
 		//vor (vorzeichen) sollte 1 fÃ¼r den linken Spieler und -1 fÃ¼r den rechten Spieler sein
@@ -19,7 +19,7 @@ public class Schildziege extends Einheit{
 		tooltipPfad = "Schildziege_anzeige.jpg";
 		//ich weiÃŸ nicht, ob das nicht eleganter geht..
 		
-		//also so sollte das uebrigens eleganter und kürzer sein, falls ich das richtig verstanden habe
+		//also so sollte das uebrigens eleganter und kï¿½rzer sein, falls ich das richtig verstanden habe
 		for (int i = -1; i <= 1; i++) {
 			for (int j = -1; j <= 1; j++) {
 				int[] temp = {i*vor, j*vor}; bewegung.add(temp); angriff.add(temp);				
@@ -28,7 +28,7 @@ public class Schildziege extends Einheit{
 	}
 	@Override
 	public void verteidigen(Feld spielbrett, Einheit angreifer){
-		if(angreifer.getName()=="Bogenschütze"){//bessere verteidigung gegen Bogenschützen
+		if(angreifer.getName()=="Bogenschï¿½tze"){//bessere verteidigung gegen Bogenschï¿½tzen
 			staerke--;
 		}else{//andere Einheiten
 			if(angreifer.getStaerke()-ruestung < 1) { //check auf SchadenshÃ¶he

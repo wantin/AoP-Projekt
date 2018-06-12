@@ -7,7 +7,7 @@ public class Bogenschuetzen extends Einheit {
 
 	public Bogenschuetzen(Spieler besitzer) {
 		this.besitzer= besitzer;
-		bildPfad = "bilder/einheiten/bogenschutze.jpg";
+		bildPfad = "bogenschutze.jpg";
 		staerke= 5;
 		ruestung= 0;
 		name= "Bogensch�tze";

@@ -44,6 +44,7 @@ public class AuswahlGUI extends JFrame{
 		content.setVisible(true);
 		auswahl.setVisible(true);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		setLocationRelativeTo(null);
 		

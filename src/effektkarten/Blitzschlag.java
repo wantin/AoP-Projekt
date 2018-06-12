@@ -12,7 +12,7 @@ public class Blitzschlag extends Effekt {
 		this.besitzer = besitzer;
 		name = "Blitzschlag";
 		preis = 150;
-		bildPfad = "bilder/effekte/blitz.jpg";
+		bildPfad = "blitz.jpg";
 		art = "fluch";
 		tooltipPfad = "Blitzsturm_anzeige.jpg";
 	}

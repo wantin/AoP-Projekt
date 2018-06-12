@@ -8,7 +8,7 @@ import einheitenkarten.*;
 
 public class KI extends Spieler {
 	
-	String name = "D�sender Doktor";
+	String name = "Doesender Doktor";
 	
 	public void resetBereit() {
 		for (int i = 0; i < truppen.size(); i++) {

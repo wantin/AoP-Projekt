@@ -12,7 +12,7 @@ public class Saeuregranate extends Effekt {
 		this.besitzer = besitzer;
 		name = "Säuregranate";
 		preis = 100;
-		bildPfad = "bilder/effekte/sauregranate.jpg";
+		bildPfad = "sauregranate.jpg";
 		art = "fluch";
 		tooltipPfad = "Saeuregranate_anzeige.jpg";
 	}
